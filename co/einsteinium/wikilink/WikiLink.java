@@ -6,10 +6,14 @@ import java.util.logging.Logger;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+
 import co.einsteinium.wikilink.cfg.ConfigHandler;
-import co.einsteinium.wikilink.key.CommandWiki;
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.PacketHandler;
+import co.einsteinium.wikilink.plg.PluginManager;
+import co.einsteinium.wikilink.run.RunManager;
+import co.einsteinium.wikilink.run.cmd.*;
+
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -76,6 +80,11 @@ public class WikiLink
 		ServerCommandManager serverCommand = ((ServerCommandManager) command);
 		
 		//serverCommand.registerCommand(new CommandWiki());
+		//LogHelper.info("Registered Wiki Command.");
+		serverCommand.registerCommand(new CommandLmgtfy());
+		LogHelper.info("Registered Lmgtfy Command.");
+		serverCommand.registerCommand(new CommandGoogle());
+		LogHelper.info("Registered Google Command.");
 	}
 	
 }

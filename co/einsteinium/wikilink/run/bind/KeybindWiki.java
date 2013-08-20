@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink.key;
+package co.einsteinium.wikilink.run.bind;
 
 /** KeybindWiki
  * 

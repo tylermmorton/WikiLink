@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink;
+package co.einsteinium.wikilink.plg;
 
 import java.io.File;
 import java.io.FileInputStream;

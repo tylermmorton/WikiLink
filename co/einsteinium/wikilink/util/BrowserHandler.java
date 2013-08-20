@@ -16,7 +16,7 @@ public class BrowserHandler
 
 	static String osName = System.getProperty("os.name");
 
-	public static void browserInit(String hyperlink, EntityPlayer player)
+	public static void browserInit(String hyperlink)
 	{
 		try
 		{
