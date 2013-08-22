@@ -18,9 +18,7 @@ public interface Plugin
     public boolean isAvailable();
     
     /** Please enter the @modid value here.
-     *  It's not used yet, but it will be used
-     *  for NEI integration in a later update.
-     *   
+     * 
      *  @since 1.6.2-011
      */
     public String getModID(); 
@@ -77,9 +75,10 @@ public interface Plugin
      *  Paste in the search domain here
      *  ex: "/index.php?search="
      *  
+     *  NOT BEING USED YET. SORRY. RETURN NULL.
+     *  
      *  @since 1.6.2-011
      */    
-
     public String getCustomWikiSearchFormat();
 
 }
