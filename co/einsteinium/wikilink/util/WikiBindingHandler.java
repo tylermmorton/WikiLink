@@ -73,6 +73,10 @@ public class WikiBindingHandler
 						//WikiLink.LogHelper.info(base.toString());
 						Reference.currentLanguage = Minecraft.getMinecraft().gameSettings.language;
 							
+							if(Reference.currentLanguage.equals("en_CA")||Reference.currentLanguage.equals("en_GB"))
+								Reference.currentLanguage = "en_US";
+								
+								
 							if((base).toString().contains("ModId:" + ((Reference.modIdList).get(x))) && (base).toString().contains("ItemId:" + matchedId))
 							{
 								if(Reference.modLocalizationList.get(x).toString().equals(Reference.currentLanguage))
@@ -85,7 +89,18 @@ public class WikiBindingHandler
 									
 									found = true;
 									break LoopTagFinder;
-								}					
+								}	
+								else if(Reference.modLocalizationList.get(x).toString().equals("ALL"))
+								{
+									WikiLink.LogHelper.info("Found wiki containing " + matchedName);
+									
+									String hyperlink = "http://" + Reference.modDomainList.get(x) + Reference.getSearchQuery(x) + matchedName.replace(" ", "+");
+									
+									BrowserHandler.browserInit(hyperlink);
+									
+									found = true;
+									break LoopTagFinder;
+								}
 						}	
 					x++;	
 					}

@@ -75,7 +75,7 @@ public class WikiLink
 	public void mainInit(FMLInitializationEvent event)
 	{
 		LogHelper.info("Recieving Outsourced Data...");
-		PluginManager.INSTANCE.initConfigs();
+	//	PluginManager.INSTANCE.initConfigs();
 		PluginManager.INSTANCE.initPlugins();
 		
 		KeyBinding[] key = {new KeyBinding("Wiki Search", Keyboard.KEY_RCONTROL)};
