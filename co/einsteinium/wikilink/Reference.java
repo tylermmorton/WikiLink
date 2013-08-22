@@ -16,11 +16,22 @@ public class Reference
 	public static final String MOD_ID = "WikiLink";
 	public static final String MOD_NAME = "WikiLink";
 	public static final String MOD_CHANNEL = "WikiLink";
-	public static final String MOD_VERSION = "Build 015";
 
 	public static final String PROXY_COMMON_LOC = "co.einsteinium.wikilink.net.CommonProxy";
 	public static final String PROXY_CLIENT_LOC = "co.einsteinium.wikilink.net.ClientProxy";
 
+	/* Version References
+	 *
+	 */
+	public static final String VER_STATE = "Release";
+	public static final String VER_MAJOR = "2";
+	public static final String VER_MINOR = "1";
+	public static final String VER_BUILD = "017";
+	public static final String VER_MINECRAFT = "1.6.2";	
+	
+	public static final String MOD_VERSION =  VER_MINECRAFT + "-" + VER_MAJOR + "." + VER_MINOR + "." + VER_BUILD + " (" + VER_STATE + ")";
+
+	
 	/* Variable References
 	 * 
 	 * These are the array lists of all of the
@@ -34,11 +45,23 @@ public class Reference
 	public static ArrayList modSoftwareList;
 	public static ArrayList modLocalizationList;
 	
+	public static String defaultSearchSystem;
+	
 	/* Language References
 	 * 
 	 */
 	
-	/* Software References
+	public static String currentLanguage;
+	
+	private static final String LANG_RESOURCE_LOCATION = "mods/wikilink/loc/lang";
+	
+	public static String[] LocaleFiles = 
+		{
+			LANG_RESOURCE_LOCATION + "en_US.xml",
+			LANG_RESOURCE_LOCATION + "es_ES.xml"
+		};
+	
+	/* Wiki Software References
 	 * 
 	 */
 	

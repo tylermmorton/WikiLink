@@ -1,28 +1,35 @@
 package co.einsteinium.wikilink;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.logging.Logger;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
-
 import co.einsteinium.wikilink.cfg.ConfigHandler;
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
-import co.einsteinium.wikilink.run.RunManager;
+import co.einsteinium.wikilink.run.bind.KeybindWiki;
+import co.einsteinium.wikilink.run.bind.PlayerTickHandler;
 import co.einsteinium.wikilink.run.cmd.*;
-
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 /** WikiLink
  * 
@@ -68,8 +75,15 @@ public class WikiLink
 	public void mainInit(FMLInitializationEvent event)
 	{
 		LogHelper.info("Recieving Outsourced Data...");
-		//PluginManager.INSTANCE.initConfig();
+		PluginManager.INSTANCE.initConfigs();
 		PluginManager.INSTANCE.initPlugins();
+		
+		KeyBinding[] key = {new KeyBinding("Wiki Search", Keyboard.KEY_RCONTROL)};
+		boolean[] repeat = {false};
+		KeyBindingRegistry.registerKeyBinding(new KeybindWiki(key, repeat));
+		
+	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
+
 	}
 	
 	@EventHandler
@@ -79,8 +93,10 @@ public class WikiLink
 		ICommandManager command = server.getCommandManager();
 		ServerCommandManager serverCommand = ((ServerCommandManager) command);
 		
-		//serverCommand.registerCommand(new CommandWiki());
-		//LogHelper.info("Registered Wiki Command.");
+		serverCommand.registerCommand(new CommandWiki());
+		LogHelper.info("Registered Wiki Command.");
+		serverCommand.registerCommand(new CommandBing());
+		LogHelper.info("Registered Bing Command.");
 		serverCommand.registerCommand(new CommandLmgtfy());
 		LogHelper.info("Registered Lmgtfy Command.");
 		serverCommand.registerCommand(new CommandGoogle());

@@ -50,6 +50,6 @@ public class BrowserHandler
 		} catch (Exception e) {
             WikiLink.LogHelper.severe("Can not find wiki software!");
         }
-		WikiLink.LogHelper.info("Website Opened");
+		WikiLink.LogHelper.info("Opening " + hyperlink);
     }
 }

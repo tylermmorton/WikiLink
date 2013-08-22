@@ -41,7 +41,6 @@ public class CommandGoogle extends CommandBase
 		if(!hyperlinkBuilder.toString().equals(""))
 		{
 			BrowserHandler.browserInit(hyperlink);	
-			WikiLink.LogHelper.info("Opening " + hyperlink);
 		}
 		else
 		WikiLink.LogHelper.warning("Can not run command. No input.");

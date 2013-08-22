@@ -10,6 +10,7 @@ import java.util.zip.ZipInputStream;
 import co.einsteinium.wikilink.WikiLink;
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.api.Plugin;
+import co.einsteinium.wikilink.cfg.ConfigHandler;
 
 import com.google.common.collect.Lists;
 
@@ -80,19 +81,28 @@ public enum PluginManager
 		System.out.println("[WikiLink] Loading the strings required for the Default Wiki");
 	}*/
     
+    public void initConfigs()
+    {
+    	Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
+    	Reference.modNameList.add(ConfigHandler.defaultWikiName);
+    	Reference.modIdList.add(ConfigHandler.defaultWikiModId);
+    	Reference.modDomainList.add(ConfigHandler.defaultWikiDomain);
+    	Reference.modSoftwareList.add(ConfigHandler.defaultWikiSoftware);
+    	Reference.modLocalizationList.add(ConfigHandler.defaultWikiLocalization);
+    }
+    
     public void initPlugins()
     {
-
     	for (Plugin plugin: plugins)
     	{
     		if(Reference.modKeyList.contains(plugin.getWikiKey()))
     		{
     			WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getWikiKey!");
     		}
-    		if(Reference.modIdList.contains(plugin.getModID()))
+    		/*else if(Reference.modIdList.contains(plugin.getModID()))
     		{
     			WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getModKey!");
-    		}
+    		}*/
     		else
     		{
     			Reference.modIdList.add(plugin.getModID());    			
@@ -100,8 +110,9 @@ public enum PluginManager
    				Reference.modNameList.add(plugin.getWikiName());
     			Reference.modDomainList.add(plugin.getWikiDomain());
     			Reference.modSoftwareList.add(plugin.getWikiSoftware());
+    			Reference.modLocalizationList.add(plugin.getWikiLocalization());
     			
-    			WikiLink.LogHelper.info("Loading the strings required from " + plugin.getWikiName());
+    			WikiLink.LogHelper.info("Loading the strings required from " + plugin.getWikiName() + " " + plugin.getWikiLocalization());
     		}
     		
     	}

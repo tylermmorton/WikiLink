@@ -15,7 +15,7 @@ public class PluginMinecraftWiki implements Plugin
 
 	@Override
 	public String getWikiKey() 
-	{ return "enmcw"; }
+	{ return "mcw"; }
 
 	@Override
 	public String getWikiName() 
