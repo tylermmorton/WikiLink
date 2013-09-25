@@ -1,9 +1,12 @@
 package co.einsteinium.wikilink;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.settings.KeyBinding;
@@ -12,11 +15,14 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
 import co.einsteinium.wikilink.net.CommonProxy;
+import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
 import co.einsteinium.wikilink.run.bind.KeybindWiki;
 import co.einsteinium.wikilink.run.bind.PlayerTickHandler;
 import co.einsteinium.wikilink.run.cmd.*;
+import co.einsteinium.wikilink.Reference;
+import co.einsteinium.wikilink.util.VersionHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -28,6 +34,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -53,7 +60,7 @@ public class WikiLink
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{
+	{	
 		LogHelper = Logger.getLogger(Reference.MOD_ID);
 		LogHelper.setParent(FMLLog.getLogger());
 	
@@ -63,24 +70,28 @@ public class WikiLink
 		LogHelper.info("Loading Outsourced Extensions...");
 		PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
 		
+		Reference.modCustomList = new ArrayList();
+		
 		Reference.modIdList = new ArrayList();
 		Reference.modKeyList = new ArrayList();
 		Reference.modNameList = new ArrayList();
 		Reference.modDomainList = new ArrayList();
 		Reference.modSoftwareList = new ArrayList();
-		Reference.modLocalizationList = new ArrayList();
+		Reference.modLocalizationList = new ArrayList();		
 	}
 	
 	@EventHandler
 	public void mainInit(FMLInitializationEvent event)
-	{
-		LogHelper.info("Recieving Outsourced Data...");
-	//	PluginManager.INSTANCE.initConfigs();
+	{		
+		WikiLink.LogHelper.info("Recieving Outsourced Data...");
+		PluginManager.INSTANCE.initConfigs();
 		PluginManager.INSTANCE.initPlugins();
 		
 		KeyBinding[] key = {new KeyBinding("Wiki Search", Keyboard.KEY_RCONTROL)};
 		boolean[] repeat = {false};
 		KeyBindingRegistry.registerKeyBinding(new KeybindWiki(key, repeat));
+		
+	NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());	
 		
 	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
 

@@ -7,6 +7,7 @@ import co.einsteinium.wikilink.WikiLink;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -33,10 +34,18 @@ public class WikiBindingHandler
 		return (player.getHeldItem().itemID);
 	}
 	
+	public static String getItemstackName(ItemStack item)
+	{
+		matchedId = item.itemID;
+		return "";
+	}
+	
 	public static String getItemName(EntityPlayer player)
 	{
-		matchedName = player.getHeldItem().getDisplayName();
-		return (player.getHeldItem().getDisplayName());
+
+			matchedName = player.getHeldItem().getDisplayName();
+			return (player.getHeldItem().getDisplayName());
+
 	}
 	
 	private static ItemData itemList(NBTBase base)
@@ -44,7 +53,7 @@ public class WikiBindingHandler
 		return null;
 	}
 	
-	public static void getInfo(EntityPlayer player)
+	public static void initSearchKey()
 	{
 		NBTTagList itemList = new NBTTagList();
 		
@@ -57,12 +66,13 @@ public class WikiBindingHandler
 		LoopTagFinder:
 		for(int i = 0; i < itemList.tagCount(); i++)
 		{
-			int x = 0;
+
 			found = false;
 			//WikiLink.LogHelper.info("Starting LoopTagFinder");
 			base = itemList.tagAt(i);
 			if(base instanceof NBTTagCompound)
 			{	
+				int x=0;
 					data.add(itemList(base));
 	
 					do
@@ -108,7 +118,7 @@ public class WikiBindingHandler
 			}	
 		}
 		if(found == false)
-		{	
+		{		
 			if(Reference.defaultSearchSystem.equals("WIKI"))
 			{
 			WikiLink.LogHelper.warning("Can not find a wiki containing " + matchedName + " for " + Reference.currentLanguage);
@@ -137,10 +147,6 @@ public class WikiBindingHandler
 			{
 				WikiLink.LogHelper.severe("Can not find default wiki search system!");
 			}
-
 		}
-
-
 	}
-	
 }

@@ -20,6 +20,7 @@ public class ConfigHandler
 	public static String defaultWikiDomain;
 	public static String defaultWikiSoftware;
 	public static String defaultWikiLocalization;
+	public static String defaultWikiCustomSearchString;
 	
 	public static void init(File file)
 	{
@@ -29,6 +30,7 @@ public class ConfigHandler
 		//
 		config.load();
 		
+		
 		//##Default Wiki Options
 		config.addCustomCategoryComment("Default Wiki Options", "Please only change these if you know what you are doing!");
 		defaultWikiKey = config.get("Default Wiki Options", "DefaultWikiKey", "mcw").getString();
@@ -37,11 +39,11 @@ public class ConfigHandler
 		defaultWikiDomain = config.get("Default Wiki Options", "DefaultWikiDomain", "www.minecraftwiki.net").getString();
 		defaultWikiSoftware = config.get("Default Wiki Options", "DefaultWikiSoftware", "MEDIAWIKI").getString();
 		defaultWikiLocalization = config.get("Default Wiki Options", "DefaultWikiLocalization", "en_US").getString();
+		defaultWikiCustomSearchString = config.get("Default Wiki Options", "DefaultWikiCustomSearchString", "NONE").getString();
 
 		//##Default Search Options
 		config.addCustomCategoryComment("Default Search Options", "Options: WIKI, BING, GOOGLE");
-		Reference.defaultSearchSystem = config.get("Default Search Options", "DefaultSearchSystem", "GOOGLE").getString();
-		
+		Reference.defaultSearchSystem = config.get("Default Search Options", "DefaultSearchSystem", "GOOGLE").getString();	
 		
 		config.save();
 		//

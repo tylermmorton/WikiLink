@@ -28,8 +28,7 @@ public enum PluginManager
 
     INSTANCE;
 
-    private static void addPlugin(final ClassLoader classLoader, final String pluginName,
-            final String packageName)
+    private static void addPlugin(final ClassLoader classLoader, final String pluginName, final String packageName)
     {
         if (pluginName.equals("PluginManager.class") || pluginName.equals("Plugin.class")) return;
         final String pluginClassName = packageName.replace(".class", "");
@@ -66,23 +65,11 @@ public enum PluginManager
         catch (final Exception ex)
         {}
     }
-
-    /** listDefaults is a small listWriter that adds the default
-     *  wikis to the list first so they are are the first indexes.
-     
-	public void listDefaults()
-	{
-		Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
-		Reference.modNameList.add(ConfigHandler.defaultWikiName);
-		Reference.modIdList.add(ConfigHandler.defaultWikiModId);
-		Reference.modDomainList.add(ConfigHandler.defaultWikiDomain);
-		Reference.modSoftwareList.add(ConfigHandler.defaultWikiSoftware);
-
-		System.out.println("[WikiLink] Loading the strings required for the Default Wiki");
-	}*/
     
     public void initConfigs()
     {
+    	Reference.modCustomList.add(ConfigHandler.defaultWikiCustomSearchString);
+    	
     	Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
     	Reference.modNameList.add(ConfigHandler.defaultWikiName);
     	Reference.modIdList.add(ConfigHandler.defaultWikiModId);
@@ -99,12 +86,8 @@ public enum PluginManager
     		{
     			WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getWikiKey!");
     		}
-    		/*else if(Reference.modIdList.contains(plugin.getModID()))
-    		{
-    			WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getModKey!");
-    		}*/
     		else
-    		{
+    		{			
     			Reference.modIdList.add(plugin.getModID());    			
     			Reference.modKeyList.add(plugin.getWikiKey());
    				Reference.modNameList.add(plugin.getWikiName());

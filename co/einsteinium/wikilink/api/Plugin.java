@@ -1,5 +1,7 @@
 package co.einsteinium.wikilink.api;
 
+import java.util.ArrayList;
+
 /** Plugin Interface
  * 
  * @since 1.6.2-015
@@ -17,12 +19,6 @@ public interface Plugin
      */	
     public boolean isAvailable();
     
-    /** Please enter the @modid value here.
-     * 
-     *  @since 1.6.2-011
-     */
-    public String getModID(); 
-    
     /** This is the "code" to access your wiki.
      *  /wiki <key> <query>
      *  
@@ -36,6 +32,12 @@ public interface Plugin
      *  @since 1.6.2-010
      */    
     public String getWikiName();
+    
+    /** Please enter the @modid value here.
+     *  
+     *  @since 1.6.2-011
+     */
+    public String getModID(); 
     
     /** This is the domain name of your wiki.
      *  "wiki.example.com"
@@ -68,17 +70,5 @@ public interface Plugin
      * 
      */
     public String getWikiLocalization();
-    
-    /** You can create a custom wiki software.
-     *  enum WikiType = CUSTOM;
-     *  
-     *  Paste in the search domain here
-     *  ex: "/index.php?search="
-     *  
-     *  NOT BEING USED YET. SORRY. RETURN NULL.
-     *  
-     *  @since 1.6.2-011
-     */    
-    public String getCustomWikiSearchFormat();
 
 }

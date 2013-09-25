@@ -1,10 +1,8 @@
-package co.einsteinium.wikilink.plg.ftb;
-
-import java.util.ArrayList;
+package co.einsteinium.wikilinklib.plg;
 
 import co.einsteinium.wikilink.api.Plugin;
 
-public class PluginTechnicWiki implements Plugin
+public class PluginBuildcraftBuildersWiki implements Plugin
 {
 
 	@Override
@@ -14,45 +12,39 @@ public class PluginTechnicWiki implements Plugin
 	}
 
 	@Override
-	public String getModID() {
-		// TODO Auto-generated method stub
-		return "TechnicPack";
-	}
-
-	@Override
 	public String getWikiKey() {
 		// TODO Auto-generated method stub
-		return "tpw";
+		return "005.03";
 	}
 
 	@Override
 	public String getWikiName() {
 		// TODO Auto-generated method stub
-		return "Technic Pack Wiki";
+		return "Buildcraft Wiki";
+	}
+
+	@Override
+	public String getModID() {
+		// TODO Auto-generated method stub
+		return "Buildcraft|Builders";
 	}
 
 	@Override
 	public String getWikiDomain() {
 		// TODO Auto-generated method stub
-		return "wiki.technicpack.net";
+		return "minecraftbuildcraft.wikia.com";
 	}
 
 	@Override
 	public String getWikiSoftware() {
 		// TODO Auto-generated method stub
-		return "MEDIAWIKI";
-	}
-
-	@Override
-	public String getCustomWikiSearchFormat() {
-		// TODO Auto-generated method stub
-		return null;
+		return "WIKIA";
 	}
 
 	@Override
 	public String getWikiLocalization() {
 		// TODO Auto-generated method stub
-		return "en_US";
+		return "ALL";
 	}
 
 }

@@ -49,7 +49,7 @@ public class PlayerTickHandler implements ITickHandler
         	WikiBindingHandler.getItemID(player);
         	WikiBindingHandler.getItemName(player);
         	
-        	WikiBindingHandler.getInfo(player); 	
+        	WikiBindingHandler.initSearchKey(); 	
     		
         	KeybindWiki.keyPressed = false;
         }
