@@ -2,18 +2,22 @@ package co.einsteinium.wikilink.nei;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import org.lwjgl.input.Keyboard;
 
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.WikiLink;
-import co.einsteinium.wikilink.util.WikiBindingHandler;
 import co.einsteinium.wikilink.wiki.Wiki;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerInputHandler;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.ItemData;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class NEIWikiLinkConfig implements IConfigureNEI
@@ -44,22 +48,13 @@ public class NEIWikiLinkConfig implements IConfigureNEI
 
 		@Override
 		public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode)
-		{
-	      
-			ItemStack stackover = gui.manager.getStackMouseOver();
-			
-	        if(stackover == null)
-	            return false;
-	                
+		{         
 	        if(keyCode == NEIClientConfig.getKeyBinding("wiki"))
 	        {
-	        	//WikiBindingHandler.matchedId = stackover.itemID;
-	        	//WikiBindingHandler.matchedName = stackover.getDisplayName();
+				ItemStack stackover = gui.manager.getStackMouseOver();
+				
+				Wiki neiWiki = new Wiki(stackover);
 	        	
-	        	Wiki.setCurrentIndex(stackover.getTagCompound());
-	        	
-	        	
-	        	//WikiBindingHandler.initSearchKey();
 	            return false;
 	        }
 	        

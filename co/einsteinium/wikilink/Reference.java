@@ -40,6 +40,12 @@ public class Reference
 	
 	public static ArrayList modCustomList;
 	
+	public static ArrayList wikiIdList = new ArrayList();
+	public static ArrayList wikiNameList = new ArrayList();
+	public static ArrayList wikiDomainList = new ArrayList();
+	public static ArrayList wikiSoftwareList = new ArrayList();
+	public static ArrayList wikiExtensionList = new ArrayList();
+	
 	public static ArrayList modIdList;
 	public static ArrayList modKeyList;
 	public static ArrayList modNameList;

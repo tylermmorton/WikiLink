@@ -2,213 +2,188 @@ package co.einsteinium.wikilink.wiki;
 
 import java.util.ArrayList;
 
+import codechicken.nei.NEIClientConfig;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.WikiLink;
+import co.einsteinium.wikilink.cfg.ConfigHandler;
 import co.einsteinium.wikilink.util.BrowserHandler;
-import co.einsteinium.wikilink.util.WikiBindingHandler;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
 public class Wiki 
 {
-	public int currentIndex;
+	public int arrayIndex;
 	
-	private int itemId;
-	
-	private String wikiName;
-	private String wikiDomain;
-	
-	private String wikiId;	
+	private String itemName;
 	private String itemModId;
-	private String wikiModId;
-	
 	private String searchTerm;
-	
-	private String wikiLink;
-	
-	//private String wikiExtension;
-	private String wikiExtension;
-	
-	//private String wikiLink;
-	
-	Wiki wiki = new Wiki();
-	
-	public Wiki()
-	{		
-		wikiLink = "http://" + wikiDomain + wikiExtension + searchTerm;
-		
-		
-		initBrowser(wikiLink);
-	}
-	
-	public enum Software
-	{
-		MEDIAWIKI, DOKUWIKI, WIKIA, WIKISPACES, PHPWIKI, WIKIDOT, CUSTOM
-	}
 
-	public static void setCurrentIndex(NBTTagCompound par1)
-	{	
-		ItemData itemData = new ItemData(par1);
+	private boolean wikiFound;
+	
+	private String primarySearchSystem;
+	private String secondarySearchSystem;
+	private boolean includeModNameInPrimary;
+	private boolean includeModNameInSecondary;
+	
+	public Wiki(ItemStack item)
+	{		
+		setItemData(item);
+		setItemName(item);
 		
-		WikiLink.LogHelper.info(itemData.getModId());
-		WikiLink.LogHelper.info("" + itemData.getItemId());
+		setArrayIndex();
+		readConfigurations();
+		
+		if(wikiFound == true)
+			BrowserHandler.browserInit(buildPrimaryHyperlink());
+		else
+			BrowserHandler.browserInit(buildSecondaryHyperlink());
 	}
 	
-	
-	public void setSearchTerm(String s)
+	/** Looks inside of the ConfigHandler and sets the values of the configurations.
+	 *  This should be loaded after the configuration when Minecraft stats up.
+	 */
+	public void readConfigurations()
 	{
-		searchTerm = "";
+		primarySearchSystem = ConfigHandler.defaultSearchSystem;
+		secondarySearchSystem = ConfigHandler.secondarySearchSystem;
+		includeModNameInPrimary = ConfigHandler.includeModNameInPrimary;
+		includeModNameInSecondary = ConfigHandler.includeModNameInSecondary;
 	}
 	
-	/* These are the methods that manage
-	 * the Wiki's unique ID.
-	 */	
-	public String getWikiId()
+	/** This method builds and returns the search term used in the hyperlink opened.
+	 *  by the BrowserHandler.
+	 *  
+	 *  @return String
+	 */
+	public String buildSearchString()
 	{
-		return null;
+		if(includeModNameInSecondary == true && wikiFound == false)
+			return (getItemName() + " " + getModId()).replace(" ","+");
+		else if(includeModNameInPrimary == true && !primarySearchSystem.equals("WIKI"))
+			return (getItemName() + " " + getModId()).replace(" ","+");
+		else
+			return getItemName().replace(" ","+");
 	}
 	
-	/**
+	/** This method builds and returns the entire hyperlink that is opened by the 
+	 *  BrowserHandler. 
 	 * 
-	 * @param s, the wiki Id
-	 * @param i, the index of the Id
+	 *  @return String
 	 */
-	public void setWikiId(String s, int i)
+	public String buildPrimaryHyperlink()
 	{
-		
+		if(primarySearchSystem.equals("WIKI"))
+			return ("http://" + getModDomainName() + getDomainExtension() + buildSearchString());
+		else if(primarySearchSystem.equals("BING"))
+			return ("http://" + "www.bing.com" + "/search?q=" + buildSearchString());
+		else if(primarySearchSystem.equals("GOOGLE"))
+			return ("http://" + "www.google.com" + "/search?q=" + buildSearchString());
+		else
+			return "";
 	}
 	
-	/* These are the methods that manage
-	 * the mod's/wiki's @ModId annotation
-	 */	
-	public String getWikiModId()
+	public String buildSecondaryHyperlink()
 	{
-		return null;
+		if(secondarySearchSystem.equals("WIKI"))
+			return ("http://" + getModDomainName() + getDomainExtension() + buildSearchString());
+		else if(secondarySearchSystem.equals("BING"))
+			return ("http://" + "www.bing.com" + "/search?q=" + buildSearchString());
+		else if(secondarySearchSystem.equals("GOOGLE"))
+			return ("http://" + "www.google.com" + "/search?q=" + buildSearchString());
+		else
+			return "";
 	}
 	
-	public void setWikiModId(String s, int i)
-	{
-		
-	}	
-	
-	public int getItemId()
-	{
-		return itemId;
-	}
-	
-	public void setItemId(ItemStack item)
-	{
-		itemId = item.itemID;
-	}	
-	
-	public String getItemModId()
-	{
-		return null;
-	}
-	
-	public void setItemModId(String s, int i)
-	{
-		
-	}	
-	
-	/* These are the methods that manage
-	 * the item's/wiki's display name.
+	/** Compares the ModId from getModId with the ModIds on the wikiIdList. It sets
+	 *  the arrayIndex variable to the current loop value. 
 	 */
-	public String getWikiName()
+	public void setArrayIndex()
 	{
-		return null;
+		for(int i = 0; i < Reference.wikiIdList.size(); i++)
+		{	
+			if(Reference.wikiIdList.get(i).equals(getModId()))
+			{
+				arrayIndex = i;
+				wikiFound = true;
+				break;
+			}
+		}
 	}
 	
-	public void setWikiName(String s, int i)
+	public int getArrayIndex()
 	{
-		
+		return arrayIndex;
+	}
+	
+	/** Sets the itemName variable to the input item's display name. 
+	 * 
+	 * @param par1 : The ItemStack to get the display name of.
+	 */
+	public void setItemName(ItemStack par1)
+	{
+		itemName = par1.getDisplayName();
 	}
 	
 	public String getItemName()
 	{
-		return null;
+		return itemName;
 	}
 	
-	public void setItemName(String s)
+	public String getModDomainName()
 	{
-		
+		return Reference.wikiDomainList.get(getArrayIndex()).toString();
 	}
 	
-	/* These are the methods that manage
-	 * the wiki's domain name.
-	 */
-	public String getWikiDomain()
+	public String getDomainExtension()
 	{
-		return Reference.modDomainList.get(currentIndex).toString();
+		if(Reference.wikiSoftwareList.get(getArrayIndex()) == "WIKIA")
+			return "/index.php?search=";
+		else if(Reference.wikiSoftwareList.get(getArrayIndex()) == "PHPWIKI")
+			return "/?do=search&id=";
+		else if(Reference.wikiSoftwareList.get(getArrayIndex()) == "WIKIDOT")
+			return "/search:site/q/";
+		else if(Reference.wikiSoftwareList.get(getArrayIndex()) == "DOKUWIKI")
+			return "/wiki.new/doku.php?do=search&id=";
+		else if(Reference.wikiSoftwareList.get(getArrayIndex()) == "MEDIAWIKI")
+			return "/index.php?search=";
+		else if(Reference.wikiSoftwareList.get(getArrayIndex()) == "WIKISPACES")
+			return "/search/view/";
+		else
+			return Reference.wikiExtensionList.get(getArrayIndex()).toString();
 	}
 	
-	public void setWikiDomain(String s)
+	public String getModDisplayName()
 	{
-		wikiDomain = s;
+		return Reference.wikiNameList.get(getArrayIndex()).toString();
 	}
 	
-	/* These are the methods that manage
-	 * the wiki's software type.
-	 */
-	public String getWikiSoftware()
-	{
-		return null;
-	}
-	
-	/** This method returns the custom extension
-	 *  for a wiki's domain address.
+	/** Takes an ItemStack and returns the ModId of the mod it came from.
 	 * 
+	 * @param par1 : The ItemStack you want to get the ModId from.
 	 */
-	public void setWikiExtension(Software s)
-	{
-		switch(s)
-		{
-			case WIKIA: case MEDIAWIKI:
-				wikiExtension = "/index.php?search=";		 
-			case WIKIDOT:
-				wikiExtension = "/search:site/q/";
-			case PHPWIKI:
-				wikiExtension = "/?do=search&id=";
-			case DOKUWIKI:
-				wikiExtension = "/wiki.new/doku.php?do=search&id=";
-			case WIKISPACES:
-				wikiExtension = "/search/view/";
-			case CUSTOM:
-				wikiExtension =  wiki.getCustomSearchString();
-		}
-	}
-	
-	/** This method returns a custom extension
-	 *  for a wiki's domain address.
-	 * 
-	 *  @return 
-	 */
-	public String getCustomSearchString()
-	{
-		return null;
-	}	
-	
-	/** This method creates a custom extension
-	 *  for a wiki's domain address.
-	 * 
-	 *  @param
-	 */
-	public void setCustomSearchString(String s, int i)
-	{
-		
-	}
-
-
-	/* These are the methods that manage
-	 * browser handling. <BrowserHandler>
-	 */
-	public void initBrowser(String s)
+	public void setItemData(ItemStack par1)
 	{		
-		BrowserHandler.browserInit(s);
+        NBTTagList itemDataList = new NBTTagList();
+        	GameData.writeItemData(itemDataList);
+        	
+        for(int i = 0; i < itemDataList.tagCount(); i++)
+        {
+        	ItemData itemData = new ItemData((NBTTagCompound) itemDataList.tagAt(i));
+        		
+        	if(itemData.getItemId() == par1.itemID)	
+        	{
+        		itemModId = itemData.getModId();
+        	}
+        }
 	}
-		
+	
+	public String getModId()
+	{
+		return itemModId;
+	}
 }

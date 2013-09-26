@@ -68,34 +68,32 @@ public enum PluginManager
     
     public void initConfigs()
     {
-    	Reference.modCustomList.add(ConfigHandler.defaultWikiCustomSearchString);
+    	//Reference.modCustomList.add(ConfigHandler.defaultWikiCustomSearchString);
     	
-    	Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
-    	Reference.modNameList.add(ConfigHandler.defaultWikiName);
-    	Reference.modIdList.add(ConfigHandler.defaultWikiModId);
-    	Reference.modDomainList.add(ConfigHandler.defaultWikiDomain);
-    	Reference.modSoftwareList.add(ConfigHandler.defaultWikiSoftware);
-    	Reference.modLocalizationList.add(ConfigHandler.defaultWikiLocalization);
+    	//Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
+    	//Reference.modNameList.add(ConfigHandler.defaultWikiName);
+    	//Reference.modIdList.add(ConfigHandler.defaultWikiModId);
+    	//Reference.modDomainList.add(ConfigHandler.defaultWikiDomain);
+    	//Reference.modSoftwareList.add(ConfigHandler.defaultWikiSoftware);
+    	//Reference.modLocalizationList.add(ConfigHandler.defaultWikiLocalization);
     }
     
     public void initPlugins()
     {
     	for (Plugin plugin: plugins)
     	{
-    		if(Reference.modKeyList.contains(plugin.getWikiKey()))
+    		if(Reference.wikiIdList.contains(plugin.getModID()))
     		{
-    			WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getWikiKey!");
+    			//WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getWikiKey!");
     		}
     		else
     		{			
-    			Reference.modIdList.add(plugin.getModID());    			
-    			Reference.modKeyList.add(plugin.getWikiKey());
-   				Reference.modNameList.add(plugin.getWikiName());
-    			Reference.modDomainList.add(plugin.getWikiDomain());
-    			Reference.modSoftwareList.add(plugin.getWikiSoftware());
-    			Reference.modLocalizationList.add(plugin.getWikiLocalization());
+    			Reference.wikiIdList.add(plugin.getModID());    			
+   				Reference.wikiNameList.add(plugin.getWikiName());
+    			Reference.wikiDomainList.add(plugin.getWikiDomain());
+    			Reference.wikiSoftwareList.add(plugin.getWikiSoftware());
     			
-    			WikiLink.LogHelper.info("Loading the strings required from " + plugin.getWikiName() + " " + plugin.getWikiLocalization());
+    			//WikiLink.LogHelper.info("Loaded: " + plugin.getWikiName() + " - Loc: " + plugin.getWikiLocalization());
     		}
     		
     	}

@@ -18,9 +18,6 @@ import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
-import co.einsteinium.wikilink.run.bind.KeybindWiki;
-import co.einsteinium.wikilink.run.bind.PlayerTickHandler;
-import co.einsteinium.wikilink.run.cmd.*;
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.util.VersionHandler;
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
@@ -70,14 +67,6 @@ public class WikiLink
 		LogHelper.info("Loading Outsourced Extensions...");
 		PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
 		
-		Reference.modCustomList = new ArrayList();
-		
-		Reference.modIdList = new ArrayList();
-		Reference.modKeyList = new ArrayList();
-		Reference.modNameList = new ArrayList();
-		Reference.modDomainList = new ArrayList();
-		Reference.modSoftwareList = new ArrayList();
-		Reference.modLocalizationList = new ArrayList();		
 	}
 	
 	@EventHandler
@@ -87,14 +76,8 @@ public class WikiLink
 		PluginManager.INSTANCE.initConfigs();
 		PluginManager.INSTANCE.initPlugins();
 		
-		KeyBinding[] key = {new KeyBinding("Wiki Search", Keyboard.KEY_RCONTROL)};
-		boolean[] repeat = {false};
-		KeyBindingRegistry.registerKeyBinding(new KeybindWiki(key, repeat));
-		
 	NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());	
-		
-	TickRegistry.registerTickHandler(new PlayerTickHandler(EnumSet.of(TickType.PLAYER)), Side.SERVER);
-
+	
 	}
 	
 	@EventHandler
@@ -103,15 +86,6 @@ public class WikiLink
 		MinecraftServer server = MinecraftServer.getServer();
 		ICommandManager command = server.getCommandManager();
 		ServerCommandManager serverCommand = ((ServerCommandManager) command);
-		
-		serverCommand.registerCommand(new CommandWiki());
-		LogHelper.info("Registered Wiki Command.");
-		serverCommand.registerCommand(new CommandBing());
-		LogHelper.info("Registered Bing Command.");
-		serverCommand.registerCommand(new CommandLmgtfy());
-		LogHelper.info("Registered Lmgtfy Command.");
-		serverCommand.registerCommand(new CommandGoogle());
-		LogHelper.info("Registered Google Command.");
 	}
 	
 }
