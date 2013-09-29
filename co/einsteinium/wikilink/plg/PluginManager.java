@@ -9,6 +9,8 @@ import java.util.zip.ZipInputStream;
 import co.einsteinium.wikilink.WikiLink;
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.api.Plugin;
+import co.einsteinium.wikilink.cfg.ConfigHandler;
+
 import com.google.common.collect.Lists;
 
 import cpw.mods.fml.common.IFuelHandler;
@@ -79,13 +81,10 @@ public enum PluginManager
 
     public void initConfigs()
     {
-        //Reference.modCustomList.add(ConfigHandler.defaultWikiCustomSearchString);
-        //Reference.modKeyList.add(ConfigHandler.defaultWikiKey);
-        //Reference.modNameList.add(ConfigHandler.defaultWikiName);
-        //Reference.modIdList.add(ConfigHandler.defaultWikiModId);
-        //Reference.modDomainList.add(ConfigHandler.defaultWikiDomain);
-        //Reference.modSoftwareList.add(ConfigHandler.defaultWikiSoftware);
-        //Reference.modLocalizationList.add(ConfigHandler.defaultWikiLocalization);
+    	Reference.wikiIdList.add("");
+        Reference.wikiNameList.add(ConfigHandler.defaultWikiName);
+        Reference.wikiDomainList.add(ConfigHandler.defaultWikiDomain);
+        Reference.wikiSoftwareList.add(ConfigHandler.defaultWikiSoftware);
     }
 
     public void initPlugins()

@@ -1,5 +1,7 @@
 package co.einsteinium.wikilink.wiki;
 
+import net.minecraft.client.gui.GuiConfirmOpenLink;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -9,29 +11,54 @@ import co.einsteinium.wikilink.util.BrowserHandler;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
+/**
+ * 
+ * @author DrEinsteinium
+ */
 public class Wiki
 {
-    public int arrayIndex;
-
-    private String itemName;
-    private static String itemModId;
-    private String searchTerm;
-
-    private boolean wikiFound;
-
-    private String primarySearchSystem;
-    private String secondarySearchSystem;
-    private boolean includeModNameInPrimary;
-    private boolean includeModNameInSecondary;
-
+	private static String itemModId;
+	private static String itemDisplayName;
+	private static String itemModDomainName;
+	private static String itemModDisplayName;
+	private static String itemUnlocalizedName;
+	
+	private boolean isWikiFound;
+	
+	private String primarySearchSystem;
+	private String secondarySearchSystem;
+	private boolean includeModNameInPrimary;
+	private boolean includeModNameInSecondary;
+	
+	public static String tooltipString;
+	
+	public static int arrayIndex;
+	public static String searchString;
+    
+    /** This constructor should be called with every new search. Creating a new
+     *  wiki object and supplying it with the correct parameters should always 
+     *  result in a wiki opening in every situation.
+     *
+     * @param item : The ItemStack of the item you would like to be searching.
+     */
     public Wiki(ItemStack item)
     {
-        setItemData(item);
-        setItemName(item);
-        setArrayIndex();
-        readConfigurations();
+    	isWikiFound = false;
+    	
+    	readConfigurations();
+    	setArrayIndex();
+    	
+    	setModId(item);
+    	setItemDisplayName(item);
+    	setItemUnlocalizedName(item);
+    	
+    	setSearchString();
+    	
+    	setModDomainName();
+    	
+    	
 
-        if (wikiFound == true)
+        if (isWikiFound == true)
         {
             BrowserHandler.browserInit(buildPrimaryHyperlink());
         }
@@ -39,10 +66,13 @@ public class Wiki
         {
             BrowserHandler.browserInit(buildSecondaryHyperlink());
         }
+    	
     }
-
-    /** Looks inside of the ConfigHandler and sets the values of the configurations.
-     *  This should be loaded after the configuration when Minecraft stats up.
+    
+    /** This method will read all of the important configurations from the 
+     *  config every time a Wiki object is called. 
+     *  <p>
+     *  The important variables are the ones handling the search systems.
      */
     public void readConfigurations()
     {
@@ -51,46 +81,155 @@ public class Wiki
         includeModNameInPrimary = ConfigHandler.includeModNameInPrimary;
         includeModNameInSecondary = ConfigHandler.includeModNameInSecondary;
     }
-
-    /** This method builds and returns the search term used in the hyperlink opened.
-     *  by the BrowserHandler.
-     *
-     *  @return String
+    
+    /** This method will create a new NBTTagList and sift through it. It will match the
+     *  itemId of the ItemStack parameter with the itemId of the current data list tag.
+     *  <p>
+     *  When it has found two matching itemIds it will return 
+     * @param itemstack : This is the itemstack that you would like to get the modId of. 
      */
-    public String buildSearchString()
+	public static void setModId(ItemStack itemstack) 
+	{
+		NBTTagList itemDataList = new NBTTagList();
+
+		GameData.writeItemData(itemDataList);
+
+		for (int i = 0; i < itemDataList.tagCount(); i++) 
+		{
+			ItemData itemData = new ItemData((NBTTagCompound) itemDataList.tagAt(i));
+
+			if (itemData.getItemId() == itemstack.itemID) 
+			{
+				itemModId = itemData.getModId();
+			}
+		}
+	}
+    
+    public static String getModId()
     {
-        if (includeModNameInSecondary == true && wikiFound == false)
+    	return itemModId;
+    }
+
+    /**
+     * @param itemstack : The ItemStack you want to get the display name of.
+     */
+    public void setItemDisplayName(ItemStack itemstack)
+    {
+    	itemDisplayName = itemstack.getDisplayName();
+    }
+    
+    /** @return itemDisplayName */
+    public String getItemDisplayName()
+    {
+    	return itemDisplayName;
+    }
+    
+    /**
+     * @param itemstack : The ItemStack you want to get the unlocalized name of.
+     */
+    public void setItemUnlocalizedName(ItemStack itemstack)
+    {
+    	itemUnlocalizedName = itemstack.getItemName();
+    }
+    
+    /** @return itemUnlocalizedName */
+    public String getItemUnlocalizedName()
+    {
+    	return itemUnlocalizedName;
+    }
+    
+    /** This method sets the arrayIndex variable by comparing all registered in
+     *  WikiLinkLib and the return statement of getModId();
+     *  <p>
+     *  It also sets isWikiFound to true as well to be used in the browser handler.
+     */
+    public void setArrayIndex()
+    {
+	    WikiIdListChecker:
+        for (int i = 0; i < Reference.wikiIdList.size(); i++)
         {
-            return (getItemName() + " " + getModId()).replace(" ", "+");
+            if (Reference.wikiIdList.get(i).equals(getModId()))
+            {
+                arrayIndex = i;
+                isWikiFound = true;
+                break WikiIdListChecker;
+            }
         }
-        else if (includeModNameInPrimary == true && !primarySearchSystem.equals("WIKI"))
+    }
+    
+    /** @return arrayIndex */
+    public int getArrayIndex()
+    {
+       return arrayIndex;
+    }
+    
+    /** This method uses the getArrayIndex method to set itemModDisplayName to the
+     *  correct name for every item.  
+     */
+    public void setModDisplayName()
+    {
+    	itemModDisplayName = Reference.wikiNameList.get(getArrayIndex()).toString();
+    }
+    
+    /** @return itemModDisplayName */
+    public String getModDisplayName()
+    {
+        return itemModDisplayName;
+    }
+    
+    /** This method uses the getArrayIndex method to set itemModDomainName to the
+     *  correct website source for every item.
+     */
+    public void setModDomainName()
+    {
+    	itemModDomainName = Reference.wikiDomainList.get(getArrayIndex()).toString();
+    }
+    
+    /** @return itemModDomainName */
+    public String getModDomainName()
+    {
+        return itemModDomainName;
+    }  
+  
+    public void setSearchString()
+    {
+        if(includeModNameInSecondary == true && isWikiFound == false)
         {
-            return (getItemName() + " " + getModId()).replace(" ", "+");
+            searchString = (getItemDisplayName() + " " + getModId()).replace(" ", "+");
+    	}  
+        else if(includeModNameInPrimary == true && !primarySearchSystem.equals("WIKI"))
+        {
+            searchString = (getItemDisplayName() + " " + getModId()).replace(" ", "+");
         }
         else
         {
-            return getItemName().replace(" ", "+");
+            searchString =  getItemDisplayName().replace(" ", "+");
         }
-    }
+	}
 
+    public String getSearchString()
+    {
+		return searchString;
+    }
+    
     /** This method builds and returns the entire hyperlink that is opened by the
      *  BrowserHandler.
-     *
+     *  
      *  @return String
      */
     public String buildPrimaryHyperlink()
     {
         if (primarySearchSystem.equals("WIKI"))
         {
-            return ("http://" + getModDomainName() + getDomainExtension() + buildSearchString());
+            return ("http://" + getModDomainName() + getDomainExtension() + getSearchString());
         }
         else if (primarySearchSystem.equals("BING"))
         {
-            return ("http://" + "www.bing.com" + "/search?q=" + buildSearchString());
+            return ("http://" + "www.bing.com" + "/search?q=" + getSearchString());
         }
         else if (primarySearchSystem.equals("GOOGLE"))
         {
-            return ("http://" + "www.google.com" + "/search?q=" + buildSearchString());
+            return ("http://" + "www.google.com" + "/search?q=" + getSearchString());
         }
         else
         {
@@ -102,62 +241,22 @@ public class Wiki
     {
         if (secondarySearchSystem.equals("WIKI"))
         {
-            return ("http://" + getModDomainName() + getDomainExtension() + buildSearchString());
+            return ("http://" + ConfigHandler.defaultWikiDomain + getDefaultDomainExtension(ConfigHandler.defaultWikiSoftware) + getSearchString());
         }
         else if (secondarySearchSystem.equals("BING"))
         {
-            return ("http://" + "www.bing.com" + "/search?q=" + buildSearchString());
+            return ("http://" + "www.bing.com" + "/search?q=" + getSearchString());
         }
         else if (secondarySearchSystem.equals("GOOGLE"))
         {
-            return ("http://" + "www.google.com" + "/search?q=" + buildSearchString());
+            return ("http://" + "www.google.com" + "/search?q=" + getSearchString());
         }
         else
         {
             return "";
         }
     }
-
-    /** Compares the ModId from getModId with the ModIds on the wikiIdList. It sets
-     *  the arrayIndex variable to the current loop value.
-     */
-    public void setArrayIndex()
-    {
-        for (int i = 0; i < Reference.wikiIdList.size(); i++)
-        {
-            if (Reference.wikiIdList.get(i).equals(getModId()))
-            {
-                arrayIndex = i;
-                wikiFound = true;
-                break;
-            }
-        }
-    }
-
-    public int getArrayIndex()
-    {
-        return arrayIndex;
-    }
-
-    /** Sets the itemName variable to the input item's display name.
-     *
-     * @param par1 : The ItemStack to get the display name of.
-     */
-    public void setItemName(ItemStack par1)
-    {
-        itemName = par1.getDisplayName();
-    }
-
-    public String getItemName()
-    {
-        return itemName;
-    }
-
-    public String getModDomainName()
-    {
-        return Reference.wikiDomainList.get(getArrayIndex()).toString();
-    }
-
+    
     public String getDomainExtension()
     {
         if (Reference.wikiSoftwareList.get(getArrayIndex()) == "WIKIA")
@@ -189,44 +288,35 @@ public class Wiki
             return Reference.wikiExtensionList.get(getArrayIndex()).toString();
         }
     }
-
-    public String getModDisplayName()
+    public String getDefaultDomainExtension(String par1)
     {
-        return Reference.wikiNameList.get(getArrayIndex()).toString();
-    }
-
-    /** Takes an ItemStack and returns the ModId of the mod it came from.
-     *
-     * @param par1 : The ItemStack you want to get the ModId from.
-     */
-    public static void setItemData(ItemStack par1)
-    {
-        NBTTagList itemDataList = new NBTTagList();
-        GameData.writeItemData(itemDataList);
-
-        for (int i = 0; i < itemDataList.tagCount(); i++)
+        if (par1.equals("WIKIA"))
         {
-            ItemData itemData = new ItemData((NBTTagCompound) itemDataList.tagAt(i));
-
-            if (itemData.getItemId() == par1.itemID)
-            {
-                itemModId = itemData.getModId();
-            }
+            return "/index.php?search=";
         }
-    }
-
-    public static String getModId()
-    {
-        return itemModId;
-    }
-    
-    public static String getDefaultSearchSystem()
-    {
-    	if(ConfigHandler.defaultSearchSystem.equals("GOOGLE"))
-    		return "start a search on Google";	
-    	else if(ConfigHandler.defaultSearchSystem.equals("BING"))
-    		return "start a search on Bing";
-    	else 
-    		return "Wiki";
+        else if (par1.equals("PHPWIKI"))
+        {
+            return "/?do=search&id=";
+        }
+        else if (par1.equals("WIKIDOT"))
+        {
+            return "/search:site/q/";
+        }
+        else if (par1.equals("DOKUWIKI"))
+        {
+            return "/wiki.new/doku.php?do=search&id=";
+        }
+        else if (par1.equals("MEDIAWIKI"))
+        {
+            return "/index.php?search=";
+        }
+        else if (par1.equals("WIKISPACES"))
+        {
+            return "/search/view/";
+        }
+        else
+        {
+            return null;
+        }
     }
 }

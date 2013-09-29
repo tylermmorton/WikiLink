@@ -25,18 +25,16 @@ public class ConnectionHandler implements IConnectionHandler
         {
             VersionHandler.getWikiLinkVersionFromWeb();
 
-            if (VersionHandler.getWikiLinkVersionFromWeb().contains(Reference.MOD_MINIVER))
-            {
-                if (!VersionHandler.getWikiLinkVersionFromWeb().contains(Reference.MOD_MINIVER))
-                {
-                    netHandler.getPlayer().addChatMessage("WikiLink is out of date for your Minecraft version. Please update at www.catacombs.co for the latest version.");
-                }
-            }
+                if(VersionHandler.getUpdateMod() == true)
+                    netHandler.getPlayer().addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A7c WikiLink is out of date for your Minecraft version. Please update at www.catacombs.co for the latest version.");
+                
+                if(VersionHandler.getUpdateLib() == true)
+                    netHandler.getPlayer().addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A7c WikiLinkLib is out of date for your Minecraft version. Please update at www.catacombs.co for the latest version.");
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            netHandler.getPlayer().addChatMessage("There was a problem while checking the version of WikiLink. Please report this at www.catacombs.co/contact-me/");
+            netHandler.getPlayer().addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A74 There was a problem while checking the version of WikiLink. Please report this at www.catacombs.co/contact-me/");
         }
     }
 

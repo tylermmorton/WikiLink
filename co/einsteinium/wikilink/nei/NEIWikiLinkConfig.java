@@ -2,15 +2,18 @@ package co.einsteinium.wikilink.nei;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 
 import co.einsteinium.wikilink.Reference;
+import co.einsteinium.wikilink.gui.GuiWikiLinkMenu;
 import co.einsteinium.wikilink.wiki.Wiki;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerInputHandler;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class NEIWikiLinkConfig implements IConfigureNEI
@@ -45,9 +48,13 @@ public class NEIWikiLinkConfig implements IConfigureNEI
         {
             if (keyCode == NEIClientConfig.getKeyBinding("wiki"))
             {
+            	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiWikiLinkMenu());
+            	
+            	
+            	/*
                 ItemStack stackover = gui.manager.getStackMouseOver();
                 Wiki neiWiki = new Wiki(stackover);
-                return false;
+                return false;*/
             }
 
             return false;

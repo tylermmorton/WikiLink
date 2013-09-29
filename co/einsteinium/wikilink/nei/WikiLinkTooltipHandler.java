@@ -19,6 +19,8 @@ import net.minecraft.nbt.NBTTagList;
 
 public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 {
+	private static String tooltipString;
+	
 	@Override
 	public List<String> handleTooltipFirst(GuiContainer gui, int mousex, int mousey, List<String> currenttip) 
 	{
@@ -35,7 +37,7 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 			{
 			currenttip.add("");
 			
-			Wiki.setItemData(itemstack);
+			Wiki.setModId(itemstack);
 		
 		        for(int x = 0; x < Reference.wikiIdList.size(); x++)
 		        {
@@ -50,11 +52,51 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 		        }
 		  	        if(wikiFound == false)
 		        	{
-		        		currenttip.add("\u00A7cWiki unavailable for \u00A7a" + Wiki.getModId());
-		        		currenttip.add("\u00A7ePress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) + " to " + Wiki.getDefaultSearchSystem());
+		  	        	setTooltipString();
+		        		//currenttip.add("\u00A7cWiki unavailable for \u00A7a" + Wiki.getModId());
+		        		currenttip.add("\u00A7ePress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) + " to " + getTooltipString());
 		        	}
 			}
 		return currenttip;
 	}
+	
+    /** This method looks in the configuration manager to check what the user has
+     *  set as the secondary search engine and creating the tooltip string for it
+     *  as apropriate.
+     */
+    public void setTooltipString()
+    {
+    	if(ConfigHandler.secondarySearchSystem.equals("BING"))
+    	{
+    		tooltipString = "start a search on Bing";
+    	}
+    	else if(ConfigHandler.secondarySearchSystem.equals("VIMEO"))
+    	{
+    		tooltipString = "start a search on Vimeo";
+    	}
+    	else if(ConfigHandler.secondarySearchSystem.equals("YAHOO"))
+    	{
+    		tooltipString = "start a search on Yahoo";
+    	}
+    	else if(ConfigHandler.secondarySearchSystem.equals("GOOGLE"))
+    	{
+    		tooltipString = "start a search on Google";
+    	}
+    	else if(ConfigHandler.secondarySearchSystem.equals("YOUTUBE"))
+    	{
+    		tooltipString = "start a search on Youtube";
+    	}
+    	else
+    	{
+    		Wiki.arrayIndex = 0;
+    		tooltipString = "start a search on the " + Reference.wikiNameList.get(0).toString();
+    	}
+    }
+    
+    /** @return tooltipString */
+    public String getTooltipString()
+    {
+    	return tooltipString;
+    }
 
 }

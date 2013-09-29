@@ -1,6 +1,6 @@
 package co.einsteinium.wikilinklib;
 
-import co.einsteinium.wikilinklib.util.UpdateHandler;
+
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.PacketHandler;
 import cpw.mods.fml.common.Mod;
@@ -25,6 +25,5 @@ public class WikiLinkLib
     public void preInit(FMLPreInitializationEvent event)
     {
         event.getModMetadata().parent = ("WikiLink");
-        UpdateHandler.updateLibrary();
     }
 }

@@ -10,6 +10,7 @@ import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
+import co.einsteinium.wikilink.util.VersionHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -60,6 +61,10 @@ public class WikiLink
         PluginManager.INSTANCE.initConfigs();
         PluginManager.INSTANCE.initPlugins();
         NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
+        
+        try{VersionHandler.getWikiLinkVersionFromWeb();} 
+        catch(Exception e){e.printStackTrace();}
+			
     }
 
     @EventHandler
