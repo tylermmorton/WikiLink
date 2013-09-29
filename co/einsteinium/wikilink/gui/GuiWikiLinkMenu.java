@@ -52,10 +52,11 @@ import co.einsteinium.wikilink.WikiLink;
  */
 public class GuiWikiLinkMenu extends GuiContainer
 {
-	public GuiWikiLinkMenu(InventoryPlayer par1Inventory, Container par2Container) 
+	public GuiWikiLinkMenu(InventoryPlayer par1Inventory) 
 	{
-		super(par2Container);
+		super(new ContainerWikiLinkMenu(par1Inventory));
 		
+		/*
 		// Draw the hotbar
 		for(int i = 0; i < 9; i++)
 		{
@@ -70,20 +71,14 @@ public class GuiWikiLinkMenu extends GuiContainer
 				this.drawSlotInventory(new Slot(par1Inventory, 9 + x + y * 9, 204 + x * 18, 7 + y * 18 ));
 			}
 		}
+		*/
 	}
 
 	private static final ResourceLocation textureLocation = new ResourceLocation("wikilink:gui/menu.png");
 	
-	public String title = "WikiLink Menu";
-	
 	public int x = 0; 
 	public int y = 0;
 	public int z = 0;
-	
-	/*public GuiWikiLinkMenu(InventoryPlayer invPlayer)
-	{
-
-	}*/
 	
 	@Override
 	protected void keyTyped(char par1, int par2)

@@ -1,5 +1,6 @@
 package co.einsteinium.wikilink.nei;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
@@ -48,7 +49,7 @@ public class NEIWikiLinkConfig implements IConfigureNEI
         {
             if (keyCode == NEIClientConfig.getKeyBinding("wiki"))
             {
-            	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiWikiLinkMenu(null, null));
+            	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiWikiLinkMenu());
             	
             	
             	/*
