@@ -48,7 +48,7 @@ public class NEIWikiLinkConfig implements IConfigureNEI
         {
             if (keyCode == NEIClientConfig.getKeyBinding("wiki"))
             {
-            	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiWikiLinkMenu());
+            	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiWikiLinkMenu(null, null));
             	
             	
             	/*
