@@ -5,10 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IWikiLinkable 
 {
-	public enum Software 
-	{
-		WIKIA, MEDIAWIKI, DOKUWIKI, PHPWIKI, WIKIDOT, YOUTUBE, VIMEO, CUSTOM
-	}
+
 	
 	/** This method returns of the @ModId of the mod that is adding the plugin.
 	 *  This is used as the unique identifier for every WikiLink plugin.
@@ -38,7 +35,6 @@ public interface IWikiLinkable
 	 * 
 	 *  @return Software YourSoftwareType
 	 */
-	public Software getWikiDomainSoftware();
 	
 	/** This method returns a custom extension for the wiki of this plugin. This
 	 *  is only usable if the return value of getWikiDomainSoftware is "CUSTOM"
@@ -47,21 +43,24 @@ public interface IWikiLinkable
 	 */
 	public String getWikiDomainCustomExtension();
 	
+	public ArrayList<String> getWikiKeywords();
+	
 	/**  This method returns a special link
 	 * 
 	 *  @return
 	 */	
 	public ArrayList<String> getSpecialItemStackLinks();
+	public ArrayList<String> getSpecialItemStackDisplay();
+	
+	/**
+	 * 
+	 * @return ArrayList<ItemStack.getUnlocalizedName()>
+	 */
+	public ArrayList<String> getSpecialItemStackCases();
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public ArrayList<ItemStack> getSpecialItemStackCases();
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public ArrayList<Software> getSpecialItemStackCaseTypes();
+	//public ArrayList<Software> getSpecialItemStackCaseTypes();
 }

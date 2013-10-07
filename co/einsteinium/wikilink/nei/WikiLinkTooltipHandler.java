@@ -2,20 +2,16 @@ package co.einsteinium.wikilink.nei;
 
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+
 import org.lwjgl.input.Keyboard;
 
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
-import co.einsteinium.wikilink.wiki.Wiki;
+import co.einsteinium.wikilink.wiki.Link;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.api.API;
 import codechicken.nei.forge.IContainerTooltipHandler;
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.ItemData;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 {
@@ -37,11 +33,11 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 			{
 			currenttip.add("");
 			
-			Wiki.setModId(itemstack);
+			Link.itemDataModId.get(itemstack.itemID);
 		
 		        for(int x = 0; x < Reference.wikiIdList.size(); x++)
 		        {
-		        	if(Reference.wikiIdList.get(x).equals(Wiki.getModId()))
+		        	if(Reference.wikiIdList.get(x).equals(Link.itemDataModId.get(itemstack.itemID)))
 		        	{
 		        		//currenttip.add("\u00A7eWiki available for \u00A7a" + Wiki.getModId());
 		        		currenttip.add("\u00A7ePress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) + " to open the " + Reference.wikiNameList.get(x));
@@ -88,7 +84,7 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
     	}
     	else
     	{
-    		Wiki.arrayIndex = 0;
+    		//Wiki.arrayIndex = 0;
     		tooltipString = "start a search on the " + Reference.wikiNameList.get(0).toString();
     	}
     }

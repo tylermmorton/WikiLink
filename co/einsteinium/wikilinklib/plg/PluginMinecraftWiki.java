@@ -1,16 +1,12 @@
 package co.einsteinium.wikilinklib.plg;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import co.einsteinium.wikilink.api.Plugin;
 
 public class PluginMinecraftWiki implements Plugin
 {
-    @Override
-    public boolean isAvailable()
-    {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
     @Override
     public String getWikiKey()
     {
@@ -19,7 +15,7 @@ public class PluginMinecraftWiki implements Plugin
     }
 
     @Override
-    public String getWikiName()
+    public String getWikiDisplay()
     {
         // TODO Auto-generated method stub
         return "Minecraft Wiki";
@@ -36,14 +32,14 @@ public class PluginMinecraftWiki implements Plugin
     public String getWikiDomain()
     {
         // TODO Auto-generated method stub
-        return "minecraftwiki.net";
+        return "www.minecraftwiki.net";
     }
 
     @Override
-    public String getWikiSoftware()
+    public Software getWikiSoftware()
     {
         // TODO Auto-generated method stub
-        return "MEDIAWIKI";
+        return Software.MEDIAWIKI;
     }
 
     @Override
@@ -52,4 +48,30 @@ public class PluginMinecraftWiki implements Plugin
         // TODO Auto-generated method stub
         return "ALL";
     }
+
+	@Override
+	public HashMap<Integer, String> getItemStackVideos()
+	{
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		
+			map.put(159, "cvi5kjjIcg0");		
+			map.put(170, "ix5P7uPc79s");
+			map.put(172, "I2-5aaqRJHA");
+			map.put(173, "DmnNJMsxNEE");
+			
+		return map;
+	}
+	
+	@Override
+	public HashMap<Integer, String> getItemStackDisplay()
+	{
+		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		
+			map.put(159, "Item Spotlight (mcspotlights)");
+			map.put(170, "Item Spotlight (mcspotlights)");
+			map.put(172, "Item Spotlight (mcspotlights)");
+			map.put(173, "Item Spotlight (mcspotlights)");
+		
+		return map;
+	}
 }

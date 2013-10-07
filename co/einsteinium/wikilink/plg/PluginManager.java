@@ -7,9 +7,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import co.einsteinium.wikilink.WikiLink;
-import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.api.Plugin;
-import co.einsteinium.wikilink.cfg.ConfigHandler;
+import co.einsteinium.wikilink.wiki.Link;
 
 import com.google.common.collect.Lists;
 
@@ -81,28 +80,20 @@ public enum PluginManager
 
     public void initConfigs()
     {
-    	Reference.wikiIdList.add("");
-        Reference.wikiNameList.add(ConfigHandler.defaultWikiName);
-        Reference.wikiDomainList.add(ConfigHandler.defaultWikiDomain);
-        Reference.wikiSoftwareList.add(ConfigHandler.defaultWikiSoftware);
+
     }
 
     public void initPlugins()
     {
         for (Plugin plugin: plugins)
         {
-            if (Reference.wikiIdList.contains(plugin.getModID()))
-            {
-                //WikiLink.LogHelper.info("Can not load strings from " + plugin.getWikiName() + ". Please change getWikiKey!");
-            }
-            else
-            {
-                Reference.wikiIdList.add(plugin.getModID());
-                Reference.wikiNameList.add(plugin.getWikiName());
-                Reference.wikiDomainList.add(plugin.getWikiDomain());
-                Reference.wikiSoftwareList.add(plugin.getWikiSoftware());
-                //WikiLink.LogHelper.info("Loaded: " + plugin.getWikiName() + " - Loc: " + plugin.getWikiLocalization());
-            }
+        	//Link.wikiModId.put(plugin.getModID(), plugin.getModID());
+        	Link.wikiDomain.put(plugin.getModID(), plugin.getWikiDomain());
+        	Link.wikiDisplay.put(plugin.getModID(), plugin.getWikiDisplay());
+        	Link.wikiSoftware.put(plugin.getModID(), plugin.getWikiSoftware());
+        	
+        	Link.videoItemStackLink.putAll(plugin.getItemStackVideos());
+        	Link.videoItemStackDisplay.putAll(plugin.getItemStackDisplay());
         }
     }
 
