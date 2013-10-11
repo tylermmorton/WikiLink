@@ -1,12 +1,17 @@
 package co.einsteinium.wikilink.wiki;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import co.einsteinium.wikilink.WikiLink;
 import co.einsteinium.wikilink.api.Plugin.Software;
+import co.einsteinium.wikilink.gui.GuiContainerWikiLinkMenu;
+import co.einsteinium.wikilink.gui.InventoryWikiLinkMenu;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.ItemData;
 
@@ -17,73 +22,109 @@ import cpw.mods.fml.common.registry.ItemData;
  * 
  */
 public class Link
-{	
-	/** The HashMap of all ItemId's and their ModId's. **/
-	public static HashMap<Integer, String> itemDataModId = new HashMap<Integer, String>();
+{
+	private static ItemStack itemstack;
 	
-	/** The HashMap of all ModId's and corresponding Wiki domains. **/
+	private static HashMap<Integer, String> itemDataMap = new HashMap<Integer, String>();
+	
+	/** **/
 	public static HashMap<String, String> wikiDomain = new HashMap<String, String>();
-	
-	/** The HashMap of all ModId's and corresponding Wiki display names. **/
+	/** **/
 	public static HashMap<String, String> wikiDisplay = new HashMap<String, String>();
-	
-	/** The HashMap of all ModId's and corresponding Wiki Software enum types **/
+	/** **/
 	public static HashMap<String, Software> wikiSoftware = new HashMap<String, Software>();
 	
+	/** **/
 	public static HashMap<Integer, String> videoItemStackLink = new HashMap<Integer, String>();
+	/** **/
 	public static HashMap<Integer, String> videoItemStackDisplay = new HashMap<Integer, String>();
 	
-	public static ArrayList<String> menuGuiDisplay = new ArrayList<String>();
-	public static ArrayList<String> menuGuiHyperlink = new ArrayList<String>();
+	public static ArrayList<String> guiDisplay = new ArrayList<String>();
+	public static ArrayList<String> guiHyperlink = new ArrayList<String>();
 	
-	private static ItemStack stackover;
-
-	public static HashMap<String, String> getWikiDomain()
+	public enum LinkType { WIKI , SITE , YOUTUBE } 
+	
+	public Link(ItemStack item, String url, String display, LinkType type)
 	{
-		return wikiDomain;
-	}
-
-	public static HashMap<String, String> getWikiDisplay()
-	{
-		return wikiDisplay;
-	}
-
-	public static HashMap<String, Software> getWikiSoftware()
-	{
-		return wikiSoftware;
+		buildGui(item, url, display, type);
 	}
 	
-	/** This method returns the current ItemStack being 
-	 *  searched.
-	 *  
-	 * @return ItemStack
-	 */
-	public static ItemStack getStackover()
+	public void addToDisplay(String s)
 	{
-		return stackover;
-	}	
+		for(int i = 2; i <= 6; i++)
+		{			
+			if(guiDisplay.get(i).isEmpty())
+			{
+				guiDisplay.set(i, s);
+				break;
+			}
+		}
+	}
 	
-	public static void setStackover(ItemStack item)
+	public void addToHyperlink(String s)
 	{
-		stackover = item;
+		for(int i = 2; i <= 6; i++)
+		{			
+			if(guiHyperlink.get(i).isEmpty())
+			{
+				guiHyperlink.set(i, s);
+				break;
+			}
+		}
+	}
+	
+	
+	public void buildGui(ItemStack item, String hyperlink, String display, LinkType type)
+	{
+		// If the first item in the list is empty, add a wiki.
+		if(guiHyperlink.get(0).isEmpty() && type == LinkType.WIKI)
+		{
+			//If the hyperlink is != null and is not Minecraft
+			//Default Mod Wiki
+			if(hyperlink != null && wikiDomain.containsKey(getItemStackModId(item))/*&& getItemStackModId(item) != "Minecraft"*/)
+			{ 			
+				guiDisplay.set(0, display);
+				guiHyperlink.set(0, hyperlink);
+			}
+			else
+			{	
+				guiDisplay.set(0, wikiDisplay.get("Default"));
+				guiHyperlink.set(0, "http://" + wikiDomain.get("Default") + LinkWiki.getWikiDomainExtension(wikiSoftware.get("Default")) + item.getDisplayName().replace(" ", "+"));
+			}
+		}
+		
+		// If the second slot is not taken and the url type is YOUTUBE
+		if(guiHyperlink.get(1).isEmpty() && (guiDisplay != null || guiHyperlink != null) && type == LinkType.YOUTUBE)
+		{
+			guiDisplay.set(1, display);
+			guiHyperlink.set(1, hyperlink);
+		}
+	}
+	
+	public String shortenDisplayString(String s)
+	{
+		if(s.length() > 20)
+		{
+			s = s.substring(0, 19) + "...";
+		}
+		
+		return s;
 	}
 
-	/** This method uses the prebuilt HashMap itemDataModId
-	 *  and returns the value of the ItemStack's ModId. 
-	 *  <p>
-	 *  <pre>HashMap(ItemStack.itemID, ItemData.getModId())</pre>
-	 *  
-	 * @param par1 : The ItemStack of the item
-	 * @return The @ModId of the ItemStack's creator
-	 */
-	public static String getItemStackModId(ItemStack par1)
-	{
-		return itemDataModId.get(par1.itemID);
-	}
 
+	public static String getGuiDisplay(int index)
+	{
+		return guiDisplay.get(index);
+	}
+	
+	public static String getGuiHyperlink(int index)
+	{
+		return guiHyperlink.get(index);
+	}
+	
 	/** This method builds the initial ItemData HashMap so 
 	 *  WikiLink will be able to quickly get the Mod Id of
-	 *  any item easily.
+	 *  any item.
 	 */
 	public static void buildItemDataHashMap()
 	{
@@ -94,82 +135,76 @@ public class Link
 		{
 			ItemData data = new ItemData((NBTTagCompound) itemDataList.tagAt(i));
 			
-			itemDataModId.put(data.getItemId(), data.getModId());
+			itemDataMap.put(data.getItemId(), data.getModId());
 		}
 	}
 	
-	public static String getGuiDisplay(int index)
+	public static HashMap<Integer, String> getItemDataHashMap()
 	{
-		return menuGuiDisplay.get(index);
+		return itemDataMap;
 	}
 	
-	public static String getGuiHyperlink(int index)
+	public static ItemStack getItemStack()
 	{
-		return menuGuiHyperlink.get(index);
+		return itemstack;
 	}
 	
-	public static void buildGui()
+	/** Sets the ItemStack in the WikiLink Menu.
+	 * 	
+	 * @param item : The ItemStack to be displayed
+	 * @param initGui : Should the GUI actually reinitialize
+	 */
+	public static void setItemStack(ItemStack item, boolean initGui)
 	{
-		// If the first slot is empty, check for mod wiki
-		if(menuGuiHyperlink.get(0).isEmpty())
-		{
-			// If mod wiki is unavailable and mod is not Minecraft, add the default mod wiki
-			if(LinkWiki.getHyperlink(getStackover()) != null && LinkWiki.getHyperlink(getStackover()) != "Minecraft")
-			{
-				menuGuiDisplay.set(0, wikiDisplay.get(getItemStackModId(getStackover())));
-				menuGuiHyperlink.set(0, LinkWiki.getHyperlink(getStackover()));
-				//return;
-			}
-			// If the mod wiki is not Minecraft and is unavailable, add the minecraft wiki.
-			else if(LinkWiki.getHyperlink(getStackover()) != null)
-			{
-				menuGuiDisplay.set(0, "Default mod wiki");
-				menuGuiHyperlink.set(0, "Wiki 1");
-				//return;
-			}
-		}
+		itemstack = item;
 		
-		// If the second slot is empty and there is an existing video, add the registered item spotlights
-		if(menuGuiHyperlink.get(1).isEmpty() && LinkYoutube.getItemStackDisplay(getStackover()) != null)
+		if(initGui)
 		{
-			menuGuiDisplay.set(1, Link.videoItemStackDisplay.get(getStackover().itemID));
-			menuGuiHyperlink.set(1, LinkYoutube.getHyperlink(getStackover()));
-			//return;
+        	InventoryWikiLinkMenu fakeSlot = new InventoryWikiLinkMenu();
+        	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerWikiLinkMenu(fakeSlot, item));
 		}
 	}
 	
-	public static void addToGuiDisplayArray(String par1)
+	/** This method purges through the pre-existing
+	 *  itemDataMap in order to find the ModId of the
+     *  ItemStack by using the item's ID as a key.
+	 * 
+	 * @param itemid : ItemStack.itemID
+	 * @return The modId of the ItemStack if available
+	 */
+	public static String getItemIdModId(int itemid)
 	{
-		for(int i = 2; i <= 6; i++)
-		{
-			if(menuGuiDisplay.get(i).isEmpty())
-			{
-				menuGuiDisplay.set(i, par1);
-				break;
-			}
+		if(itemDataMap.containsKey(itemid))
+			return itemDataMap.get(itemid);
+		else {
+			WikiLink.LogHelper.severe("Could not find matching modId for given int.");			
+			return null;
 		}
 	}
 	
-	public static void addToGuiHyperlinkArray(String par1)
-	{			
-		for(int i = 2; i <= 6; i++)
-		{			
-			if(menuGuiHyperlink.get(i).isEmpty())
-			{
-				menuGuiHyperlink.set(i, par1);
-				break;
-			}
-		}
+	/** This method purges through the pre-existing 
+	 *  itemDataMap in order to find the ModId of the
+	 *  ItemStack by using the item's ID as a key.
+	 * 
+	 * @param item : ItemStack
+	 * @return The modId of the ItemStack.
+	 */
+	public static String getItemStackModId(ItemStack item)
+	{
+		return itemDataMap.get(item.itemID);
 	}
 	
+	/** This method resets the content of both of the
+	 *  ArrayLists regarding the WikiLink Menu. 
+	 *  <p>
+	 *  It sets all six indexes to "", not null.
+	 */
 	public static void setDefaultArrayLists()
 	{
 		for(int i = 0; i <= 6; i++)
 		{
-			menuGuiDisplay.add(i, "");
-			menuGuiHyperlink.add(i, "");
+			guiDisplay.add(i, "");
+			guiHyperlink.add(i, "");
 		}
-	}
-	
-
+	}	
 }

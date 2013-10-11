@@ -12,17 +12,10 @@ public interface Plugin
 {
 	public enum Software 
 	{
-		WIKIA, MEDIAWIKI, DOKUWIKI, PHPWIKI, WIKIDOT, YOUTUBE, VIMEO, CUSTOM, WIKISPACES
+		WIKIA, MEDIAWIKI, DOKUWIKI, PHPWIKI, WIKIDOT, YOUTUBE, VIMEO, CUSTOM, WIKISPACES, GOOGLE
 	}
 	
     /* For WIKI */
-    
-    /** This is the "code" to access your wiki.
-     *  /wiki <key> <query>
-     *
-     *  @since 1.6.2-010
-     */
-    public String getWikiKey();
 
     /** This is the english name of your wiki.
      *  "Example Wiki"

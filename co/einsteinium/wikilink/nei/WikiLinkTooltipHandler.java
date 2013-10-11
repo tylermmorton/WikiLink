@@ -31,27 +31,10 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 		
 		if(ConfigHandler.includeTooltipsOnItems == true)
 			{
-			currenttip.add("");
+		//	currenttip.add("");
 			
-			Link.itemDataModId.get(itemstack.itemID);
+			//Link.itemDataModId.get(itemstack.itemID);
 		
-		        for(int x = 0; x < Reference.wikiIdList.size(); x++)
-		        {
-		        	if(Reference.wikiIdList.get(x).equals(Link.itemDataModId.get(itemstack.itemID)))
-		        	{
-		        		//currenttip.add("\u00A7eWiki available for \u00A7a" + Wiki.getModId());
-		        		currenttip.add("\u00A7ePress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) + " to open the " + Reference.wikiNameList.get(x));
-		        		wikiFound = true;
-		        		break;
-		        	}
-	
-		        }
-		  	        if(wikiFound == false)
-		        	{
-		  	        	setTooltipString();
-		        		//currenttip.add("\u00A7cWiki unavailable for \u00A7a" + Wiki.getModId());
-		        		currenttip.add("\u00A7ePress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) + " to " + getTooltipString());
-		        	}
 			}
 		return currenttip;
 	}
@@ -60,7 +43,7 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
      *  set as the secondary search engine and creating the tooltip string for it
      *  as apropriate.
      */
-    public void setTooltipString()
+  /*  public void setTooltipString()
     {
     	if(ConfigHandler.secondarySearchSystem.equals("BING"))
     	{
@@ -87,7 +70,7 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
     		//Wiki.arrayIndex = 0;
     		tooltipString = "start a search on the " + Reference.wikiNameList.get(0).toString();
     	}
-    }
+    }*/
     
     /** @return tooltipString */
     public String getTooltipString()

@@ -1,27 +1,37 @@
 package co.einsteinium.wikilink.wiki;
 
+import co.einsteinium.wikilink.WikiLink;
+import co.einsteinium.wikilink.wiki.Link.LinkType;
 import net.minecraft.item.ItemStack;
 
 public class LinkYoutube extends Link
 {
-	public LinkYoutube()
+
+	public LinkYoutube(ItemStack item)
 	{
-		
+		super(item, getUrl(item), getDisplay(item), getLinkType());
+		// TODO Auto-generated constructor stub
+	}
+
+	public static LinkType getLinkType()
+	{
+		return LinkType.YOUTUBE;
+	}	
+	
+	public static String getUrl(ItemStack item)
+	{
+		return "http://www.youtube.com/watch?v=" + getWatchCode(item);
 	}
 	
-	public static String getHyperlink(ItemStack item)
+	public static String getWatchCode(ItemStack item)
 	{
-		return "http://www.youtube.com/watch?v=" + getItemStackLink(item);
+		if(videoItemStackLink.get(item.itemID) != null)
+			return videoItemStackLink.get(item.itemID);
+		else return "";
 	}
 	
-	public static String getItemStackLink(ItemStack item)
+	public static String getDisplay(ItemStack item)
 	{
-		return videoItemStackLink.get(item.itemID);
+		return "Item Spotlight [YouTube]";
 	}
-	
-	public static String getItemStackDisplay(ItemStack item)
-	{
-		return videoItemStackDisplay.get(item.itemID);
-	}
-	
 }

@@ -1,6 +1,8 @@
 package co.einsteinium.wikilink.gui;
 
-import java.util.List;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -98,16 +100,16 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 		int posX = (this.width - xSizeOfTexture) / 2;
 		int posY = (this.height - ySizeOfTexture) / 2;
 		
-		Link.buildGui();
+		//Link.buildGui();
 		
 		WikiLink.LogHelper.info(Link.getGuiDisplay(0));
-		WikiLink.LogHelper.info(Link.getGuiDisplay(2));
+		WikiLink.LogHelper.info(Link.getGuiDisplay(1));
 		
 		for(int i = 0; i <= 5; i++)
 		{
 			if(!Link.getGuiDisplay(i).isEmpty())	
 			{
-				WikiLink.LogHelper.info("Adding button " + i);
+				//WikiLink.LogHelper.info("Adding button " + i);
 				buttonList.add(new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
 			}
 				//buttonList.add(new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
@@ -147,7 +149,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -165,7 +167,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -183,7 +185,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -201,7 +203,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -219,7 +221,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -237,7 +239,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 					}
 				}
 				
-				setHyperlink(Link.menuGuiHyperlink.get(button.id));
+				setHyperlink(Link.guiHyperlink.get(button.id));
 				
 				break;
 			}
@@ -245,17 +247,27 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			case 6:
 			{
 				WikiLink.LogHelper.info(getHyperlink());
+				if(!getHyperlink().isEmpty())
+				{
+					BrowserHandler.browserInit(getHyperlink());
+				}
 				break;
 			}
 			case 7:
 			{
-				WikiLink.LogHelper.info("Button Clipboard");
+				if(!getHyperlink().isEmpty())
+				{
+					StringSelection selection = new StringSelection(getHyperlink());
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(selection, selection);
+				}
+				
 				break;
 			}	
 		}
 	}
 	
-	@Override
+/*	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton)
 	{
 		super.mouseClicked(mouseX,  mouseY,  mouseButton);
@@ -268,7 +280,7 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 				actionPerformed(button);
 			}
 		}
-	}
+	}*/
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) 
@@ -298,6 +310,6 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, shorta / 1.0F, shortb / 1.0F);
 
-		renderer.renderItemAndEffectIntoGUI(fontRenderer, renderEngine, Link.getStackover(), posX + 153, posY + 131);
+		renderer.renderItemAndEffectIntoGUI(fontRenderer, renderEngine, Link.getItemStack(), posX + 153, posY + 131);
 	}
 }

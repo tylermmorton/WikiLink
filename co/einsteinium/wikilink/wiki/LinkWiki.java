@@ -10,34 +10,45 @@ import co.einsteinium.wikilink.api.Plugin.Software;
  */
 public class LinkWiki extends Link
 {
-	private String wikiModId;
-	
-	/** Constructor **/
+
 	public LinkWiki(ItemStack item)
 	{
+		super(item, getUrl(item), getDisplay(item), getLinkType());
+	}
+		
+	public static LinkType getLinkType()
+	{
+		return LinkType.WIKI;
+	}	
+	
+	public static String getUrl(ItemStack item)
+	{
+		if(getWikiDomain(item) != null)
+		{
+			return "http://" + getWikiDomain(item) + getWikiDomainExtension(getWikiSoftware(item)) + item.getDisplayName().replace(" ", "+");
+		}
+		else return null;
 	}
 	
-	public static String getWikiModId(ItemStack item)
+	public static String getDisplay(ItemStack item)
 	{
-		WikiLink.LogHelper.info("Getting ModId");
-		return itemDataModId.get(item.itemID);
+		return wikiDisplay.get(getItemStackModId(item));
 	}
 	
 	public static String getWikiDomain(ItemStack item)
 	{
-		WikiLink.LogHelper.info("Getting Domain");
-		return wikiDomain.get(getWikiModId(item));
+		return wikiDomain.get(getItemStackModId(item));
 	}
 	
 	public static Software getWikiSoftware(ItemStack item)
 	{
-		WikiLink.LogHelper.info("Getting Software");
-		return wikiSoftware.get(getWikiModId(item));
+	//	WikiLink.LogHelper.info("Getting Software : " + getItemStackModId(item));
+		return wikiSoftware.get(getItemStackModId(item));
 	}
 	
-	public static String getWikiDomainExtension(ItemStack item)
+	public static String getWikiDomainExtension(Software software)
 	{
-		switch(getWikiSoftware(item))
+		switch(software)
 		{
 			case WIKIA:
 				return "/index.php?search=";
@@ -55,24 +66,5 @@ public class LinkWiki extends Link
 				return null;
 		}
 	}
-	
-	public static String getWikiSearchTerms(ItemStack item)
-	{
-		WikiLink.LogHelper.info("Getting Search Terms");
-		return item.getDisplayName().replace(" ", "+");
-	}
-	
-	/** **/
-	public static String getHyperlink(ItemStack item)
-	{
-		if(getWikiDomain(item) != null)
-		{	
-			WikiLink.LogHelper.info("Getting Hyperlink");
-			return "http://" + getWikiDomain(item) + getWikiDomainExtension(item) + getWikiSearchTerms(item);
-		}
-		
-		WikiLink.LogHelper.info("No wiki found for " + getWikiModId(item));
-		return null;
-		
-	}
+
 }

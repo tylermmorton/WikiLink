@@ -8,6 +8,7 @@ import java.util.zip.ZipInputStream;
 
 import co.einsteinium.wikilink.WikiLink;
 import co.einsteinium.wikilink.api.Plugin;
+import co.einsteinium.wikilink.cfg.ConfigHandler;
 import co.einsteinium.wikilink.wiki.Link;
 
 import com.google.common.collect.Lists;
@@ -85,6 +86,10 @@ public enum PluginManager
 
     public void initPlugins()
     {
+    	Link.wikiDomain.put("Default", ConfigHandler.defaultWikiDomain);
+    	Link.wikiDisplay.put("Default", ConfigHandler.defaultWikiDisplay);
+    	Link.wikiSoftware.put("Default", ConfigHandler.getSoftware());
+    	
         for (Plugin plugin: plugins)
         {
         	//Link.wikiModId.put(plugin.getModID(), plugin.getModID());
