@@ -15,8 +15,10 @@ public class VersionHandler
     public static String getWikiLinkVersionFromWeb() throws Exception
     {
         URL versionIn = new URL("https://raw.github.com/DrEinsteinium/WikiLink/master/version.txt");
+
         BufferedReader in = new BufferedReader(new InputStreamReader(versionIn.openStream()));
         String versionOut = in.readLine();
+        
         in.close();
         return versionOut;
     }

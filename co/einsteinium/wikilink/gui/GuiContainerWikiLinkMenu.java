@@ -77,7 +77,6 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 	public final int xSizeOfTexture = 176;
 	public final int ySizeOfTexture = 154;
 	
-	@Override
 	protected void keyTyped(char par1, int par2)
 	{
 		if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.keyCode)
@@ -86,13 +85,11 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 		}
 	}
 	
-	@Override
 	public boolean doesGuiPauseGame()
 	{			
 		return false;
 	}
 	
-	@Override
 	public void initGui()
 	{
 		super.initGui();
@@ -116,7 +113,6 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 		}
 			buttonList.add(new GuiButton(6, posX + 6, posY + 129, 72, 20, "Browser"));
 			buttonList.add(new GuiButton(7, posX + 79, posY + 129, 72, 20, "Clipboard"));
-			
 	}
 
 	public void setHyperlink(String h)

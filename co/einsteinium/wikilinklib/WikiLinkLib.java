@@ -9,13 +9,13 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-
+/*
 @Mod(modid = LibReference.MOD_ID, name = LibReference.MOD_NAME, version = LibReference.MOD_VERSION)
 @NetworkMod(channels = {LibReference.MOD_CHANNEL}, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
-
+*/
 public class WikiLinkLib
 {
-    @Instance(LibReference.MOD_ID)
+/*    @Instance(LibReference.MOD_ID)
     public static WikiLinkLib instace;
 
     @SidedProxy(clientSide = LibReference.PROXY_CLIENT_LOC, serverSide = LibReference.PROXY_COMMON_LOC)
@@ -25,5 +25,5 @@ public class WikiLinkLib
     public void preInit(FMLPreInitializationEvent event)
     {
         event.getModMetadata().parent = ("WikiLink");
-    }
+    }*/
 }

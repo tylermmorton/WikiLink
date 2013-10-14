@@ -30,8 +30,9 @@ public class BrowserHandler
             }
             else
             {
+            	
                 //assume Unix or Linux
-                String[] browsers = { "google-chrome", "firefox", "opera", "epiphany", "konqueror", "conkeror", "midori", "kazehakase", "mozilla", "netscape" };
+                String[] browsers = { "xdg-open", "google-chrome", "firefox", "opera", "epiphany", "konqueror", "conkeror", "midori", "kazehakase", "mozilla", "netscape" };
                 String browser = null;
 
                 for (int count = 0; count < browsers.length && browser == null; count++)

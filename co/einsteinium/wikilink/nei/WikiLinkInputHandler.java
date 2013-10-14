@@ -16,7 +16,7 @@ public class WikiLinkInputHandler implements IContainerInputHandler
 	
 	private static ItemStack stackover;
 	
-    @Override
+    
     public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode)
     {
         if (keyCode == NEIClientConfig.getKeyBinding("wiki"))
@@ -43,45 +43,45 @@ public class WikiLinkInputHandler implements IContainerInputHandler
         return false;
     }
 
-    @Override
+   
     public void onKeyTyped(GuiContainer gui, char keyChar, int keyID)
     {
     }
 
-    @Override
+    
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyCode)
     {
         return false;
     }
 
-    @Override
+    
     public boolean mouseClicked(GuiContainer gui, int mousex, int mousey, int button)
     {
         return false;
     }
 
-    @Override
+    
     public void onMouseClicked(GuiContainer gui, int mousex, int mousey, int button)
     {
     }
 
-    @Override
+    
     public void onMouseUp(GuiContainer gui, int mousex, int mousey, int button)
     {
     }
 
-    @Override
+    
     public boolean mouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled)
     {
         return false;
     }
 
-    @Override
+    
     public void onMouseScrolled(GuiContainer gui, int mousex, int mousey, int scrolled)
     {
     }
 
-    @Override
+    
     public void onMouseDragged(GuiContainer gui, int mousex, int mousey, int button, long heldTime)
     {
     }

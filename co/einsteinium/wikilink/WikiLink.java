@@ -1,5 +1,7 @@
 package co.einsteinium.wikilink;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.minecraft.command.ICommandManager;
@@ -10,6 +12,8 @@ import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
+import co.einsteinium.wikilink.util.LibraryHandler;
+import co.einsteinium.wikilink.util.UpdateHandler;
 import co.einsteinium.wikilink.util.VersionHandler;
 import co.einsteinium.wikilink.wiki.Link;
 import cpw.mods.fml.common.FMLLog;
@@ -18,7 +22,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -46,12 +49,28 @@ public class WikiLink
     public static Logger LogHelper;
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+    public void preInit(FMLPreInitializationEvent event) throws IOException, ClassNotFoundException
     {
-        LogHelper = Logger.getLogger(Reference.MOD_ID);
-        LogHelper.setParent(FMLLog.getLogger());
-        LogHelper.info("Loading Configurations...");
-        ConfigHandler.init(event.getSuggestedConfigurationFile());
+    	LogHelper = Logger.getLogger(Reference.MOD_ID);
+        LogHelper.setParent(FMLLog.getLogger());  
+        
+    	ConfigHandler.init(event.getSuggestedConfigurationFile());  
+    	
+    	File dir = new File(proxy.getModRoot() + "/mods/WikiLink");
+    		if(!dir.exists())
+    		{
+    			dir.mkdir();
+    			LogHelper.info("Creating dir: " + dir.getAbsolutePath());
+    			
+    			UpdateHandler.download(dir);
+    		}
+    		else
+    		{
+    			UpdateHandler.update(dir);
+    		}
+    		
+    	LibraryHandler.loadLibClasses(dir);
+        
         LogHelper.info("Loading Outsourced Extensions...");
         PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
     }

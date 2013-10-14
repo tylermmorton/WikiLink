@@ -23,14 +23,19 @@ public class Reference
     public static final String VER_BUILD = "01";
     public static final String VER_MINECRAFT = "1.6.4";
     
+    public static final String LIB_STATE = "Release";
+    public static final String LIB_MAJOR = "3";
+    public static final String LIB_MINOR = "00";
+    public static final String LIB_BUILD = "02";
+    public static final String LIB_MINECRAFT = "1.6.4";
+    
     public static final String VER_MODHASH = "f7be4d3eade462a902291ad863bd917b";
+    public static final String VER_LIBHASH = "ed4b1607000b396e960ecac26013b09d";
 
     public static final String MOD_MINIVER = VER_MAJOR + "." + VER_MINOR + "." + VER_BUILD;
     public static final String MOD_VERSION = VER_MINECRAFT + "-" + VER_MAJOR + "." + VER_MINOR + "." + VER_BUILD + " (" + VER_STATE + ")";
 
-    public static ArrayList wikiIdList = new ArrayList();
-    public static ArrayList wikiNameList = new ArrayList();
-    public static ArrayList wikiDomainList = new ArrayList();
-    public static ArrayList wikiSoftwareList = new ArrayList();
-    public static ArrayList wikiExtensionList = new ArrayList();
+    public static final String LIB_MINIVER = LIB_MAJOR + "." + LIB_MINOR + "." + LIB_BUILD;
+    public static final String LIB_VERSION = LIB_MINECRAFT + "-" + LIB_MAJOR + "." + LIB_MINOR + "." + LIB_BUILD + " (" + LIB_STATE + ")";
+
 }
