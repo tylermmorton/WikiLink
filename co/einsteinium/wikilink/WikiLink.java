@@ -60,11 +60,7 @@ public class WikiLink
        
        // LogHelper.info("Loading Outsourced Extensions...");
        PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
-       
-       LogHelper.info(PluginRegistry.getWikiDisplayMap().toString());
-       LogHelper.info(PluginRegistry.getCustomWikiSoftwareMap().toString());
-       
-       LogHelper.info(PluginRegistry.getItemSpotlightMap().toString());
+
     }
 
     @EventHandler
