@@ -1,21 +1,20 @@
 package co.einsteinium.wikilink;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
+import co.einsteinium.wikilink.api.Software;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
+import co.einsteinium.wikilink.link.Link;
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
-import co.einsteinium.wikilink.util.LibraryHandler;
-import co.einsteinium.wikilink.util.UpdateHandler;
+import co.einsteinium.wikilink.plg.PluginRegistry;
 import co.einsteinium.wikilink.util.VersionHandler;
-import co.einsteinium.wikilink.wiki.Link;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -56,31 +55,21 @@ public class WikiLink
         
     	ConfigHandler.init(event.getSuggestedConfigurationFile());  
     	
-    	File dir = new File(proxy.getModRoot() + "/mods/WikiLink");
-    		if(!dir.exists())
-    		{
-    			dir.mkdir();
-    			LogHelper.info("Creating dir: " + dir.getAbsolutePath());
-    			
-    			UpdateHandler.download(dir);
-    		}
-    		else
-    		{
-    			UpdateHandler.update(dir);
-    		}
-    		
-    	LibraryHandler.loadLibClasses(dir);
-        
-        LogHelper.info("Loading Outsourced Extensions...");
-        PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
+       PluginRegistry.registerWikiLink("Default", ConfigHandler.defaultWikiDomain, ConfigHandler.defaultWikiDisplay, ConfigHandler.getSoftware(), ConfigHandler.defaultCustomWikiSearchString);
+    	
+       
+       // LogHelper.info("Loading Outsourced Extensions...");
+       PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
+       
+       LogHelper.info(PluginRegistry.getWikiDisplayMap().toString());
+       LogHelper.info(PluginRegistry.getCustomWikiSoftwareMap().toString());
+       
+       LogHelper.info(PluginRegistry.getItemSpotlightMap().toString());
     }
 
     @EventHandler
     public void mainInit(FMLInitializationEvent event)
-    {
-        WikiLink.LogHelper.info("Recieving Outsourced Data...");
-        PluginManager.INSTANCE.initConfigs();
-        PluginManager.INSTANCE.initPlugins();
+    {      	
         NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
         
         try{VersionHandler.getWikiLinkVersionFromWeb();} 

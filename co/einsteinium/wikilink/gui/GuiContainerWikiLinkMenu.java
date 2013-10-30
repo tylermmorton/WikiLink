@@ -19,52 +19,39 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import co.einsteinium.wikilink.WikiLink;
+import co.einsteinium.wikilink.link.Link;
+import co.einsteinium.wikilink.link.LinkGoogle;
+import co.einsteinium.wikilink.link.LinkWiki;
+import co.einsteinium.wikilink.link.LinkYoutube;
+import co.einsteinium.wikilink.plg.PluginRegistry;
 import co.einsteinium.wikilink.util.BrowserHandler;
-import co.einsteinium.wikilink.wiki.Link;
 
-
-/** GuiWikiLinkMenu
- *  
- *  This menu will be the main menu for the WikiLink information lookup system.
- *  
- *  It will include the ability to set a spotlight (ghost)item, used to fill in
- *  the item parameters for the WikiLink database search. Users can also press I
- *  in NEI while hovering over an item in order to fill the ghost item slot with
- *  the hovered item.
- * 
- *  The ItemId of the item supplied will be sent through all of the registered
- *  databases in order to find all relevent wikis that can be searched for that
- *  specifc item. 
- *  
- *  It will first return the most relevant WikiLink, and after it will list all
- *  relevent YouTube videos(if registered). After all relevant systems have been
- *  listed it will continue to list all default search engines such as Google and 
- *  Bing.
- *  
- *  It will then build a list of the relevent wikis and display them in the brown
- *  scrolling box in the GUI. Here, users can select the link they want to open 
- *  and either copy it to their clipboard or open it in their default browser.
- * 
- *  -- 
- *  
- *  There will also be a second tab on the side(or top) of the GUI that will handle
- *  WikiLink's configurations.
- *  
- *  A similar listing GUI will be available to scroll through. Users can pick config
- *  options from the list and change them instantly in game by pressing buttons. The
- *  GUI will also include a large grey box explaining what the config option does and
- *  what it can be changed to. 
- * 
- */
 public class GuiContainerWikiLinkMenu extends GuiContainer
 {
-	public GuiContainerWikiLinkMenu(InventoryWikiLinkMenu par1, ItemStack stackover) 
+	public GuiContainerWikiLinkMenu(InventoryWikiLinkMenu par1, ItemStack item) 
 	{
-		super(new ContainerWikiLinkMenu(par1, stackover));
+		super(new ContainerWikiLinkMenu(par1, item));
+		
+		if(item != null)
+		{
+			//if(PluginRegistry.getWikiDisplayMap().containsKey(Link.getItemIdModId(item.itemID)))
+			//{
+				LinkWiki wikilink = new LinkWiki(item);
+			//}
+			
+			if(PluginRegistry.getGoogleDomainMap().containsKey(Link.getItemIdModId(item.itemID)))
+			{
+				LinkGoogle link = new LinkGoogle(item);
+			}
+			
+			if(PluginRegistry.getItemSpotlightMap().containsKey(item.itemID))
+			{
+				LinkYoutube link = new LinkYoutube(item);
+			}
+		}
 	}
 	
 	private String hyperlink = new String();
-	private boolean[] isDisabled = new boolean[6];
 	
 	public static FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 	private static final TextureManager renderEngine = Minecraft.getMinecraft().renderEngine;
@@ -99,17 +86,13 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 		
 		//Link.buildGui();
 		
-		WikiLink.LogHelper.info(Link.getGuiDisplay(0));
-		WikiLink.LogHelper.info(Link.getGuiDisplay(1));
-		
 		for(int i = 0; i <= 5; i++)
 		{
-			if(!Link.getGuiDisplay(i).isEmpty())	
-			{
-				//WikiLink.LogHelper.info("Adding button " + i);
-				buttonList.add(new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
+			if(!Link.getDisplayListIndex(i).isEmpty() && Link.getDisplayListIndex(i) != null)	
+			{	
+				buttonList.add(new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));
 			}
-				//buttonList.add(new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
+				
 		}
 			buttonList.add(new GuiButton(6, posX + 6, posY + 129, 72, 20, "Browser"));
 			buttonList.add(new GuiButton(7, posX + 79, posY + 129, 72, 20, "Clipboard"));
@@ -135,17 +118,15 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
+				for(int i = 0; i < 5; i++)
 				{
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
 				}
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
+				setHyperlink(Link.getDomainListIndex(button.id));
 				
 				break;
 			}
@@ -153,35 +134,31 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{				
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
+				for(int i = 0; i < 5; i++)
 				{
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
-				}
+				}				
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
-				
+				setHyperlink(Link.getDomainListIndex(button.id));				
+
 				break;
 			}
 			case 2:
 			{
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
+				for(int i = 0; i < 5; i++)
 				{
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
 				}
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
+				setHyperlink(Link.getDomainListIndex(button.id));
 				
 				break;
 			}
@@ -189,17 +166,15 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
+				for(int i = 0; i < 5; i++)
 				{
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
 				}
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
+				setHyperlink(Link.getDomainListIndex(button.id));
 				
 				break;
 			}
@@ -207,17 +182,15 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
+				for(int i = 0; i < 5; i++)
 				{
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
 				}
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
+				setHyperlink(Link.getDomainListIndex(button.id));
 				
 				break;
 			}
@@ -225,27 +198,33 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{
 				button.enabled = false;
 				
-				for(int i = 0; i <= 5; i++)
-				{//buttonList.get(i);
-					if(!Link.getGuiDisplay(i).isEmpty() && i != button.id)	
+				for(int i = 0; i < 5; i++)
+				{
+					if(!Link.getDisplayListIndex(i).isEmpty() && i != button.id)	
 					{
-						WikiLink.LogHelper.info("Adding button " + i);
-						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getGuiDisplay(i)));
-						
+						buttonList.set(i, new GuiWikiLinkButton(i, posX + 7, posY + 6 + (20 * i), 162, 20, Link.getDisplayListIndex(i), true));		
 					}
 				}
 				
-				setHyperlink(Link.guiHyperlink.get(button.id));
+				setHyperlink(Link.getDomainListIndex(button.id));
 				
 				break;
 			}
 			// Buttons
 			case 6:
 			{
-				WikiLink.LogHelper.info(getHyperlink());
 				if(!getHyperlink().isEmpty())
 				{
-					BrowserHandler.browserInit(getHyperlink());
+					if(!getHyperlink().contains("404Error"))
+					{
+						BrowserHandler.browserInit(getHyperlink());
+					}
+					else
+					{
+						Minecraft.getMinecraft().thePlayer.closeScreen();
+						Minecraft.getMinecraft().thePlayer.addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A74 404 Error - WikiLink does not exist. Please contact \u00A79@DrEinsteinium \u00A74with the information below.");
+						Minecraft.getMinecraft().thePlayer.addChatMessage(LinkWiki.getErrorMessage());
+					}
 				}
 				break;
 			}
@@ -253,9 +232,21 @@ public class GuiContainerWikiLinkMenu extends GuiContainer
 			{
 				if(!getHyperlink().isEmpty())
 				{
-					StringSelection selection = new StringSelection(getHyperlink());
-					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-					clipboard.setContents(selection, selection);
+					if(!getHyperlink().contains("404Error"))
+					{
+						StringSelection selection = new StringSelection(getHyperlink());
+						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+						clipboard.setContents(selection, selection);
+						
+						Minecraft.getMinecraft().thePlayer.closeScreen();
+						Minecraft.getMinecraft().thePlayer.addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A74 404 The WikiLink has been copied to the clipboard.");	
+					}
+					else
+					{
+						Minecraft.getMinecraft().thePlayer.closeScreen();
+						Minecraft.getMinecraft().thePlayer.addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A74 404 Error - WikiLink does not exist. Please contact \u00A79@DrEinsteinium \u00A74with the information below.");
+						Minecraft.getMinecraft().thePlayer.addChatMessage(LinkWiki.getErrorMessage());
+					}
 				}
 				
 				break;

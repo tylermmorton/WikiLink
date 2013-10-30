@@ -37,13 +37,13 @@ public class GuiWikiLinkButton extends GuiButton
 	
 	protected static final ResourceLocation buttonTextures = new ResourceLocation("wikilink:gui/menu.png");
 	
-	public GuiWikiLinkButton(int par1, int par2, int par3, int par4, int par5, String par6Str) 
+	public GuiWikiLinkButton(int par1, int par2, int par3, int par4, int par5, String par6Str, boolean isEnabled) 
 	{
 		super(par1, par2, par3, par4, par5, par6Str);
 				
         this.width = 200;
         this.height = 20;
-        this.enabled = true;
+        this.enabled = isEnabled;
         this.drawButton = true;
         this.id = par1;
         this.xPosition = par2;

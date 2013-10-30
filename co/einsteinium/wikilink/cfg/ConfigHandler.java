@@ -2,8 +2,8 @@ package co.einsteinium.wikilink.cfg;
 
 import java.io.File;
 
-import co.einsteinium.wikilink.api.Plugin.Software;
 import net.minecraftforge.common.Configuration;
+import co.einsteinium.wikilink.api.Software;
 
 /** ConfigHandler
  *
@@ -18,6 +18,7 @@ public class ConfigHandler
     public static String defaultWikiDomain;
     public static String defaultWikiDisplay;    
     public static String defaultWikiSoftware;
+    public static String defaultCustomWikiSearchString;
     
     public static void init(File file)
     {
@@ -30,18 +31,17 @@ public class ConfigHandler
         defaultWikiDomain = config.get("Default Wiki Options", "defaultWikiDomain", "wiki.feed-the-beast.com").getString();
         defaultWikiDisplay = config.get("Default Wiki Options", "defaultWikiDisplay", "Feed the Beast Wiki").getString();
         defaultWikiSoftware = config.get("Default Wiki Options", "defaultWikiSoftware", "MEDIAWIKI").getString();
+        defaultCustomWikiSearchString = config.get("Deafault Wiki Custom Search String", "defaultCustomWikiSearchString", "").getString();
+        config.addCustomCategoryComment("Deafault Wiki Custom Search String", "DO NOT CHANGE UNLESS YOU KNOW WHAT YOU ARE DOING. IF NOTHING, LEAVE BLANK.");
       
         config.save();
         //
     }
     
     public static Software getSoftware()
-    {
-    	if(defaultWikiSoftware.equals("MEDIAWIKI"))
-    		return Software.MEDIAWIKI;
-    	else if(defaultWikiSoftware.equals("WIKIA"))
-    		return Software.WIKIA;
-    	
-    	else return null;
-    }
+	{
+		return Software.fromString(defaultWikiSoftware);
+	}
 }
+
+	

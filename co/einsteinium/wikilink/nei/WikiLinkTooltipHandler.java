@@ -9,7 +9,9 @@ import org.lwjgl.input.Keyboard;
 
 import co.einsteinium.wikilink.Reference;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
-import co.einsteinium.wikilink.wiki.Link;
+import co.einsteinium.wikilink.link.Link;
+import co.einsteinium.wikilink.plg.PluginRegistry;
+import codechicken.nei.KeyManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.forge.IContainerTooltipHandler;
 
@@ -30,48 +32,13 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 		boolean wikiFound = false;
 		
 		if(ConfigHandler.includeTooltipsOnItems == true)
-			{
-		//	currenttip.add("");
-			
-			//Link.itemDataModId.get(itemstack.itemID);
+		{
+			currenttip.add("\u00a7aPress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) +  " to open the WikiLink Menu");
+		}
 		
-			}
 		return currenttip;
 	}
 	
-    /** This method looks in the configuration manager to check what the user has
-     *  set as the secondary search engine and creating the tooltip string for it
-     *  as apropriate.
-     */
-  /*  public void setTooltipString()
-    {
-    	if(ConfigHandler.secondarySearchSystem.equals("BING"))
-    	{
-    		tooltipString = "start a search on Bing";
-    	}
-    	else if(ConfigHandler.secondarySearchSystem.equals("VIMEO"))
-    	{
-    		tooltipString = "start a search on Vimeo";
-    	}
-    	else if(ConfigHandler.secondarySearchSystem.equals("YAHOO"))
-    	{
-    		tooltipString = "start a search on Yahoo";
-    	}
-    	else if(ConfigHandler.secondarySearchSystem.equals("GOOGLE"))
-    	{
-    		tooltipString = "start a search on Google";
-    	}
-    	else if(ConfigHandler.secondarySearchSystem.equals("YOUTUBE"))
-    	{
-    		tooltipString = "start a search on Youtube";
-    	}
-    	else
-    	{
-    		//Wiki.arrayIndex = 0;
-    		tooltipString = "start a search on the " + Reference.wikiNameList.get(0).toString();
-    	}
-    }*/
-    
     /** @return tooltipString */
     public String getTooltipString()
     {

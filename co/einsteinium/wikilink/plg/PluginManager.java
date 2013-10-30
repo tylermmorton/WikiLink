@@ -7,14 +7,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import co.einsteinium.wikilink.WikiLink;
+import co.einsteinium.wikilink.api.IGoogleLink;
+import co.einsteinium.wikilink.api.IWikiLink;
+import co.einsteinium.wikilink.api.IYoutubeLink;
 import co.einsteinium.wikilink.api.Plugin;
-import co.einsteinium.wikilink.cfg.ConfigHandler;
-import co.einsteinium.wikilink.wiki.Link;
 
 import com.google.common.collect.Lists;
 
-import cpw.mods.fml.common.IFuelHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.ModMetadata;
 
 /** PluginManager
  *
@@ -34,7 +34,8 @@ public enum PluginManager
         }
 
         final String pluginClassName = packageName.replace(".class", "");
-
+        	WikiLink.LogHelper.finest("Loading : " + pluginClassName);
+        
         try
         {
             final Class<?> pluginClass = classLoader.loadClass(pluginClassName);
@@ -47,61 +48,73 @@ public enum PluginManager
                 do
                 {
                     for (final Class<?> i : clz.getInterfaces())
-                        if (i == Plugin.class)
+                        if (i == IGoogleLink.class)
                         {
-                            isPlugin = true;
-                            break;
+                        	final IGoogleLink plugin = (IGoogleLink) pluginClass.newInstance();
+                        	
+                    		if(plugin != null)
+                    		{
+                    			INSTANCE.plugins.add(plugin);
+                    			
+                    			//WikiLink.LogHelper.info(clz + " Implements IGoogleLink.");
+                    			PluginRegistry.registerGoogleSite(plugin.getModID(), plugin.getGoogleDomain(), plugin.getGoogleDisplay());
+                    			
+                    			break;
+                    		}
+                        }
+                        else if(i == IWikiLink.class)
+                        {
+                        	final IWikiLink plugin = (IWikiLink) pluginClass.newInstance();
+                        	
+                        		if(plugin != null)
+                        		{
+                        			INSTANCE.plugins.add(plugin);
+                        			//WikiLink.LogHelper.info(clz + " Implements IWikiLink."); 
+                        			
+                        			
+                        			for(int x = 0; x < plugin.getModID().size(); x++)
+                        			{
+                        				PluginRegistry.registerWikiLink(plugin.getModID().get(x), plugin.getWikiDomain(), plugin.getWikiDisplay(), plugin.getWikiSoftware(), plugin.getCustomSearchString());
+                        			}
+                        			
+                        			
+                        			break;
+                        		}
+                        }
+                        else if(i == IYoutubeLink.class)
+                        {
+                        	final IYoutubeLink plugin = (IYoutubeLink) pluginClass.newInstance();
+                        	
+                        		if(plugin != null)
+                        		{
+                        			INSTANCE.plugins.add(plugin);
+                        			//WikiLink.LogHelper.info(clz + " Implements IYoutubeLink.");
+                        			PluginRegistry.registerYoutubeVideo(plugin.getItemStackVideos());
+                        			
+                        			break;
+                        		}
                         }
 
                     clz = clz.getSuperclass();
                 }
                 while (clz != null && !isPlugin);
-
-                if (!isPlugin)
-                {
-                    return;
-                }
-
-                final Plugin plugin = (Plugin) pluginClass.newInstance();
-
-                if (plugin != null)
-                {
-                    INSTANCE.plugins.add(plugin);
-
-                    if (plugin instanceof IFuelHandler)
-                    {
-                        GameRegistry.registerFuelHandler((IFuelHandler) plugin);
-                    }
-                }
             }
         }
         catch (final Exception ex)
-        {}
-    }
-
-    public void initConfigs()
-    {
-
-    }
-
-    public void initPlugins()
-    {
-    	Link.wikiDomain.put("Default", ConfigHandler.defaultWikiDomain);
-    	Link.wikiDisplay.put("Default", ConfigHandler.defaultWikiDisplay);
-    	Link.wikiSoftware.put("Default", ConfigHandler.getSoftware());
-    	
-        for (Plugin plugin: plugins)
         {
-        	//Link.wikiModId.put(plugin.getModID(), plugin.getModID());
-        	Link.wikiDomain.put(plugin.getModID(), plugin.getWikiDomain());
-        	Link.wikiDisplay.put(plugin.getModID(), plugin.getWikiDisplay());
-        	Link.wikiSoftware.put(plugin.getModID(), plugin.getWikiSoftware());
+	        ex.printStackTrace();
+        }
+        catch(final AbstractMethodError ex)
+        {
+        	WikiLink.LogHelper.severe("Found an exception while loading " + packageName);
+        	WikiLink.LogHelper.severe("This has been caused by an AbstractMethodError, meaning "
+        			     + "the plugin in question is out of date for the current WikiLink API.");
+        	WikiLink.LogHelper.severe("Please message the author of the plugin in question and inform him/her of this situation.");
         	
-        	Link.videoItemStackLink.putAll(plugin.getItemStackVideos());
-        	Link.videoItemStackDisplay.putAll(plugin.getItemStackDisplay());
+        	ex.printStackTrace();
         }
     }
-
+    
     private static void loadExternalPlugins(final File modLocation)
     {
         try
@@ -160,7 +173,7 @@ public enum PluginManager
             {
                 final String pluginName = file.getName();
 
-                if (file.isFile() && pluginName.startsWith("Plugin")
+                if (file.isFile() && pluginName.startsWith("WL")
                         && pluginName.endsWith(".class")) addPlugin(classLoader, pluginName,
                                     parseClassName(file.getPath()));
                 else if (file.isDirectory())
@@ -192,7 +205,7 @@ public enum PluginManager
                 final File entryFile = new File(entryName);
                 final String pluginName = entryFile.getName();
 
-                if (!entry.isDirectory() && pluginName.startsWith("Plugin")
+                if (!entry.isDirectory() && pluginName.startsWith("WL")
                         && pluginName.endsWith(".class"))
                     addPlugin(classLoader, pluginName,
                               entryFile.getPath().replace(File.separatorChar, '.'));
