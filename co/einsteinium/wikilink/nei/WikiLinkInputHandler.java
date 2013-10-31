@@ -8,6 +8,7 @@ import co.einsteinium.wikilink.link.Link;
 import co.einsteinium.wikilink.link.LinkWiki;
 import co.einsteinium.wikilink.link.LinkYoutube;
 import codechicken.nei.NEIClientConfig;
+import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerInputHandler;
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -15,15 +16,16 @@ public class WikiLinkInputHandler implements IContainerInputHandler
 {
 	
 	private static ItemStack stackover;
-	
     
     public boolean keyTyped(GuiContainer gui, char keyChar, int keyCode)
-    {
+    {	
         if (keyCode == NEIClientConfig.getKeyBinding("wiki"))
         {
-        	if(gui.manager.getStackMouseOver() != null)
+        	GuiContainerManager manager = GuiContainerManager.getManager(gui);
+        	
+        	if(manager.getStackMouseOver() != null)
         	{
-	        	stackover = gui.manager.getStackMouseOver();
+	        	stackover = manager.getStackMouseOver();
 
 	        	Link.resetGuiList(Link.getDomainList());
 	        	Link.resetGuiList(Link.getDisplayList());
