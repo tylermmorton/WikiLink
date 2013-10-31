@@ -16,13 +16,16 @@ public class VersionHandler
         BufferedReader in = new BufferedReader(new InputStreamReader(versionIn.openStream()));
      
         String line;
+        String wholeString = "";
         
         while((line = in.readLine()) != null)
         {
-        	if(!line.contains(Reference.VER_MODHASH))
-        	{
-        		return true;
-        	}
+        	wholeString = wholeString + " " + line;
+        }
+        
+        if(!wholeString.contains(Reference.VER_MODHASH))
+        {
+        	return true;
         }
         
         in.close();
