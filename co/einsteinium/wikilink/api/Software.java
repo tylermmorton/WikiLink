@@ -45,7 +45,7 @@ public enum Software
 	public static String getDomainExtension(Software s)
 	{
 			if(s == WIKIA)
-				return "/index.php?search=";
+				return "/wiki/Special:Search?search=";
 			else if(s == PHPWIKI)
 				return "/?do=search&id=";
 			else if(s == WIKIDOT)
