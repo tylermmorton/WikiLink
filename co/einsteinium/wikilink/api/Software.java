@@ -25,19 +25,19 @@ public enum Software
 	
 	public static Software fromString(String s)
 	{
-		if(s == "WIKIA")
+		if(s.equals("WIKIA"))
 			return WIKIA;
-		else if(s == "MEDIAWIKI")
+		else if(s.equals("MEDIAWIKI"))
 			return MEDIAWIKI;
-		else if(s == "DOKUWIKI")
+		else if(s.equals("DOKUWIKI"))
 			return DOKUWIKI;
-		else if(s == "PHPWIKI")
+		else if(s.equals("PHPWIKI"))
 			return PHPWIKI;
-		else if(s == "WIKIDOT")
+		else if(s.equals("WIKIDOT"))
 			return WIKIDOT;
-		else if(s == "WIKISPACES")
+		else if(s.equals("WIKISPACES"))
 			return WIKISPACES;
-		else if(s == "CUSTOM")
+		else if(s.equals("CUSTOM"))
 			return CUSTOM;
 		return null;
 	}
