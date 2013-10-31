@@ -12,7 +12,7 @@ public class ContainerWikiLinkMenu extends Container
 {	
 	public ContainerWikiLinkMenu(InventoryWikiLinkMenu fakeInv, ItemStack stackover)
 	{
-		this.addSlotToContainer(new Slot(fakeInv, 0, 153, 137));
+		this.addSlotToContainer(new Slot(fakeInv, 0, 153, 131));
 	}
 	
 
