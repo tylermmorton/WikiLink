@@ -13,6 +13,9 @@ import co.einsteinium.wikilink.api.Software;
  */
 public class ConfigHandler
 {
+	public static boolean shortenUrl;
+	public static boolean shortenAdfly;
+	
     public static boolean includeTooltipsOnItems;
     
     public static String defaultWikiDomain;
@@ -27,13 +30,16 @@ public class ConfigHandler
         config.load();
                 
         includeTooltipsOnItems = config.get("Tooltip Options", "includeTooltipsOnItems", true, "Should WikiLink give a message on item tooltips when an item is hovered in an inventory?").getBoolean(true);
-
+        
         defaultWikiDomain = config.get("Default Wiki Options", "defaultWikiDomain", "wiki.feed-the-beast.com").getString();
         defaultWikiDisplay = config.get("Default Wiki Options", "defaultWikiDisplay", "Feed the Beast Wiki").getString();
         defaultWikiSoftware = config.get("Default Wiki Options", "defaultWikiSoftware", "MEDIAWIKI").getString();
         defaultCustomWikiSearchString = config.get("Deafault Wiki Custom Search String", "defaultCustomWikiSearchString", "").getString();
         config.addCustomCategoryComment("Deafault Wiki Custom Search String", "DO NOT CHANGE UNLESS YOU KNOW WHAT YOU ARE DOING. IF NOTHING, LEAVE BLANK.");
       
+        config.addCustomCategoryComment("Link Shortener Options", "These are the options used to change how WikiLink shortens links that are sent out.");
+        shortenUrl = config.get("Link Shortener Options", "shortenUrl", true, "Should WikiLink shorten the URLs? (Non-Adfly)").getBoolean(true);
+        shortenAdfly = config.get("Link Shortener Options", "shortenWithAdfly", false, "Should WikiLink shorten the URLs with Adfly? If you would like to support the developer, you may turn this on, but it defaults to false.").getBoolean(false);
         config.save();
         //
     }
