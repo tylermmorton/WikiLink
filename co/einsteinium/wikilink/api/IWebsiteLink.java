@@ -1,6 +1,6 @@
 package co.einsteinium.wikilink.api;
 
-public interface IGoogleLink extends Plugin
+public interface IWebsiteLink extends Plugin
 {
 	public String getModID();
 	

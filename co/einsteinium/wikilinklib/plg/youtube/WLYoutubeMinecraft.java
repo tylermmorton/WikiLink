@@ -2,12 +2,12 @@ package co.einsteinium.wikilinklib.plg.youtube;
 
 import java.util.HashMap;
 
-import co.einsteinium.wikilink.api.IYoutubeLink;
+import co.einsteinium.wikilink.api.ISpotlightLink;
 
 /** Minecraft Youtube Plugin
  * @modId Minecraft
  */
-public class WLYoutubeMinecraft implements IYoutubeLink
+public class WLYoutubeMinecraft implements ISpotlightLink
 {
 
 	@Override

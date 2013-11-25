@@ -70,17 +70,6 @@ public class EncodingHelper
 	      .replace("%5D","%5D");
 	}
 	
-	/** Replaces the given char in the given string
-	 *  with the correct percent-encoded value. The
-	 *  method then returns the edited string.
-	 *  
-	 *  @return given str
-	 
-	public String encodeCharacter(String str, char c)
-	{
-	  return str.replace(String.valueOf(c), URIMAP.get(String.valueOf(c)));
-	}*/
-
 	/** Used by bit.ly integration to decode the 
 	 *  "echo" recieved by the URL shortener. It
 	 *  pulls just the bit.ly link out of given str.
@@ -108,13 +97,6 @@ public class EncodingHelper
 	{
 		String str = encodeAddress(url);
 		URL urle = new URL(String.format("https://api-ssl.bitly.com/v3/shorten?access_token=" + "%s" + "&longUrl=" + "%s", Reference.BITAPI_TOKEN, str));
-		return urle;
-	}
-	
-	public URL generateAdflyString(String url) throws MalformedURLException
-	{
-		String str = encodeAddress(url);
-		URL urle = new URL(String.format("http://api.adf.ly/api.php?key=" + "%s" + "&uid=5499358" + "&advert_type=int" + "&domain=adf.ly" + "&url=" + "%s", Reference.FLYAPI_TOKEN, str));
 		return urle;
 	}
 }

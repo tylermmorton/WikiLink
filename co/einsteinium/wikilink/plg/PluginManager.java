@@ -7,9 +7,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import co.einsteinium.wikilink.WikiLink;
-import co.einsteinium.wikilink.api.IGoogleLink;
+import co.einsteinium.wikilink.api.IWebsiteLink;
 import co.einsteinium.wikilink.api.IWikiLink;
-import co.einsteinium.wikilink.api.IYoutubeLink;
+import co.einsteinium.wikilink.api.ISpotlightLink;
 import co.einsteinium.wikilink.api.Plugin;
 
 import com.google.common.collect.Lists;
@@ -48,9 +48,9 @@ public enum PluginManager
                 do
                 {
                     for (final Class<?> i : clz.getInterfaces())
-                        if (i == IGoogleLink.class)
+                        if (i == IWebsiteLink.class)
                         {
-                        	final IGoogleLink plugin = (IGoogleLink) pluginClass.newInstance();
+                        	final IWebsiteLink plugin = (IWebsiteLink) pluginClass.newInstance();
                         	
                     		if(plugin != null)
                     		{
@@ -81,9 +81,9 @@ public enum PluginManager
                         			break;
                         		}
                         }
-                        else if(i == IYoutubeLink.class)
+                        else if(i == ISpotlightLink.class)
                         {
-                        	final IYoutubeLink plugin = (IYoutubeLink) pluginClass.newInstance();
+                        	final ISpotlightLink plugin = (ISpotlightLink) pluginClass.newInstance();
                         	
                         		if(plugin != null)
                         		{

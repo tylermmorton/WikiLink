@@ -2,7 +2,7 @@ package co.einsteinium.wikilink.api;
 
 import java.util.HashMap;
 
-public interface IYoutubeLink extends Plugin
+public interface ISpotlightLink extends Plugin
 {
 	/** This HashMap contains the ItemID and the /watch code.
 	 *  <p><b>Always return the HashMap when adding indexes. This will

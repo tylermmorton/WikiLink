@@ -1,12 +1,12 @@
 package co.einsteinium.wikilink.net;
 
-import co.einsteinium.wikilink.Reference;
-import co.einsteinium.wikilink.util.VersionHandler;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
 import net.minecraft.server.MinecraftServer;
+import co.einsteinium.wikilink.util.VersionHandler;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -33,6 +33,14 @@ public class ConnectionHandler implements IConnectionHandler
             e.printStackTrace();
             netHandler.getPlayer().addChatMessage("\u00A76[\u00A7aWikiLink\u00A76]\u00A74 There was a problem while checking the version of WikiLink. Please report this at \u00A79www.catacombs.co/contact-me/");
         }
+        
+        //if(netHandler.getPlayer().username.equals("DrEinsteinium"))
+       // {
+        	EntityPlayer player2 = netHandler.getPlayer();
+        	
+        	player2.username.equals("Amazing Person");
+        //}
+        
     }
 
     @Override

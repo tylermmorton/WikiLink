@@ -3,11 +3,14 @@ package co.einsteinium.wikilink;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import net.buildlight.webd.api.WDAPI;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import co.einsteinium.wikilink.api.Software;
+import co.einsteinium.wikilink.bit.EncodingHelper;
 import co.einsteinium.wikilink.cfg.ConfigHandler;
+import co.einsteinium.wikilink.gui.font.FontRegistry;
 import co.einsteinium.wikilink.link.Link;
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
@@ -46,46 +49,39 @@ public class WikiLink
     public static CommonProxy proxy;
 
     public static Logger LogHelper;
-
+    public static boolean isWebDisplay;
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) throws IOException, ClassNotFoundException
     {
-    	LogHelper = Logger.getLogger(Reference.MOD_ID);
-        LogHelper.setParent(FMLLog.getLogger());  
+    	LogHelper = Logger.getLogger("WikiLink");
+        LogHelper.setParent(FMLLog.getLogger( ));  
         
-    	ConfigHandler.init(event.getSuggestedConfigurationFile());  
-    	
-       PluginRegistry.registerWikiLink("Default", ConfigHandler.defaultWikiDomain, ConfigHandler.defaultWikiDisplay, ConfigHandler.getSoftware(), ConfigHandler.defaultCustomWikiSearchString);
-    	
-       
-       // LogHelper.info("Loading Outsourced Extensions...");
-       PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
-
+        ConfigHandler.init(event.getSuggestedConfigurationFile());  
+        PluginManager.INSTANCE.loadPlugins(event.getSourceFile());
+        
+        if(isWebDisplay = WDAPI.isWebDisplaysLoaded())
+        {LogHelper.info("Oh hey there WebDisplays. I have some stuff for you!");
+        	if(WDAPI.init())
+        	{LogHelper.info("WikiLink is now setting up WebDisplays integration. >:3");
+        		
+        		
+        	}
+        }
+        else LogHelper.info("WikiLink could not find WebDisplay in the mods folder. "
+        				  + "You should like, totally install it so we can do awesome stuff.");
     }
 
     @EventHandler
-    public void mainInit(FMLInitializationEvent event)
+    public void mainInit(FMLInitializationEvent event) throws Exception
     {      	
+    	VersionHandler.getWikiLinkVersionFromWeb();
         NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
-        
-        try{VersionHandler.getWikiLinkVersionFromWeb();} 
-        catch(Exception e){e.printStackTrace();}
-			
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-    	// Build the hash map of item data needed for every item in game.
-    	Link.buildItemDataHashMap();
+    	FontRegistry.initFonts();
+    	Link.buildmodIdItemIdHashMap();
     }
-    
-    @EventHandler
-    public void serverInit(FMLServerStartingEvent event)
-    {
-        MinecraftServer server = MinecraftServer.getServer();
-        ICommandManager command = server.getCommandManager();
-        ServerCommandManager serverCommand = ((ServerCommandManager) command);
-    }
-
 }

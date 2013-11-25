@@ -3,6 +3,7 @@ package co.einsteinium.wikilink.plg;
 import java.util.HashMap;
 
 import co.einsteinium.wikilink.api.Software;
+import co.einsteinium.wikilink.link.Link;
 
 /** The Registrar for all Plugin Information
  *  @author DrEinsteinium

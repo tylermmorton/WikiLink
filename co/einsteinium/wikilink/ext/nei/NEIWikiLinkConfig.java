@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink.nei;
+package co.einsteinium.wikilink.ext.nei;
 
 import org.lwjgl.input.Keyboard;
 
@@ -14,8 +14,7 @@ public class NEIWikiLinkConfig implements IConfigureNEI
     public void loadConfig()
     {
         API.addKeyBind("wiki", Keyboard.KEY_I);
-        
-        LanguageRegistry.instance().addStringLocalization("nei.options.keys.wiki", "Wiki Search");
+        LanguageRegistry.instance().addStringLocalization("nei.options.keys.wiki", "WikiLink Search");
         
         GuiContainerManager.addInputHandler(new WikiLinkInputHandler());
         GuiContainerManager.addTooltipHandler(new WikiLinkTooltipHandler());

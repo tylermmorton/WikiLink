@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink.nei;
+package co.einsteinium.wikilink.ext.nei;
 
 import java.util.List;
 
@@ -27,15 +27,10 @@ public class WikiLinkTooltipHandler implements IContainerTooltipHandler
 
 	@Override
 	public List<String> handleItemTooltip(GuiContainer gui, ItemStack itemstack, List<String> currenttip) 
-	{	        
-		
-		boolean wikiFound = false;
-		
+	{	        		
 		if(ConfigHandler.includeTooltipsOnItems == true)
-		{
 			currenttip.add("\u00a7aPress " + Keyboard.getKeyName(NEIClientConfig.getKeyBinding("wiki")) +  " to open the WikiLink Menu");
-		}
-		
+
 		return currenttip;
 	}
 	

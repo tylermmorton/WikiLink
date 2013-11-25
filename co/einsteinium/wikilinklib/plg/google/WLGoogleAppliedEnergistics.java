@@ -1,8 +1,8 @@
 package co.einsteinium.wikilinklib.plg.google;
 
-import co.einsteinium.wikilink.api.IGoogleLink;
+import co.einsteinium.wikilink.api.IWebsiteLink;
 
-public class WLGoogleAppliedEnergistics implements IGoogleLink
+public class WLGoogleAppliedEnergistics implements IWebsiteLink
 {
 
 	@Override

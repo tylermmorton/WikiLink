@@ -1,65 +1,55 @@
 package co.einsteinium.wikilink.link;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import co.einsteinium.wikilink.api.Software;
 import co.einsteinium.wikilink.plg.PluginRegistry;
 
 /**
  * 
- * @author DrEinsteinium
+ *  @author DrEinsteinium
  */
 public class LinkWiki extends Link
-{
-	private static ItemStack stack;
-	private static String softwareExtension;
-	
-	public LinkWiki(ItemStack item)
+{	
+	public LinkWiki(ItemStack item, String modId)
 	{
-		super(getWikiHyperlink(item), getWikiDisplay(item), item);
-		
-		stack = item;
+		super(getHyperlink(item, modId), getDisplay(item), item);
 	}
 	
-	public static String getWikiHyperlink(ItemStack item)
+	private static String getDisplay(ItemStack item)
 	{
-		if(PluginRegistry.getWikiDisplayMap().containsKey(Link.getItemIdModId(item.itemID)))
-		{
-			return "http://" + getWikiDomain(item) + getWikiSoftwareExtension(PluginRegistry.getWikiSoftwareMap().get(getItemIdModId(item.itemID)), item) + item.getDisplayName();
-		}
-		else return "http://" + (PluginRegistry.getWikiDomainMap().get("Default") + getWikiSoftwareExtension(PluginRegistry.getWikiSoftwareMap().get("Default"), item)) + item.getDisplayName();
+		if(!PluginRegistry.getWikiDisplayMap().containsKey(getModId(item)))
+			 return PluginRegistry.getWikiDisplayMap().get("Default") + " - " + item.getDisplayName();
+		else return PluginRegistry.getWikiDisplayMap().get(Link.getModId(item.itemID)) + " - " + item.getDisplayName();
 	}
 	
-	public static String getWikiDomain(ItemStack item)
+	private static String getHyperlink(ItemStack item, String modId)
 	{
-		// Returns domain name of wiki.
-		return PluginRegistry.getWikiDomainMap().get(getItemIdModId(item.itemID));
-	}
+		if(PluginRegistry.getWikiDisplayMap().containsKey(modId))
+			 return "http://" + getWikiDomain(item) + getSoftwareExtension(PluginRegistry.getWikiSoftwareMap().get(modId), item) + item.getDisplayName();
+		else return "http://" + (PluginRegistry.getWikiDomainMap().get("Default") + getSoftwareExtension(PluginRegistry.getWikiSoftwareMap().get("Default"), item)) + item.getDisplayName();
 
-	public static String getWikiDisplay(ItemStack item)
-	{
-		// Returns display name of wiki
-		if(PluginRegistry.getWikiDisplayMap().containsKey(Link.getItemIdModId(item.itemID)))
-		{
-			return "[Wiki] " + (PluginRegistry.getWikiDisplayMap().get(Link.getItemIdModId(item.itemID)) + " - " + item.getDisplayName());
-		}
-		else return "[Wiki] " + (PluginRegistry.getWikiDisplayMap().get("Default") + " - " + item.getDisplayName());
 	}
 	
-	public static String getWikiSoftwareExtension(Software s, ItemStack item)
+	private static String encodeHyperlink(String link)
 	{
-		if(s == Software.CUSTOM)
-		{	
-			softwareExtension = PluginRegistry.getCustomWikiSoftwareMap().get(getItemIdModId(item.itemID));
-			return softwareExtension;
-		}
-		
-		return s.getDomainExtension(s);
+		return link.replace(" ", "%20")
+				   .replace("+", "%2B");
 	}
 	
-	public static String getErrorMessage()
+	private static String getWikiDomain(ItemStack item)
 	{
-		return "\u00A76[Error 404] " + stack.getDisplayName() + " - " + getItemIdModId(stack.itemID);
+		return PluginRegistry.getWikiDomainMap().get(getModId(item.itemID));
+	}
+	
+	private static Software getWikiSoftware(ItemStack item)
+	{
+		return PluginRegistry.getWikiSoftwareMap().get(getModId(item.itemID));
+	}
+	
+	private static String getSoftwareExtension(Software s, ItemStack item)
+	{
+		if(s.equals(Software.CUSTOM))
+			 return PluginRegistry.getCustomWikiSoftwareMap().get(getModId(item.itemID));
+		else return Software.getDomainExtension(s);
 	}
 }

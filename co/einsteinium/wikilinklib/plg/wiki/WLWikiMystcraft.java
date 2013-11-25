@@ -40,8 +40,7 @@ public class WLWikiMystcraft implements IWikiLink
 	@Override
 	public String getCustomSearchString()
 	{
-		//return "/wiki/doku.php?do=search&id=";
-		return null;
+		return "/wiki/doku.php?do=search&id=";
 	}
 
 }

@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink.gui;
+package co.einsteinium.wikilink.gui.trash;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -28,8 +28,7 @@ public class GuiWikiLinkButton extends GuiButton
     /** ID for this control. */
     public int id;
 
-    /** True if this control is enabled, false to disable. */
-    public boolean enabled;
+
     
     /** Hides the button completely if false. */
     public boolean drawButton;
@@ -78,16 +77,8 @@ public class GuiWikiLinkButton extends GuiButton
                 l = 16777120;
             }
             this.drawString(fontrenderer, this.displayString, this.xPosition + 3, this.yPosition + 6, l);
-            //this.drawString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition + (this.height - 8) / 2, l);
-        }
+         }
 
 	}
-	
-/*
-	@Override
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
-    {
-        return this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-    }
-*/
+
 }

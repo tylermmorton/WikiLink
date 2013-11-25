@@ -1,4 +1,4 @@
-package co.einsteinium.wikilink.gui;
+package co.einsteinium.wikilink.gui.trash;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

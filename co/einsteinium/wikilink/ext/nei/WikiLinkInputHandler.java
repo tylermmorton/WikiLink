@@ -1,12 +1,13 @@
-package co.einsteinium.wikilink.nei;
+package co.einsteinium.wikilink.ext.nei;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
-import co.einsteinium.wikilink.gui.GuiContainerWikiLinkMenu;
-import co.einsteinium.wikilink.gui.InventoryWikiLinkMenu;
+import co.einsteinium.wikilink.gui.menu.GuiContainerMenu;
+import co.einsteinium.wikilink.gui.trash.GuiContainerWikiLinkMenu;
+import co.einsteinium.wikilink.gui.trash.InventoryWikiLinkMenu;
 import co.einsteinium.wikilink.link.Link;
 import co.einsteinium.wikilink.link.LinkWiki;
-import co.einsteinium.wikilink.link.LinkYoutube;
+import co.einsteinium.wikilink.link.LinkSpotlight;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.forge.GuiContainerManager;
 import codechicken.nei.forge.IContainerInputHandler;
@@ -25,13 +26,14 @@ public class WikiLinkInputHandler implements IContainerInputHandler
         	
         	if(manager.getStackMouseOver() != null)
         	{
-	        	stackover = manager.getStackMouseOver();
-
-	        	Link.resetGuiList(Link.getDomainList());
-	        	Link.resetGuiList(Link.getDisplayList());
+        		FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(manager.getStackMouseOver()));
+        		//FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerWikiLinkMenu(new InventoryWikiLinkMenu(), manager.getStackMouseOver()));
+        		/*
+	        	Link.generatedLinkMapping.clear();
+	        	Link.generatedLinkListing.clear();
 	        	
 	        	InventoryWikiLinkMenu fakeSlot = new InventoryWikiLinkMenu();
-	        	FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerWikiLinkMenu(fakeSlot, stackover));	
+	        	;*/	
         	}
         }
 

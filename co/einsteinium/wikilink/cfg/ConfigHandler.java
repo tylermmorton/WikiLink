@@ -4,6 +4,7 @@ import java.io.File;
 
 import net.minecraftforge.common.Configuration;
 import co.einsteinium.wikilink.api.Software;
+import co.einsteinium.wikilink.plg.PluginRegistry;
 
 /** ConfigHandler
  *
@@ -41,6 +42,9 @@ public class ConfigHandler
         shortenUrl = config.get("Link Shortener Options", "shortenUrl", true, "Should WikiLink shorten the URLs? (Non-Adfly)").getBoolean(true);
         shortenAdfly = config.get("Link Shortener Options", "shortenWithAdfly", false, "Should WikiLink shorten the URLs with Adfly? If you would like to support the developer, you may turn this on, but it defaults to false.").getBoolean(false);
         config.save();
+        
+        PluginRegistry.registerWikiLink("Default", defaultWikiDomain, defaultWikiDisplay, getSoftware(), defaultCustomWikiSearchString);
+    	
         //
     }
     

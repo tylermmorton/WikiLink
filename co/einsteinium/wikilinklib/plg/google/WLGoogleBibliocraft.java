@@ -1,8 +1,8 @@
 package co.einsteinium.wikilinklib.plg.google;
 
-import co.einsteinium.wikilink.api.IGoogleLink;
+import co.einsteinium.wikilink.api.IWebsiteLink;
 
-public class WLGoogleBibliocraft implements IGoogleLink {
+public class WLGoogleBibliocraft implements IWebsiteLink {
 
 	@Override
 	public String getModID()
