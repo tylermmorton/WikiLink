@@ -4,20 +4,20 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.buildlight.webd.api.WDAPI;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.server.MinecraftServer;
-import co.einsteinium.wikilink.api.Software;
-import co.einsteinium.wikilink.bit.EncodingHelper;
+import net.minecraft.client.settings.KeyBinding;
+
+import org.lwjgl.input.Keyboard;
+
 import co.einsteinium.wikilink.cfg.ConfigHandler;
 import co.einsteinium.wikilink.gui.font.FontRegistry;
+import co.einsteinium.wikilink.key.WorldInspection;
 import co.einsteinium.wikilink.link.Link;
 import co.einsteinium.wikilink.net.CommonProxy;
 import co.einsteinium.wikilink.net.ConnectionHandler;
 import co.einsteinium.wikilink.net.PacketHandler;
 import co.einsteinium.wikilink.plg.PluginManager;
-import co.einsteinium.wikilink.plg.PluginRegistry;
 import co.einsteinium.wikilink.util.VersionHandler;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -26,7 +26,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
@@ -76,6 +75,10 @@ public class WikiLink
     {      	
     	VersionHandler.getWikiLinkVersionFromWeb();
         NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
+        
+        KeyBinding[] key = {new KeyBinding("WikiLink Menu", Keyboard.KEY_I)};
+        boolean[] repeat = {false};
+        KeyBindingRegistry.registerKeyBinding(new WorldInspection(key, repeat));
     }
 
     @EventHandler
@@ -83,5 +86,6 @@ public class WikiLink
     {
     	FontRegistry.initFonts();
     	Link.buildmodIdItemIdHashMap();
+   
     }
 }
