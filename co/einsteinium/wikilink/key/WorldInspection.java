@@ -7,6 +7,7 @@ import co.einsteinium.wikilink.gui.menu.GuiContainerMenu;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
@@ -44,39 +45,43 @@ public class WorldInspection extends KeyHandler
 	{
 		this.keyPressed = true;
 		World world = Minecraft.getMinecraft().theWorld;
-		
-		if(Minecraft.getMinecraft().objectMouseOver.entityHit != null)
-			if(Minecraft.getMinecraft().objectMouseOver.entityHit instanceof EntityLiving)
-			{EntityLiving entity = (EntityLiving)Minecraft.getMinecraft().objectMouseOver.entityHit;
-				//The ItemStack to pass to the GUI
-				//Since it's an entity, I pass a monster egg.
-				ItemStack item = new ItemStack(Item.monsterPlacer);
-					item.setItemDamage(entity.entityId);
-				
-				WikiLink.LogHelper.info(entity.getEntityName() + ":" + entity.entityId);	
-				WikiLink.LogHelper.info(item.getDisplayName()  + ":" + item.getItemDamage());	
-				
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(item));
-			}
-			else if(Minecraft.getMinecraft().objectMouseOver.entityHit instanceof EntityItem)
-			{EntityItem entity = (EntityItem)Minecraft.getMinecraft().objectMouseOver.entityHit;
-				ItemStack item = entity.getEntityItem();
-				
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(item));
+		try
+		{
+		if(Minecraft.getMinecraft().objectMouseOver != null)
+			if(Minecraft.getMinecraft().objectMouseOver.entityHit != null)
+			{
+				if(Minecraft.getMinecraft().objectMouseOver.entityHit instanceof EntityLiving)
+				{Entity entity = (EntityLiving)Minecraft.getMinecraft().objectMouseOver.entityHit;
+					Entity entity1 = entity.getClass().getConstructor(new Class[] {World.class}).newInstance(new Object[] {world});
+					
+					//The ItemStack to pass to the GUI
+					//Since it's an entity, I pass a monster egg.
+					ItemStack item = new ItemStack(Item.monsterPlacer);
+						item.setItemDamage(entity1.entityId);
+					
+					WikiLink.LogHelper.info("Mob Id " + entity1.entityId);	
+						
+					//FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(item));
+				}	
 			}
 			else if(world.blockExists(Minecraft.getMinecraft().objectMouseOver.blockX, 
 									  Minecraft.getMinecraft().objectMouseOver.blockY, 
 									  Minecraft.getMinecraft().objectMouseOver.blockZ))
-			{
-				int worldX = Minecraft.getMinecraft().objectMouseOver.blockX;
-				int worldY = Minecraft.getMinecraft().objectMouseOver.blockY;
-				int worldZ = Minecraft.getMinecraft().objectMouseOver.blockZ;
-				
-				int id = world.getBlockId(worldX, worldY, worldZ);
-				ItemStack item = new ItemStack(Block.blocksList[id]);
-				
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(item));
-			}
+				{
+					int worldX = Minecraft.getMinecraft().objectMouseOver.blockX;
+					int worldY = Minecraft.getMinecraft().objectMouseOver.blockY;
+					int worldZ = Minecraft.getMinecraft().objectMouseOver.blockZ;
+					
+					int id = world.getBlockId(worldX, worldY, worldZ);
+					ItemStack item = new ItemStack(Block.blocksList[id]);
+					
+					FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(item));
+				}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override
