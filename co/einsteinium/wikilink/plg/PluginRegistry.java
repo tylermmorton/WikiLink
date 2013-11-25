@@ -20,6 +20,9 @@ public class PluginRegistry
 	 private static final HashMap<String, String> googleDomainMap = new HashMap<String, String>();
 	 private static final HashMap<String, String> googleDisplayMap = new HashMap<String, String>();
 	 
+	 private static final HashMap<String, String> mcforumPostMap = new HashMap<String, String>();
+	 private static final HashMap<String, String> mcforumDisplayMap = new HashMap<String, String>();
+	 
 	 /** Registers a Wiki to the Wiki map sets with the ModId as the keys.
 	  *  @param modId    : The ModId of the Mod's Wiki
 	  *  @param domain   : The Domain of the Mod's Wiki
@@ -29,10 +32,8 @@ public class PluginRegistry
 	 public static void registerWikiLink(String modId, String domain, String display, Software software, String customSoftware)
 	 {
 		 if(customSoftware == null || customSoftware.isEmpty())
-		 {
 			 customSoftware = "404Error"; 
-		 }
-		 
+		  
 		 wikiDomainMap.put(modId, domain);
 		 wikiDisplayMap.put(modId, display);
 		 wikiSoftwareMap.put(modId, software);
@@ -43,6 +44,12 @@ public class PluginRegistry
 	 {
 		 googleDomainMap.put(modId, domain);
 		 googleDisplayMap.put(modId, display);
+	 }
+	 //TODO
+	 public static void registerMcForumPost(String modId, String display, String postCode)
+	 {
+		 mcforumPostMap.put(modId, postCode);
+		 mcforumDisplayMap.put(modId, display);
 	 }
 	 
 	 /** Registers a single Youtube Video to the video mapping.
@@ -109,6 +116,16 @@ public class PluginRegistry
 	 {
 		 return googleDomainMap;
 	 }	 
+	 
+	 public static HashMap<String, String> getMcForumPostMap()
+	 {
+		 return mcforumPostMap;
+	 }
+	 
+	 public static HashMap<String, String> getMcForumDisplayMap()
+	 {
+		 return mcforumDisplayMap;
+	 }
 	 
 	 /**
 	  * @return googleDisplayMap
