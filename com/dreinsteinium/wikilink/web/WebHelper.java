@@ -1,7 +1,9 @@
 package com.dreinsteinium.wikilink.web;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.dreinsteinium.wikilink.Reference;
@@ -14,7 +16,7 @@ import com.dreinsteinium.wikilink.WikiLink;
  *  @since  11/27/2013
  *  @author DrEinsteinium
  *  **/
-public abstract class WebHelper 
+public class WebHelper 
 {
 	/** <b>encode</b><br>
 	 *  Returns the ASCII encoded version of the 
@@ -39,6 +41,33 @@ public abstract class WebHelper
 		return str;
 	}
 	
+	/** <b>getResponse</b><br>
+	 *  getResponse returns the web api response for
+	 *  the given string url. This does not check to
+	 *  see if the url is encoded.
+	 *  **/
+	public static String getResponse(String str)
+	{
+		String response = null;
+		
+		try
+		{
+			BufferedReader in = new BufferedReader(new InputStreamReader(new URL(str).openStream()));
+			
+			String line;
+			while((line = in.readLine()) != null)
+				response += line;
+				
+			in.close();
+		}
+		catch(Exception e)
+		{
+			WikiLink.LogHelper.severe("Exception occured while seeking an api response with " + str);	
+		}
+	
+		return response;
+	}
+	
 	/** <b>shortenHyperlink</b><br>
 	 *  Returns a shortened version of the hyperlink
 	 *  given. This hyperlink is shortened using the
@@ -47,33 +76,15 @@ public abstract class WebHelper
 	 *  **/
 	public static String shortenHyperlink(String str)
 	{
-		String hyperlink = null;
+		String hyperlink = str;
 		String url = String.format("https://api-ssl.bitly.com/v3/shorten?access_token=%s"
 				+ "&longUrl=%s", Reference.BITAPI_TOKEN, encode(str));	
 		
-		try{
-			BufferedReader in = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+		String response = getResponse(url);
 			
-			if(in != null)
-			{
-				String l  = null;
-				String w = null;
-				
-				while((l = in.readLine()) != null)
-				   w += l;	
-				
-				if(w != null)
-					hyperlink = "http://" + w.substring(w.indexOf("wikilink.info"), 
-							w.indexOf("wikilink.info")+22).replace("\\/","/");
-				
-				in.close();
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			WikiLink.WLLog.info("");
-		}
+		if(response != null)
+			hyperlink = "http://" + response.substring(response.indexOf("wikilink.info"), 
+					response.indexOf("wikilink.info")+22).replace("\\/","/");
 		
 		return hyperlink;
 	}
