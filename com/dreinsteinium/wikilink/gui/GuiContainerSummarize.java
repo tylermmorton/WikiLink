@@ -14,6 +14,8 @@ import com.dreinsteinium.wikilink.gui.widget.Widget;
 import com.dreinsteinium.wikilink.gui.widget.WidgetFakeItem;
 import com.dreinsteinium.wikilink.gui.widget.WidgetShortenedString;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 /** The GuiContainer Class for the Summarize 
  *  screen. This screen is used when data is
  *  recieved by the Feed the Beast wiki.
@@ -49,8 +51,8 @@ public class GuiContainerSummarize extends GuiContainer
 		//Add a "visual" slot
 		container.addSlot(0, 233, 232);
 		
-		this.buttonList.add(new GuiButton(1, posX + 6, posY + 230, 110, 20, "WikiLink Menu"));
-		this.buttonList.add(new GuiButton(2, posX + 119, posY + 230, 110, 20, "Feed the Beast Wiki"));
+		this.buttonList.add(new GuiButton(0, posX + 6, posY + 230, 110, 20, "WikiLink Menu"));
+		this.buttonList.add(new GuiButton(1, posX + 119, posY + 230, 110, 20, "Feed the Beast Wiki"));
 
 	}
 
@@ -69,6 +71,23 @@ public class GuiContainerSummarize extends GuiContainer
 	
 		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 123, posY + 8, 242, fontRenderer);		
 			header.draw();
+	}
+	
+	@Override
+	public void actionPerformed(GuiButton button)
+	{
+		action:switch(button.id)
+		{
+			case 0: // WikiLink Menu
+			{
+				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerMenu(this.item));
+				break action;
+			}
+			case 1: // FTB Wiki
+			{
+				
+			}
+		}
 	}
 
 }

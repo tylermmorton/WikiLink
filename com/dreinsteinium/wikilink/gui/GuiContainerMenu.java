@@ -77,7 +77,7 @@ public class GuiContainerMenu extends GuiContainer
 		Widget itemic = new WidgetFakeItem(this.item, posX + 233, posY + 7, this.fontRenderer, this.renderEngine);
 			itemic.draw();	
 			
-		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 242, fontRenderer);		
+		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 108, fontRenderer);		
 			header.draw();
 	}
 	
