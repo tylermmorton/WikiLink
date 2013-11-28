@@ -13,10 +13,14 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import com.dreinsteinium.wikilink.WikiLink;
 import com.dreinsteinium.wikilink.gui.util.WikiLinkContainer;
+import com.dreinsteinium.wikilink.gui.widget.Widget;
 import com.dreinsteinium.wikilink.gui.widget.WidgetFakeItem;
 import com.dreinsteinium.wikilink.gui.widget.WidgetScrollPane;
 import com.dreinsteinium.wikilink.gui.widget.WidgetShortenedString;
+
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class GuiContainerMenu extends GuiContainer
 {
@@ -25,14 +29,9 @@ public class GuiContainerMenu extends GuiContainer
 
 	private static WikiLinkContainer container;
 
+	private String summary;
 	private ItemStack item;
-	
-	private WidgetFakeItem itemic;
-	private WidgetScrollPane scroll;
-	private WidgetShortenedString header;
-	
-	private List<GuiButton> linkList = new ArrayList<GuiButton>();
-	
+
 	public GuiContainerMenu(ItemStack item) 
 	{
 		super(container = new WikiLinkContainer());
@@ -49,15 +48,17 @@ public class GuiContainerMenu extends GuiContainer
 		
 		int posX = (this.width - this.xSize) / 2;
 		int posY = (this.height - this.ySize) / 2;
-
-		GuiButton summaryButton = new GuiButton(3, posX + 170, posY + 130, 78, 20, "Summarize");
-
-		this.buttonList.add(summaryButton);
-		this.buttonList.add(new GuiButton(1, posX + 6, posY + 130, 78, 20, "Browser"));
-		this.buttonList.add(new GuiButton(2, posX + 88, posY + 130, 78, 20, "Clipboard"));
 		
-		for(int i = 3; i < 9; i++)
-			this.linkList.add(new GuiButton(i, posX + 88, posY + 130, 78, 20, "Clipboard"));
+		GuiButton browserButton = new GuiButton(0, posX + 6, posY + 130, 78, 20, "Browser");
+		GuiButton clipbrdButton = new GuiButton(1, posX + 88, posY + 130, 78, 20, "Clipboard");
+		GuiButton summaryButton = new GuiButton(2, posX + 170, posY + 130, 78, 20, "Summarize");
+		
+		//if(this.summary == null)
+		//	summaryButton.enabled = false;
+		
+		this.buttonList.add(browserButton);
+		this.buttonList.add(clipbrdButton);
+		this.buttonList.add(summaryButton);
 	}
 	
 	@Override
@@ -68,32 +69,42 @@ public class GuiContainerMenu extends GuiContainer
 		int posX = (this.width - this.xSize) / 2;
 		int posY = (this.height - this.ySize) / 2;
 
+		/** Draw the bg **/
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);	
 		drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
 
-		itemic = new WidgetFakeItem(this.item, posX + 233, posY + 7, this.fontRenderer, this.renderEngine);
+		/** Draw the widgets **/
+		Widget itemic = new WidgetFakeItem(this.item, posX + 233, posY + 7, this.fontRenderer, this.renderEngine);
 			itemic.draw();	
 			
-		scroll = new WidgetScrollPane(posX + 235, posY + 27, 12, 15, 100, 24, this, linkList, this.textureLocation, 108, 156);	
-			scroll.draw();
-			
-		header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 242, fontRenderer);		
+		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 242, fontRenderer);		
 			header.draw();
 	}
 	
-	@Override
-	public void updateScreen()
+	public void actionPerformed(GuiButton button)
 	{
-		//if(!scroll.updateButtonList().isEmpty())
-			//for(int x = 3; x < 8; x++)
-				//this.buttonList.set(x, scroll.updateButtonList().get(x-3));		
-	}
-	
-	@Override
-	public void handleMouseInput()
-	{
-		super.handleMouseInput();
-		
-		scroll.updateScrollPositon(Mouse.getEventDWheel());
+		action:switch(button.id)
+		{
+			case 0: //Browser
+			{
+				WikiLink.LogHelper.info("Browser Button");
+				break action;
+			}
+			case 1: //Clipboard
+			{
+				WikiLink.LogHelper.info("Clipboard Button");
+				break action;
+			}
+			case 2: //Summarize
+			{
+				WikiLink.LogHelper.info("Summarize Button");
+				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerSummarize(this.item));
+				break action;
+			}
+			default: // All other buttons(link selections)
+			{
+				
+			}
+		}
 	}
 }

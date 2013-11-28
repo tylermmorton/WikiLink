@@ -51,12 +51,7 @@ public class GuiContainerSummarize extends GuiContainer
 		
 		this.buttonList.add(new GuiButton(1, posX + 6, posY + 230, 110, 20, "WikiLink Menu"));
 		this.buttonList.add(new GuiButton(2, posX + 119, posY + 230, 110, 20, "Feed the Beast Wiki"));
-		
-		WidgetFakeItem itemic = new WidgetFakeItem(this.item, posX + 233, posY + 232, this.fontRenderer, this.renderEngine);
-			itemic.draw();
-		
-		WidgetShortenedString header = new WidgetShortenedString(this.item.getDisplayName(), posX + 123, posY + 8, 242, fontRenderer);		
-			header.draw();
+
 	}
 
 	@Override
@@ -68,6 +63,12 @@ public class GuiContainerSummarize extends GuiContainer
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);	
 		drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
+		
+		Widget itemic = new WidgetFakeItem(this.item, posX + 233, posY + 232, this.fontRenderer, this.renderEngine);
+			itemic.draw();
+	
+		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 123, posY + 8, 242, fontRenderer);		
+			header.draw();
 	}
 
 }
