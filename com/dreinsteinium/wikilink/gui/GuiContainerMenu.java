@@ -97,7 +97,6 @@ public class GuiContainerMenu extends GuiContainer
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);	
 		drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
 		
-		
 		scroll.draw();
 		
 		/** Draw the widgets **/	
@@ -144,9 +143,55 @@ public class GuiContainerMenu extends GuiContainer
 	    int wheelState;
 	    if((wheelState = Mouse.getEventDWheel()) != 0)
 	    {
-    	    scroll.updateScrollPositon(wheelState / (this.scrollButtonList.size() + 1));
-    	    WikiLink.LogHelper.info("" + scroll.scrollbarPosY);
+    	    scroll.updateScrollPositon(this.scroll.scrollbarPosY - (wheelState / 10));
 	    }
+	}
+	
+	@Override
+	public void mouseClicked(int mouseX, int mouseY, int button)
+	{   
+	    super.mouseClicked(mouseX, mouseY, button);
+	    
+	    int posX = (this.width - this.xSize) / 2;
+	    int posY = (this.height - this.ySize) / 2;
+	    
+	    // If they aren't pressing LMB or if the scroll bar is disabled
+	    if(button != 0 || this.scroll.scrollbarState == 1)
+	        return;
+	    
+	    //Set isScrollPressed to true when someone clicks on the bar icon
+	    if(isMouseOverArea(mouseX, mouseY, posX + 235, posY + 27 + this.scroll.scrollbarPosY, 12, 15))
+	        this.scroll.isScrollPressed = true;
+	    
+	    //Change the position of the bar if someone clicks inside of the area
+	    if(isMouseOverArea(mouseX, mouseY, posX + 234, posY + 26, 14, 102))	    
+	        this.scroll.updateScrollPositon((mouseY - 100));   
+	}
+	
+	@Override
+	public void mouseClickMove(int mouseX, int mouseY, int button, long timeSince)
+	{
+	    super.mouseClickMove(mouseX, mouseY, button, timeSince);
+	    
+	    int posX = (this.width - this.xSize) / 2;
+        int posY = (this.height - this.ySize) / 2;
+    	    
+    	if(isMouseOverArea(mouseX, mouseY, posX + 234, posY + 26, 14, 102))
+    	    if(Mouse.isButtonDown(0) && this.scroll.isScrollPressed)
+    	    {
+    	        this.scroll.updateScrollPositon((mouseY - 100));
+
+    	        //WikiLink.LogHelper.info(String.format("You are clicking @ (%s,%s) with button #%s", mouseX-235, mouseY-100, button));
+    	        
+    	        // If they release the button, set isScrollPressed to false
+    	        if(!Mouse.isButtonDown(0))
+    	            this.scroll.isScrollPressed = false;
+    	    }
+	}
+	
+	private boolean isMouseOverArea(int mouseX, int mouseY, int posX, int posY, int sizeX, int sizeY) 
+	{
+	   return(mouseX >= posX && mouseX < posX + sizeX && mouseY >= posY && mouseY < posY + sizeY);
 	}
 	
 }

@@ -15,13 +15,13 @@ public class WidgetScrollPane extends Widget
 	/** The Gui being drawn into **/
 	private Gui gui;
 	/** The X Position of the Scroll Bar **/
-	private int posX;
+	public int posX;
 	/** The Y Position of the Scroll Bar **/
-	private int posY;
+	public int posY;
 	/** The Width of the Scroll Bar**/
 	private int width;
 	/** The Height of the Scroll Bar**/
-	private int sHeight;
+	public int sHeight;
 	/** The Height of the Content Box**/
 	private int cHeight;
 	private int bHeight;
@@ -30,6 +30,8 @@ public class WidgetScrollPane extends Widget
 	public int scrollbarPosY;
 	/** isScrollable **/
 	public int scrollbarState;
+	
+	public boolean isScrollPressed;
 	
 	/** The X Position of the Scroll Icon **/
 	private int tposX;
@@ -87,12 +89,15 @@ public class WidgetScrollPane extends Widget
 	    if(change != 0)
 	    {
     		//if(this.scrollbarState == 0)
-    		this.scrollbarPosY -= change/*/ (this.bHeight * this.buttonList.size())*/;
+    		this.scrollbarPosY = change/*/ (this.bHeight * this.buttonList.size())*/;
     		
     		if(this.scrollbarPosY > 85)// 85 is the height of the full bar - the height of the icon
     		   this.scrollbarPosY = 85;
     		if(this.scrollbarPosY < 00)
     		   this.scrollbarPosY = 00;
+    		
+    		// Make sure the button list is updated properly
+    		this.updateButtonList();
 	    }
 	}
 
@@ -102,18 +107,7 @@ public class WidgetScrollPane extends Widget
 	 *  **/
 	public List<GuiButton> updateButtonList()
 	{
-		//Divide content height by the button height
-		//this gets the amount of buttons to display
-		int toDisplay = this.cHeight / this.bHeight;
-		int startingIndex = 0;
-		List<GuiButton> displayList = new ArrayList<GuiButton>();	
-		
-		for(int i = 0; i < toDisplay; i++)
-		{
-			
-		}
-		
-		return displayList;
-		
+        return buttonList;
+
 	}
 }
