@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.dreinsteinium.wikilink.WikiLink;
 import com.dreinsteinium.wikilink.web.WebHelper;
 
 /** WikiParser<br>
@@ -22,36 +23,48 @@ public class WikiParser extends WebHelper
     
     public WikiParser(ItemStack item)
     {
-        this.response = runSpecialCases(item);
+        WikiLink.LogHelper.info("Before: " + this.response);
         
-        if(this.response == null)
+        if((this.response = runSpecialCases(item)) == null)
         {
             this.pagename = item.getDisplayName();
-            this.response = WebHelper.getResponse(String.format(FTB_WIKI_HYPERLINK, encode(item.getDisplayName())));
+            this.response = getResponse(String.format(FTB_WIKI_HYPERLINK, encode(item.getDisplayName())));
         }
+        
+        WikiLink.LogHelper.info("After: " + this.parseResponse());
     }
     
     public String parseResponse()
     {
-        //If it directs to a search page, return null
-        if(this.response.contains("[search]"))
-            return null;
-        
-        String str = this.response;
-            //Start by cutting out the beginning of the file
-            str = str.substring(str.indexOf("}}"));
-                // If we can find a stopping point
-                // The loop will check for ==, {{ or __TOC__,
-                // Which are all common patterns.
-                for(int i = 0; i < str.length(); i++)
-                {
-                    if(str.indexOf("==") == i)
-                        return str.substring(0,i);
-                    else if(str.indexOf("{{") == i)
-                        return str.substring(0,i);
-                    else if(str.indexOf("__TOC__") == i)
-                        return str.substring(0,i);
-                }
+        if(this.response != null)
+        {
+            //If it directs to a search page, return null
+            if(this.response.contains("[search]"))
+                return null;
+            // If it directs to the mc wiki, return null
+            if(this.response.contains("{{Vanilla"))
+                return null;
+            
+            //If the response is actually a page
+            if(this.response.contains("[pages]"))
+            {
+                String str = this.response;
+                    //Start by cutting out the beginning of the file
+                    str = str.substring(str.indexOf("}}") +2);
+                        // If we can find a stopping point
+                        // The loop will check for ==, {{ or __TOC__,
+                        // Which are all common patterns.
+                        for(int i = 0; i < str.length(); i++)
+                        {
+                            if(str.indexOf("==") == i)
+                                return str.substring(0,i);
+                            else if(str.indexOf("{{") == i)
+                                return str.substring(0,i);
+                            else if(str.indexOf("__TOC__") == i)
+                                return str.substring(0,i);
+                        }
+            }
+        }
         return null;
     }
     
@@ -86,6 +99,16 @@ public class WikiParser extends WebHelper
             }//OreDictCheck
         }//BlockCheck
         
-        return response;
+        return null;
+    }
+    
+    public String getPagename()
+    {
+        return this.pagename;
+    }
+    
+    public String getResponse()
+    {
+        return this.response;
     }
 }

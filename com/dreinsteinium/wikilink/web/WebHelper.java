@@ -26,7 +26,7 @@ public class WebHelper
      * **/
     public static String encode(String str)
     {
-        return str;
+        return str.replace(" ", "%20");
     }
 
     /**
@@ -61,9 +61,8 @@ public class WebHelper
             in.close();
         } catch (Exception e)
         {
-            WikiLink.LogHelper
-                    .severe("Exception occured while seeking an api response with "
-                            + str);
+            WikiLink.LogHelper.severe("Exception occured while seeking an api response with " + str);
+            e.printStackTrace();
         }
 
         return response;
