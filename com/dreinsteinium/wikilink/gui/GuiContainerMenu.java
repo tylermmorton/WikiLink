@@ -19,6 +19,7 @@ import com.dreinsteinium.wikilink.gui.widget.Widget;
 import com.dreinsteinium.wikilink.gui.widget.WidgetFakeItem;
 import com.dreinsteinium.wikilink.gui.widget.WidgetScrollPane;
 import com.dreinsteinium.wikilink.gui.widget.WidgetShortenedString;
+import com.dreinsteinium.wikilink.web.util.WikiParser;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -31,7 +32,15 @@ public class GuiContainerMenu extends GuiContainer
 
 	private String summary;
 	private ItemStack item;
-
+	
+	private WikiParser wiki;
+	
+	WidgetScrollPane scroll;
+	private int scrollPos = 0;
+	private boolean isScrollPressed;
+	
+	private List scrollButtonList = new ArrayList();
+	
 	public GuiContainerMenu(ItemStack item) 
 	{
 		super(container = new WikiLinkContainer());
@@ -39,6 +48,18 @@ public class GuiContainerMenu extends GuiContainer
 		this.item = item;
 		this.xSize = 256;
 		this.ySize = 156;
+		
+		this.wiki = new WikiParser(item);
+	}
+	
+	public GuiContainerMenu(ItemStack item, WikiParser wiki)
+	{
+	    super(container = new WikiLinkContainer());
+	    
+	    this.wiki = wiki;
+	    this.item = item;
+	    this.xSize = 256;
+	    this.ySize = 156;
 	}
 
 	@Override
@@ -53,12 +74,15 @@ public class GuiContainerMenu extends GuiContainer
 		GuiButton clipbrdButton = new GuiButton(1, posX + 88, posY + 130, 78, 20, "Clipboard");
 		GuiButton summaryButton = new GuiButton(2, posX + 170, posY + 130, 78, 20, "Summarize");
 		
-		//if(this.summary == null)
-		//	summaryButton.enabled = false;
+		String response = wiki.parseResponse();
+		if(response == null || response.isEmpty())
+			summaryButton.enabled = false;
 		
 		this.buttonList.add(browserButton);
 		this.buttonList.add(clipbrdButton);
 		this.buttonList.add(summaryButton);
+		
+		this.scroll = new WidgetScrollPane(posX + 235, posY + 27, 12, 15, 120, 24, this, this.scrollButtonList, this.textureLocation, 108, 156);
 	}
 	
 	@Override
@@ -72,13 +96,17 @@ public class GuiContainerMenu extends GuiContainer
 		/** Draw the bg **/
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);	
 		drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
-
-		/** Draw the widgets **/
+		
+		
+		scroll.draw();
+		
+		/** Draw the widgets **/	
+		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 108, fontRenderer);		
+			header.draw();		
+			
 		Widget itemic = new WidgetFakeItem(this.item, posX + 233, posY + 7, this.fontRenderer, this.renderEngine);
 			itemic.draw();	
-			
-		Widget header = new WidgetShortenedString(this.item.getDisplayName(), posX + 61, posY + 8, 108, fontRenderer);		
-			header.draw();
+
 	}
 	
 	public void actionPerformed(GuiButton button)
@@ -98,7 +126,7 @@ public class GuiContainerMenu extends GuiContainer
 			case 2: //Summarize
 			{
 				WikiLink.LogHelper.info("Summarize Button");
-				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerSummarize(this.item));
+				FMLClientHandler.instance().getClient().displayGuiScreen(new GuiContainerSummarize(this.item, this.wiki));
 				break action;
 			}
 			default: // All other buttons(link selections)
@@ -107,4 +135,18 @@ public class GuiContainerMenu extends GuiContainer
 			}
 		}
 	}
+	
+	@Override
+	public void handleMouseInput()
+	{
+	    super.handleMouseInput();
+	    
+	    int wheelState;
+	    if((wheelState = Mouse.getEventDWheel()) != 0)
+	    {
+    	    scroll.updateScrollPositon(wheelState / (this.scrollButtonList.size() + 1));
+    	    WikiLink.LogHelper.info("" + scroll.scrollbarPosY);
+	    }
+	}
+	
 }

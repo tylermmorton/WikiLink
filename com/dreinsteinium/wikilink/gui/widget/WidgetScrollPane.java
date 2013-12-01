@@ -27,9 +27,9 @@ public class WidgetScrollPane extends Widget
 	private int bHeight;
 
 	/** The current position of the bar **/
-	private int scrollbarPosY;
+	public int scrollbarPosY;
 	/** isScrollable **/
-	private int scrollbarState;
+	public int scrollbarState;
 	
 	/** The X Position of the Scroll Icon **/
 	private int tposX;
@@ -38,7 +38,7 @@ public class WidgetScrollPane extends Widget
 	/** The texture sheet the Scroll Icon resides on **/
 	private ResourceLocation texture;
 	/** The list of GuiButtons the Scroll Bar will be scrolling through **/
-	private List<GuiButton> buttonList;
+	public List<GuiButton> buttonList;
 	
 	public WidgetScrollPane(int posX, int posY, int width, int sHeight, int cHeight, int bHeight, Gui gui, List<GuiButton> list, ResourceLocation texture, int tposX, int tposY)
 	{
@@ -84,13 +84,16 @@ public class WidgetScrollPane extends Widget
 	 *  **/
 	public void updateScrollPositon(int change)
 	{
-		if(this.scrollbarState == 0)
-		    this.scrollbarPosY -= change / (this.bHeight * this.buttonList.size());
-		
-		if(this.scrollbarPosY > 100)
-		   this.scrollbarPosY = 100;
-		if(this.scrollbarPosY < 00)
-		   this.scrollbarPosY = 00;
+	    if(change != 0)
+	    {
+    		//if(this.scrollbarState == 0)
+    		this.scrollbarPosY -= change/*/ (this.bHeight * this.buttonList.size())*/;
+    		
+    		if(this.scrollbarPosY > 85)// 85 is the height of the full bar - the height of the icon
+    		   this.scrollbarPosY = 85;
+    		if(this.scrollbarPosY < 00)
+    		   this.scrollbarPosY = 00;
+	    }
 	}
 
 	/** <b>updateButtonList</b><br>
