@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.dreinsteinium.wikilink.key.WorldInspection;
 import com.dreinsteinium.wikilink.net.CommonProxy;
+import com.dreinsteinium.wikilink.plg.PluginManager;
 import com.dreinsteinium.wikilink.util.PacketHandler;
 import com.dreinsteinium.wikilink.web.link.Link;
 
@@ -53,7 +54,12 @@ public class WikiLink
 		LogHelper = Logger.getLogger("WikiLink");
 		LogHelper.setParent(FMLLog.getLogger());
 		
-		event.getModMetadata().name = Reference.MOD_NAME;
+		WikiLink.LogHelper.info("WikiLink is now setting up the Plugin data needed during runtime.");
+		long start = System.currentTimeMillis();
+		    PluginManager.INSTANCE.loadPlugins(event.getSourceFile());		    
+	    LogHelper.info(String.format("WikiLink took %s milliseconds to load %s plugins.", System.currentTimeMillis() - start, PluginManager.INSTANCE.plugins.size()));
+		
+	    event.getModMetadata().name = Reference.MOD_NAME;
 		event.getModMetadata().version = Reference.MOD_MINIVER;
 		event.getModMetadata().authorList.add("DrEinsteinium");
 	}
