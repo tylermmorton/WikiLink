@@ -9,6 +9,7 @@ import org.lwjgl.input.Keyboard;
 import com.dreinsteinium.wikilink.key.WorldInspection;
 import com.dreinsteinium.wikilink.net.CommonProxy;
 import com.dreinsteinium.wikilink.util.PacketHandler;
+import com.dreinsteinium.wikilink.web.link.Link;
 
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLLog;
@@ -69,5 +70,10 @@ public class WikiLink
         KeyBinding[] key = {new KeyBinding("WikiLink Menu", Keyboard.KEY_I)};
         boolean[] repeat = {false};
         KeyBindingRegistry.registerKeyBinding(new WorldInspection(key, repeat));
+        
+        LogHelper.info("WikiLink is now setting up the ItemData mapping needed during runtime.");
+        long start = System.currentTimeMillis();
+            Link.buildmodIdItemIdHashMap();
+        LogHelper.info(String.format("WikiLink took %s milliseconds to create %s item mappings.", System.currentTimeMillis() - start, Link.modIdItemIdMapping.size()));
 	}
 }

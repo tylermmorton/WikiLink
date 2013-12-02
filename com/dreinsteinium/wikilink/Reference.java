@@ -24,6 +24,8 @@ public class Reference
 	
     public static final String MOD_MINIVER = VER_MAJOR + "." + VER_MINOR + "." + VER_BUILD;
     public static final String MOD_VERSION = VER_MINECRAFT + "-" + VER_MAJOR + "." + VER_MINOR + "." + VER_BUILD + " (" + VER_STATE + ")";
-    
+    	
+    public static final String GOOGLE_TOKEN = "AIzaSyBXn0XhTUmjs5VLTAyX4uuj0RxrnqTDq_M";
 	public static final String BITAPI_TOKEN = "72107fafc4dda52519a18db8bee00445154cf4c3";
+
 }
