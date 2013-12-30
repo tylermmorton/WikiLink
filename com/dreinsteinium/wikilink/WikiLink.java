@@ -12,6 +12,7 @@ import com.dreinsteinium.wikilink.net.CommonProxy;
 import com.dreinsteinium.wikilink.net.ConnectionHandler;
 import com.dreinsteinium.wikilink.plg.PluginManager;
 import com.dreinsteinium.wikilink.run.bind.WorldInspection;
+import com.dreinsteinium.wikilink.run.cmd.ReloadCommand;
 import com.dreinsteinium.wikilink.util.PacketHandler;
 import com.dreinsteinium.wikilink.web.link.Link;
 
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -90,6 +92,12 @@ public class WikiLink
         long start1 = System.currentTimeMillis();
             PluginManager.INSTANCE.loadPostInitPlgs();      
         LogHelper.info(String.format("WikiLink took %s milliseconds to load %s video list(s).", System.currentTimeMillis() - start1, PluginManager.INSTANCE.postInitPlgs.size()));
-
 	}
+	
+	@EventHandler
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+	    event.registerServerCommand(new ReloadCommand());
+	}
+	
 }
