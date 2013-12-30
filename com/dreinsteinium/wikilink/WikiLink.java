@@ -1,14 +1,17 @@
 package com.dreinsteinium.wikilink;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
 
-import com.dreinsteinium.wikilink.key.WorldInspection;
+import com.dreinsteinium.wikilink.cfg.ConfigHandler;
 import com.dreinsteinium.wikilink.net.CommonProxy;
+import com.dreinsteinium.wikilink.net.ConnectionHandler;
 import com.dreinsteinium.wikilink.plg.PluginManager;
+import com.dreinsteinium.wikilink.run.bind.WorldInspection;
 import com.dreinsteinium.wikilink.util.PacketHandler;
 import com.dreinsteinium.wikilink.web.link.Link;
 
@@ -22,6 +25,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /** WikiLink<br>
  *  Minecraft Modification that bridges the
@@ -50,24 +55,23 @@ public class WikiLink
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{
+	{	    
 		LogHelper = Logger.getLogger("WikiLink");
 		LogHelper.setParent(FMLLog.getLogger());
 		
-		WikiLink.LogHelper.info("WikiLink is now setting up the Plugin data needed during runtime.");
-		long start = System.currentTimeMillis();
-		    PluginManager.INSTANCE.loadPlugins(event.getSourceFile());		    
-	    LogHelper.info(String.format("WikiLink took %s milliseconds to load %s plugins.", System.currentTimeMillis() - start, PluginManager.INSTANCE.plugins.size()));
-		
-	    event.getModMetadata().name = Reference.MOD_NAME;
-		event.getModMetadata().version = Reference.MOD_MINIVER;
-		event.getModMetadata().authorList.add("DrEinsteinium");
+        ConfigHandler.init(event.getSuggestedConfigurationFile());
+				
+        WikiLink.LogHelper.info("WikiLink is now setting up the Plugin data needed during runtime.");
+        long start1 = System.currentTimeMillis();
+            PluginManager.INSTANCE.loadPlugins(event.getSourceFile());          
+        LogHelper.info(String.format("WikiLink took %s milliseconds to load %s plugin(s).", System.currentTimeMillis() - start1, PluginManager.INSTANCE.plugins.size()));
 	}
 	
 	@EventHandler
 	public void mainInit(FMLInitializationEvent event)
 	{
 		LogHelper.info("This is WikiLink Version " + Reference.MOD_VERSION);
+        NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 	}
 	
 	@EventHandler
@@ -78,8 +82,14 @@ public class WikiLink
         KeyBindingRegistry.registerKeyBinding(new WorldInspection(key, repeat));
         
         LogHelper.info("WikiLink is now setting up the ItemData mapping needed during runtime.");
-        long start = System.currentTimeMillis();
+        long start2 = System.currentTimeMillis();
             Link.buildmodIdItemIdHashMap();
-        LogHelper.info(String.format("WikiLink took %s milliseconds to create %s item mappings.", System.currentTimeMillis() - start, Link.modIdItemIdMapping.size()));
+        LogHelper.info(String.format("WikiLink took %s milliseconds to create %s item mappings.", System.currentTimeMillis() - start2, Link.modIdItemIdMapping.size()));
+        
+        WikiLink.LogHelper.info("WikiLink is now setting up the Youtube data needed during runtime.");
+        long start1 = System.currentTimeMillis();
+            PluginManager.INSTANCE.loadPostInitPlgs();      
+        LogHelper.info(String.format("WikiLink took %s milliseconds to load %s video list(s).", System.currentTimeMillis() - start1, PluginManager.INSTANCE.postInitPlgs.size()));
+
 	}
 }

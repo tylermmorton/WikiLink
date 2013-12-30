@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.dreinsteinium.wikilink.WikiLink;
+import com.dreinsteinium.wikilink.cfg.ConfigHandler;
 import com.dreinsteinium.wikilink.web.WebHelper;
 
 /** WikiParser<br>
@@ -23,15 +24,12 @@ public class WikiParser extends WebHelper
     
     public WikiParser(ItemStack item)
     {
-        WikiLink.LogHelper.info("Before: " + this.response);
-        
+        if(ConfigHandler.enableSummarize)
         if((this.response = runSpecialCases(item)) == null)
         {
             this.pagename = item.getDisplayName();
             this.response = getResponse(String.format(FTB_WIKI_HYPERLINK, encode(item.getDisplayName())));
         }
-        
-        WikiLink.LogHelper.info("After: " + this.parseResponse());
     }
     
     public String parseResponse()
@@ -77,7 +75,7 @@ public class WikiParser extends WebHelper
         {
             /* Check to see if the ore is a part of
              * the OreDictionary */
-            if(!OreDictionary.getOreName(item.itemID).equals("Unknown"))
+          if(!OreDictionary.getOreName(item.itemID).equals("Unknown"))
             {String oreName = OreDictionary.getOreName(item.itemID);
                 
                 if(oreName.equalsIgnoreCase("oreTin"))

@@ -20,6 +20,7 @@ public class NEIWikiLinkConfig implements IConfigureNEI
         
         GuiContainerManager.addInputHandler(new WikiLinkInputHandler());
         GuiContainerManager.addTooltipHandler(new WikiLinkTooltipHandler());
+        
     }
 
     @Override

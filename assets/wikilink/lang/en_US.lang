@@ -1,0 +1,29 @@
+wikilink.language.name=English
+wikilink.language.region=US
+wikilink.language.code=en_US
+wikilink.language.author=DrEinsteinium
+
+wikilink.gui.menu.browser=Browser
+wikilink.gui.menu.clipboard=Clipboard
+
+wikilink.gui.menu.wiki.search=Wiki Search
+
+wikilink.gui.menu.youtube.video=Youtube Video
+wikilink.gui.menu.youtube.view=View Count
+wikilink.gui.menu.youtube.like=Likes
+wikilink.gui.menu.youtube.dislike=Dislikes
+wikilink.gui.menu.youtube.favorites=Favorites
+wikilink.gui.menu.youtube.authors=Author
+
+wikilink.gui.menu.google.search=Google Search
+wikilink.gui.menu.google.ilucky=I'm Feeling Lucky
+wikilink.gui.menu.google.iluckyquestion=Do ya feel lucky, punk?
+
+wikilink.gui.menu.thread.forumthread=Minecraft Forum Thread
+
+wikilink.gui.menu.website.websitelink=Website Search
+
+wikilink.gui.summary.menubutton=WikiLink Menu
+wikilink.gui.summary.wikibutton=Feed the Beast Wiki
+
+wikilink.gui.tooltip.wikiavailable=Press %s to open the WikiLink Menu

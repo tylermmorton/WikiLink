@@ -3,6 +3,8 @@ package com.dreinsteinium.wikilink.util;
 import java.lang.reflect.Method;
 
 import com.dreinsteinium.wikilink.WikiLink;
+import com.dreinsteinium.wikilink.cfg.ConfigHandler;
+import com.dreinsteinium.wikilink.web.WebHelper;
 
 /** BrowserHandler
  *  @author DrEinsteinium
@@ -13,6 +15,10 @@ public class BrowserHandler
 
     public static void browserInit(String hyperlink)
     {
+        if(hyperlink != null && !hyperlink.contains("google.com") && !hyperlink.contains("&btnI"))
+            if(ConfigHandler.shortenHyperlinks)
+            hyperlink = WebHelper.shortenHyperlink(hyperlink);
+        
         try
         {
             if (osName.startsWith("Windows"))
@@ -52,9 +58,9 @@ public class BrowserHandler
         }
         catch (Exception e)
         {
-            WikiLink.WLLog.severe("Can not find wiki software!");
+            WikiLink.LogHelper.severe("Can not find wiki software!");
         }
 
-        WikiLink.WLLog.info("Opening " + hyperlink);
+        WikiLink.LogHelper.info("Opening " + hyperlink);
     }
 }

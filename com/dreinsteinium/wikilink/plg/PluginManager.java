@@ -2,11 +2,16 @@ package com.dreinsteinium.wikilink.plg;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import net.minecraft.item.ItemStack;
+
 import com.dreinsteinium.wikilink.WikiLink;
+import com.dreinsteinium.wikilink.api.IConfigureWikiLink;
 import com.dreinsteinium.wikilink.api.plg.IPluginThread;
 import com.dreinsteinium.wikilink.api.plg.IPluginWebsite;
 import com.dreinsteinium.wikilink.api.plg.IPluginWikiLink;
@@ -16,6 +21,8 @@ import com.google.common.collect.Lists;
 public enum PluginManager
 {
     INSTANCE;
+    
+    public List<Plugin> postInitPlgs = new ArrayList<Plugin>();
     
     private static void addPlugin(final ClassLoader classLoader, final String pluginName, final String packageName)
     {
@@ -29,7 +36,6 @@ public enum PluginManager
         
         try
         {
-            PluginRegistrar register = new PluginRegistrar();
             final Class<?> pluginClass = classLoader.loadClass(pluginClassName);
 
             if (pluginClass != null)
@@ -47,7 +53,7 @@ public enum PluginManager
                             if(plugin != null && plugin.isAvailable() == true)
                             {
                                 INSTANCE.plugins.add(plugin);                                
-                                register.registerWiki(plugin.getIdentification(), plugin.getDomainName(), plugin.getDisplayName(), plugin.getSoftwareType());       
+                                PluginRegistrar.registerWiki(plugin.getIdentification(), plugin.getDomainName(), plugin.getDisplayName(), plugin.getSoftwareType());       
                                 
                                 break;
                             }
@@ -59,7 +65,7 @@ public enum PluginManager
                             if(plugin != null && plugin.isAvailable() == true)
                             {
                                 INSTANCE.plugins.add(plugin);
-                                register.registerThread(plugin.getIdentification(), plugin.getThreadNumberStr());
+                                PluginRegistrar.registerThread(plugin.getIdentification(), plugin.getThreadNumberStr());
                                 
                                 break;
                             }
@@ -71,7 +77,7 @@ public enum PluginManager
                             if(plugin != null && plugin.isAvailable() == true)
                             {
                                 INSTANCE.plugins.add(plugin);                               
-                                //register.registerWebsite(plugin., domain);
+                                PluginRegistrar.registerWebsite(plugin.getIdentification(), plugin.getWebsiteDomain(), plugin.getWebsiteDisplay());
                                 
                                 break;
                             }
@@ -83,11 +89,25 @@ public enum PluginManager
                             if(plugin != null && plugin.isAvailable() == true)
                             {
                                 INSTANCE.plugins.add(plugin);
-                                register.registerYoutube(plugin.getItemStackVideos());
+                                
+                                for(Map.Entry<ItemStack, String> entry : plugin.getItemStackVideos().entrySet())
+                                    PluginRegistrar.registerYoutube(entry.getKey(), entry.getValue());
                                 
                                 break;
                             }
                         }   
+                        else if(i == IConfigureWikiLink.class)
+                        {
+                            final IConfigureWikiLink plugin = (IConfigureWikiLink)pluginClass.newInstance();
+                            
+                            if(plugin != null && plugin.isAvailable() == true)
+                            {
+                                INSTANCE.plugins.add(plugin);
+                                INSTANCE.postInitPlgs.add(plugin);
+                  
+                                break;
+                            }
+                        }
                     
                     clz = clz.getSuperclass();
                 }
@@ -106,6 +126,16 @@ public enum PluginManager
             WikiLink.LogHelper.severe("Please message the author of the plugin in question and inform him/her of this situation.");
             
             ex.printStackTrace();
+        }
+    }
+    
+    public static void loadPostInitPlgs()
+    {
+        if(!INSTANCE.postInitPlgs.isEmpty())
+        for(Plugin plugin : INSTANCE.postInitPlgs)
+        {
+            if(plugin instanceof IConfigureWikiLink)
+             ((IConfigureWikiLink) plugin).onLoad();
         }
     }
     

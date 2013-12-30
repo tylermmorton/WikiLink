@@ -28,11 +28,6 @@ public class WikiLinkInventory implements IInventory
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-
-	}
-
-	@Override
 	public String getInvName() {
 		return null;
 	}
@@ -70,5 +65,11 @@ public class WikiLinkInventory implements IInventory
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
 	}
+
+    @Override
+    public void setInventorySlotContents(int i, ItemStack itemstack)
+    {
+        
+    }
 
 }

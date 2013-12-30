@@ -44,7 +44,7 @@ public class WidgetFakeItem extends Widget
 	        
 	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240 / 1.0F, 240 / 1.0F);
-
+	        
 		renderer.renderItemAndEffectIntoGUI(fontrenderer, renderengine, item, posX, posY);
 	}
 

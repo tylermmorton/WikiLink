@@ -14,7 +14,7 @@ import com.dreinsteinium.wikilink.plg.Plugin;
  *  @since  11/30/2013
  *  @author DrEinsteinium
  *  **/
-public interface IPluginWiki extends Plugin
+public interface IPluginWikiLink extends Plugin
 {    
     /** <b>getIdentification</b><br>
      *  getIdentification should return an ArrayList of @ModId strings

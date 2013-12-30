@@ -1,4 +1,4 @@
-package com.dreinsteinium.wikilink.key;
+package com.dreinsteinium.wikilink.run.bind;
 
 import java.util.EnumSet;
 
@@ -43,6 +43,9 @@ public class WorldInspection extends KeyHandler
     @Override
     public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
     {
+        if(Minecraft.getMinecraft().currentScreen != null)
+            return;
+        
         this.keyPressed = true;
         World world = Minecraft.getMinecraft().theWorld;
         try
