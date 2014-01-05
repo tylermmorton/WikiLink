@@ -1,5 +1,5 @@
 version: MD5HASH
-updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/wiki.yml
+updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_wiki.yml
 ---
 mods:
   - BuildCraft
