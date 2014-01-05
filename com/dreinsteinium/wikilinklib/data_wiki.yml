@@ -2,21 +2,6 @@ version: be2f7baf4a8fc07f2812b13f09860342
 updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_wiki.yml
 ---
 mods:
-  - BuildCraft
-  - BiblioCraft
-soft: MEDIAWIKI
-link: www.ftbwiki.org
-name: Feed the Beast Wiki
----
-mods:
-  - BuildCraft
-  - BiblioCraft
-soft: CUSTOM
-link: www.ftbwiki.org
-name: Feed the Beast Wiki(Unofficial)
-custom: /search?q=
----
-mods:
   - Minecraft
 soft: MEDIAWIKI
 link: minecraft.gamepedia.com
