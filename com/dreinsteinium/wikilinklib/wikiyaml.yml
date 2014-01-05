@@ -1,0 +1,16 @@
+version: MD5HASH
+---
+mods:
+  - BuildCraft
+  - BiblioCraft
+soft: MEDIAWIKI
+link: www.ftbwiki.org
+name: Feed the Beast Wiki
+---
+mods:
+  - BuildCraft
+  - BiblioCraft
+soft: CUSTOM
+link: www.ftbwiki.org
+name: Feed the Beast Wiki(Unofficial)
+custom: /search?q=
