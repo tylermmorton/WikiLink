@@ -1,4 +1,4 @@
-version: 1dad975578122095b1914bcc86d96eee
+version: be2f7baf4a8fc07f2812b13f09860342
 updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_wiki.yml
 ---
 mods:
@@ -15,6 +15,12 @@ soft: CUSTOM
 link: www.ftbwiki.org
 name: Feed the Beast Wiki(Unofficial)
 custom: /search?q=
+---
+mods:
+  - Minecraft
+soft: MEDIAWIKI
+link: minecraft.gamepedia.com
+name: Minecraft Wiki
 ---
 
 
