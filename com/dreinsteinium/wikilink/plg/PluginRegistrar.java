@@ -2,6 +2,7 @@ package com.dreinsteinium.wikilink.plg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,6 +19,7 @@ public class PluginRegistrar
     private static ArrayList<String> wikiDomainList = new ArrayList<String>();
     private static ArrayList<String> wikiDisplayList = new ArrayList<String>();
     private static ArrayList<Software> wikiSoftwareList = new ArrayList<Software>();
+    private static ArrayList<String> wikiCustomSoftwareString = new ArrayList<String>();
     
     private static HashMap threadMap = new HashMap<String, String>();
     
@@ -31,14 +33,15 @@ public class PluginRegistrar
      *  Registers a Wiki to the Wiki mapping and sets the @ModId value
      *  as the key.
      *  **/
-    public static void registerWiki(ArrayList<String> idList, String domain, String display, Software software)
+    public static void registerWiki(List<String> idList, String domain, String display, Software software, String custom)
     {
         for(int i = 0; i < idList.size(); i++)
         {
             wikiIdList.add(idList.get(i));
             wikiDomainList.add(domain);
             wikiDisplayList.add(display);
-            wikiSoftwareList.add(software);      
+            wikiSoftwareList.add(software);
+            wikiCustomSoftwareString.add(custom);
         }
     }
   
@@ -62,10 +65,15 @@ public class PluginRegistrar
         return wikiSoftwareList;
     }
     
+    public static ArrayList<String> getWikiCustomSoftwareStringMap()
+    {
+         return wikiCustomSoftwareString;
+    }
+    
     //************************************************************\\
     public static void registerThread(String modId, String threadNum)
     {
-        threadMap.put(modId, threadNum);
+        threadMap.put(modId, threadNum + "-");
     }
     
     public static HashMap<String, String> getThreadMap()
@@ -91,13 +99,10 @@ public class PluginRegistrar
     }
     
     //************************************************************\\
-    public static void registerWebsite(ArrayList<String> idList, String domain, String display)
+    public static void registerWebsite(String modid, String domain, String display)
     {
-        for(int i = 0; i < idList.size(); i++)
-        {
-            websiteDomainMap.put(idList.get(i), domain);
-            websiteDisplayMap.put(idList.get(i), display);
-        }
+            websiteDomainMap.put(modid, domain);
+            websiteDisplayMap.put(modid, display);
     }
     
     public static HashMap<String, String> getWebsiteDomainMap()

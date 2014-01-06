@@ -54,7 +54,7 @@ public class LinkWikiLink extends Link
             case WIKISPACES:
                return "/search/view/";
             case CUSTOM:
-               return "";
+               return this.getWikiCustomSoftwareStringMap().get(this.index);
             default:
             {
                 WikiLink.LogHelper.severe("WikiLink could not find a Software enumtype for the ItemStack.");

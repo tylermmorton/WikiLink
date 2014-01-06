@@ -11,6 +11,7 @@ import codechicken.nei.forge.IContainerInputHandler;
 import com.dreinsteinium.wikilink.WikiLink;
 import com.dreinsteinium.wikilink.gui.GuiContainerMenu;
 import com.dreinsteinium.wikilink.gui.GuiContainerSummarize;
+import com.dreinsteinium.wikilink.web.link.Link;
 
 import cpw.mods.fml.client.FMLClientHandler;
 

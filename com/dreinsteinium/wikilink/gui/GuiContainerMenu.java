@@ -1,10 +1,13 @@
 package com.dreinsteinium.wikilink.gui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -12,10 +15,15 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import org.lwjgl.input.Mouse;
@@ -29,7 +37,7 @@ import com.dreinsteinium.wikilink.plg.PluginRegistrar;
 import com.dreinsteinium.wikilink.util.BrowserHandler;
 import com.dreinsteinium.wikilink.web.link.EnumLink;
 import com.dreinsteinium.wikilink.web.link.Link;
-import com.dreinsteinium.wikilink.web.link.LinkEntity;
+import com.dreinsteinium.wikilink.web.link.LinkWikiSpecified;
 import com.dreinsteinium.wikilink.web.link.LinkGoogle;
 import com.dreinsteinium.wikilink.web.link.LinkThread;
 import com.dreinsteinium.wikilink.web.link.LinkWebsite;
@@ -96,12 +104,15 @@ public class GuiContainerMenu extends GuiContainer
     
     @Override
     public void initGui()
-    {        
+    {   
+        
+        container.addSlot(0, posX + 152, posY + 111);
+        
+        super.initGui();
+        
         this.posX = (this.width - this.xSize) / 2;
         this.posY = (this.height - this.ySize) / 2;
              
-        container.addSlot(container.inventorySlots.size() + 1, posX + 152, posY + 111);
-        
         this.browser = new GuiButton(0, posX + 7, posY + 130, 68, 20, I18n.getString("wikilink.gui.menu.browser"));
         this.clipboard = new GuiButton(1, posX + 79, posY + 130, 68, 20, I18n.getString("wikilink.gui.menu.clipboard"));
         this.summarize = new GuiButton(2, posX + 152, posY + 130, 16, 20, "?");      
@@ -115,7 +126,8 @@ public class GuiContainerMenu extends GuiContainer
                this.paragraph = response;            
         }
         
-        this.updateButtons();        
+        this.updateButtons();    
+
     }
     
     @Override
@@ -128,8 +140,6 @@ public class GuiContainerMenu extends GuiContainer
         
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); 
         drawTexturedModalRect(this.posX, this.posY, 0, 0, this.xSize, this.ySize);
-        
-        this.updateItemStackFocus(this.item);
                
         if(this.needsScrollbar())
         {
@@ -142,11 +152,14 @@ public class GuiContainerMenu extends GuiContainer
            this.drawTexturedModalRect(posX + 154, posY + 7 + this.scrollbarPosY, 176 + 12, 0, 12, 15);
         }
         
+        this.updateItemStackFocus(this.item);
     } 
     
     @Override
     public void actionPerformed(GuiButton button)
-    {         
+    {       
+        super.actionPerformed(button);
+        
         if(button.id == 0)
         {
             WikiLink.LogHelper.info(this.hyperlink);
@@ -207,6 +220,7 @@ public class GuiContainerMenu extends GuiContainer
         if(this.scrollButtonList.size() > 5)
              return true;
         else return false;
+
     }
     
     public void initButtons()
@@ -218,14 +232,25 @@ public class GuiContainerMenu extends GuiContainer
             //If the item is an egg or spawner, add the entity link
             if(this.item.itemID == 52 || this.item.itemID == 383)
             {EntityLiving entity = this.getEntityToRender(this.item);
-                LinkEntity link = new LinkEntity(this.item, entity);
-                this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay() + " (" + link.entity.getEntityName() + ")", link.getHyperlink(), link, true, this));
+                LinkWikiSpecified link = new LinkWikiSpecified(this.item, entity.getEntityName());
+                this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay() + " (" + link.str + ")", link.getHyperlink(), link, true, this));
             }
-            
+        
             for(int i = 0; i < PluginRegistrar.getWikiIdMap().size(); i++)
             if(PluginRegistrar.getWikiIdMap().get(i).equals(Link.getModId(this.item)))
             {LinkWikiLink link = new LinkWikiLink(this.item, i);
              this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay() + " (" + item.getDisplayName() + ")", link.getHyperlink(), link, true, this));
+            }
+            
+            if(EnchantmentHelper.getEnchantments(this.item) != null && this.item.itemID == 403)
+            {Map enchantments = EnchantmentHelper.getEnchantments(this.item);
+                 Iterator entries = enchantments.entrySet().iterator();
+                     while(entries.hasNext())
+                     {   
+                         String name = StatCollector.translateToLocal(Enchantment.enchantmentsList[(Integer)(((Entry)entries.next()).getKey())].getName());
+                         LinkWikiSpecified link = new LinkWikiSpecified(this.item, name.substring(0, name.length()).trim());
+                         this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay() + " (" + link.str + ")", link.getHyperlink(), link, true, this));
+                     }
             }
         }
           
@@ -234,14 +259,18 @@ public class GuiContainerMenu extends GuiContainer
         {
            if(entry.getKey().equals(Link.getModId(this.item)))
            {
-               LinkWebsite link = new LinkWebsite(this.item);
-               this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay(), link.getHyperlink(), link, true, this));
+               LinkWebsite link1 = new LinkWebsite(this.item, false);
+               this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link1.getDisplay(), link1.getHyperlink(), link1, true, this));
+
+               LinkWebsite link2 = new LinkWebsite(this.item, true);
+               this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link2.getDisplay(), link2.getHyperlink(), link2, true, this));
            }
        }
         
         if(ConfigHandler.enableYoutube)
         for(int i = 0; i < PluginRegistrar.getYoutubeItemList().size(); i++)
-        {if(ItemStack.areItemStacksEqual(PluginRegistrar.getYoutubeItemList().get(i), this.item))   
+        {this.item.stackSize = 0;
+         if(ItemStack.areItemStacksEqual(PluginRegistrar.getYoutubeItemList().get(i), this.item))   
             {LinkYoutube link = new LinkYoutube(this.item, PluginRegistrar.getYoutubeCodeList().get(i));
                 this.scrollButtonList.add(new GuiButtonLink(scrollButtonList.size() + 3, posX + 8, posY + 7 + (24 * (scrollButtonList.size())), link.getDisplay(), link.getHyperlink(), link, true, this));
             }
@@ -373,9 +402,10 @@ public class GuiContainerMenu extends GuiContainer
         
         int wheelState;
         if((wheelState = Mouse.getEventDWheel()) != 0)      
-            this.updateScrollPositon(this.scrollbarPosY - (wheelState / 10));       
+            this.updateScrollPositon(this.scrollbarPosY - (wheelState / 10)); 
+        
     }
-
+    
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button)
     {   
@@ -391,10 +421,11 @@ public class GuiContainerMenu extends GuiContainer
         //Set isScrollPressed to true when someone clicks on the bar icon
         if(isMouseOverArea(mouseX, mouseY, posX + 154, posY + 7 + this.scrollbarPosY, 12, 15))
             this.isScrollPressed = true;
+      
         
         //Change the position of the bar if someone clicks inside of the area
-        //if(isMouseOverArea(mouseX, mouseY, posX + 234, posY + 26, 14, 102))       
-        //    this.updateScrollPositon((mouseY - 100));   
+        //if(isMouseOverArea(mouseX, mouseY, posX + 154, posY + 7, 14, 102))       
+        //    this.updateScrollPositon((mouseY));   
     }
     
     @Override
@@ -408,12 +439,12 @@ public class GuiContainerMenu extends GuiContainer
         //if(isMouseOverArea(mouseX, mouseY, posX + 234, posY + 26, 14, 102))
             if(Mouse.isButtonDown(0) && this.isScrollPressed)
             {
-                this.updateScrollPositon((mouseY - posY) - 5);
+                this.updateScrollPositon(mouseY - posY);
 
                 // If they release the button, set isScrollPressed to false
                 if(!Mouse.isButtonDown(0))
                     this.isScrollPressed = false;
-            }
+            }   
     }
     
     public EntityLiving getEntityToRender(ItemStack item)

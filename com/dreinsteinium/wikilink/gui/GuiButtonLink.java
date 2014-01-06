@@ -118,16 +118,18 @@ public class GuiButtonLink extends GuiButton
                     {LinkWebsite link1 = (LinkWebsite)link;
                         list.add("\u00a76\u00a7l" + I18n.getString("wikilink.gui.menu.website.websitelink"));
                         list.add("\u00a7a" + link1.getDisplay());
+                        if(link1.getDisplay().contains("Search"))
+                           list.add("\u00a72> " + container.item.getDisplayName());
                         list.add("");
                         list.add("\u00a79\u00a7o" + link1.getWebsiteDomainMap().get(link1.getModId(container.item)));
                     }
-                    else if(this.link instanceof LinkEntity)
-                    {LinkEntity link1 = (LinkEntity)link;
+                    else if(this.link instanceof LinkWikiSpecified)
+                    {LinkWikiSpecified link1 = (LinkWikiSpecified)link;
                     list.add("\u00a76\u00a7l" + I18n.getString("wikilink.gui.menu.wiki.search"));
                     list.add("\u00a7a" + link1.getDisplay());
-                    list.add("\u00a72> " + link1.entity.getEntityName());
+                    list.add("\u00a72> " + link1.str);
                     list.add("");
-                    list.add("\u00a79\u00a7owww.minecraftwiki.net");
+                    list.add("\u00a79\u00a7ominecraft.gamepedia.com");
                     }
                                                                  
                     this.drawTooltip(list, par2, par3, fontrenderer);
@@ -164,7 +166,7 @@ public class GuiButtonLink extends GuiButton
             tipposY = container.height - tipheight - 6;
         }
 
-        this.zLevel = 300.0F;
+        this.zLevel = 1000.0F;
         int color1 = -267386864;
         this.drawGradientRect(tipposX - 3, tipposY - 4, tipposX + tipwidth + 3, tipposY - 3, color1, color1);
         this.drawGradientRect(tipposX - 3, tipposY + tipheight + 3, tipposX + tipwidth + 3, tipposY + tipheight + 4, color1, color1);

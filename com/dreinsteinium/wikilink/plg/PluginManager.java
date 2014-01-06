@@ -1,275 +1,132 @@
 package com.dreinsteinium.wikilink.plg;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.dreinsteinium.wikilink.WikiLink;
-import com.dreinsteinium.wikilink.api.IConfigureWikiLink;
-import com.dreinsteinium.wikilink.api.plg.IPluginThread;
-import com.dreinsteinium.wikilink.api.plg.IPluginWebsite;
-import com.dreinsteinium.wikilink.api.plg.IPluginWikiLink;
-import com.dreinsteinium.wikilink.api.plg.IPluginYoutube;
-import com.google.common.collect.Lists;
+import com.dreinsteinium.wikilink.api.Software;
+import com.esotericsoftware.yamlbeans.YamlReader;
 
-public enum PluginManager
+public class PluginManager
 {
-    INSTANCE;
-    
-    public List<Plugin> postInitPlgs = new ArrayList<Plugin>();
-    
-    private static void addPlugin(final ClassLoader classLoader, final String pluginName, final String packageName)
+    public static void parseWiki(File file)
     {
-        if (pluginName.equals("PluginManager.class") || pluginName.equals("Plugin.class"))
-        {
+        if(!file.exists())
             return;
-        }
 
-        final String pluginClassName = packageName.replace(".class", "");
-            WikiLink.LogHelper.finest("Loading : " + pluginClassName);
-        
         try
         {
-            final Class<?> pluginClass = classLoader.loadClass(pluginClassName);
-
-            if (pluginClass != null)
+          YamlReader reader = new YamlReader(new FileReader(file));            
+            while(true)
             {
-                Class<?> clz = pluginClass;
-                boolean isPlugin = false;
-
-                do
-                {
-                    for (final Class<?> i : clz.getInterfaces())
-                        if(i == IPluginWikiLink.class)
-                        {
-                            final IPluginWikiLink plugin = (IPluginWikiLink)pluginClass.newInstance();
-                            
-                            if(plugin != null && plugin.isAvailable() == true)
-                            {
-                                INSTANCE.plugins.add(plugin);                                
-                                PluginRegistrar.registerWiki(plugin.getIdentification(), plugin.getDomainName(), plugin.getDisplayName(), plugin.getSoftwareType());       
-                                
-                                break;
-                            }
-                        }
-                        else if(i == IPluginThread.class)
-                        {
-                            final IPluginThread plugin = (IPluginThread)pluginClass.newInstance();
-                            
-                            if(plugin != null && plugin.isAvailable() == true)
-                            {
-                                INSTANCE.plugins.add(plugin);
-                                PluginRegistrar.registerThread(plugin.getIdentification(), plugin.getThreadNumberStr());
-                                
-                                break;
-                            }
-                        }
-                        else if(i == IPluginWebsite.class)
-                        {
-                            final IPluginWebsite plugin = (IPluginWebsite)pluginClass.newInstance();
-                            
-                            if(plugin != null && plugin.isAvailable() == true)
-                            {
-                                INSTANCE.plugins.add(plugin);                               
-                                PluginRegistrar.registerWebsite(plugin.getIdentification(), plugin.getWebsiteDomain(), plugin.getWebsiteDisplay());
-                                
-                                break;
-                            }
-                        }                        
-                        else if(i == IPluginYoutube.class)
-                        {
-                            final IPluginYoutube plugin = (IPluginYoutube)pluginClass.newInstance();
-                            
-                            if(plugin != null && plugin.isAvailable() == true)
-                            {
-                                INSTANCE.plugins.add(plugin);
-                                
-                                for(Map.Entry<ItemStack, String> entry : plugin.getItemStackVideos().entrySet())
-                                    PluginRegistrar.registerYoutube(entry.getKey(), entry.getValue());
-                                
-                                break;
-                            }
-                        }   
-                        else if(i == IConfigureWikiLink.class)
-                        {
-                            final IConfigureWikiLink plugin = (IConfigureWikiLink)pluginClass.newInstance();
-                            
-                            if(plugin != null && plugin.isAvailable() == true)
-                            {
-                                INSTANCE.plugins.add(plugin);
-                                INSTANCE.postInitPlgs.add(plugin);
-                  
-                                break;
-                            }
-                        }
-                    
-                    clz = clz.getSuperclass();
+                Map map = (Map)reader.read();
+                    if(map == null) break;
+                //Use this if to skip the "updater" section of the yml doc.
+                if(map.get("name") != null)
+                {ArrayList<String> idlist = (ArrayList<String>)map.get("mods");
+                 String customsearch = null;
+                 if(((String)map.get("soft")).equals("CUSTOM"))
+                      customsearch = (String)map.get("custom");
+                 PluginRegistrar.registerWiki(idlist, (String)map.get("link"), (String)map.get("name"), Software.fromString((String)map.get("soft")), customsearch);
                 }
-                while (clz != null && !isPlugin);
             }
+          reader.close();
         }
-        catch (final Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        catch(final AbstractMethodError ex)
-        {
-            WikiLink.LogHelper.severe("Found an exception while loading " + packageName);
-            WikiLink.LogHelper.severe("This has been caused by an AbstractMethodError, meaning "
-                         + "the plugin in question is out of date for the current WikiLink API.");
-            WikiLink.LogHelper.severe("Please message the author of the plugin in question and inform him/her of this situation.");
-            
-            ex.printStackTrace();
-        }
+        catch(Exception e)
+        {}   
     }
     
-    public static void loadPostInitPlgs()
+    public static void parseThread(File file)
     {
-        if(!INSTANCE.postInitPlgs.isEmpty())
-        for(Plugin plugin : INSTANCE.postInitPlgs)
+        if(!file.exists())
+            return;
+
+        try
         {
-            if(plugin instanceof IConfigureWikiLink)
-             ((IConfigureWikiLink) plugin).onLoad();
+          YamlReader reader = new YamlReader(new FileReader(file));            
+            while(true)
+            {
+                Map map = (Map)reader.read();
+                    if(map == null) break;
+                //Use this if to skip the "updater" section of the yml doc.
+                if(map.get("link") != null)
+                {ArrayList<String> mods = (ArrayList<String>)map.get("mods");
+                 ArrayList<String> link = (ArrayList<String>)map.get("link");
+                 
+                 for(String a : mods)
+                   for(String b : link)
+                      PluginRegistrar.registerThread(a, b.replace("-", ""));         
+                }
+            }
+          reader.close();
         }
+        catch(Exception e)
+        {}   
+
     }
     
-    private static void loadExternalPlugins(final File modLocation)
+    public static void parseYoutube(File file)
     {
+        if(!file.exists())
+            return;
+
         try
         {
-            final File pluginDir = new File(com.dreinsteinium.wikilink.WikiLink.proxy.getModRoot() + "/mods");
-            final ClassLoader classLoader = WikiLink.class.getClassLoader();
-
-            if (!pluginDir.isDirectory())
+          YamlReader reader = new YamlReader(new FileReader(file));            
+            while(true)
             {
-                return;
-            }
-
-            final File[] fileList = pluginDir.listFiles();
-
-            if (fileList == null)
-            {
-                return;
-            }
-
-            for (final File file : fileList)
-                if (file.isFile())
-                    if (file.getName().endsWith(".jar") || file.getName().endsWith(".zip"))
-                        if (!file.getName().equals(modLocation.getName()))
-                        {
-                            loadPluginsFromFile(file, classLoader);
-                        }
-        }
-        catch (final Exception ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
-    private static void loadIncludedPlugins(final File modLocation)
-    {
-        final ClassLoader classLoader = WikiLink.class.getClassLoader();
-
-        if (modLocation.isFile()
-                && (modLocation.getName().endsWith(".jar") || modLocation.getName()
-                    .endsWith(".zip")))
-        {
-            loadPluginsFromFile(modLocation, classLoader);
-        }
-        else if (modLocation.isDirectory())
-        {
-            loadPluginsFromBin(modLocation, classLoader);
-        }
-    }
-
-    private static void loadPluginsFromBin(final File bin, final ClassLoader classLoader)
-    {
-        final File[] fileList = bin.listFiles();
-
-        if (fileList != null)
-            for (final File file : fileList)
-            {
-                final String pluginName = file.getName();
-
-                if (file.isFile() && pluginName.startsWith("WL")
-                        && pluginName.endsWith(".class")) addPlugin(classLoader, pluginName,
-                                    parseClassName(file.getPath()));
-                else if (file.isDirectory())
-                {
-                    loadPluginsFromBin(file, classLoader);
+                Map map = (Map)reader.read();
+                    if(map == null) break;
+                if(map.get("item") != null)
+                {ArrayList<String> link = (ArrayList<String>)map.get("link");
+                 ArrayList<String> meta = (ArrayList<String>)map.get("meta");
+                 for(String i : meta)
+                     for(String s : link)
+                     {ItemStack item = new ItemStack(Integer.valueOf((String)map.get("item")), 0, Integer.valueOf(i));
+                         PluginRegistrar.registerYoutube(item, s);
+                     }
                 }
             }
+          reader.close();
+        }
+        catch(Exception e)
+        {}   
     }
-
-    private static void loadPluginsFromFile(final File file, final ClassLoader classLoader)
+    
+    public static void parseWebsite(File file)
     {
+        if(!file.exists())
+            return;
+
         try
         {
-            ZipEntry entry = null;
-            final FileInputStream fileIO = new FileInputStream(file);
-            final ZipInputStream zipIO = new ZipInputStream(fileIO);
-
-            while (true)
+          YamlReader reader = new YamlReader(new FileReader(file));            
+            while(true)
             {
-                entry = zipIO.getNextEntry();
-
-                if (entry == null)
-                {
-                    fileIO.close();
-                    break;
+                Map map = (Map)reader.read();
+                    if(map == null) break;
+                //Use this if to skip the "updater" section of the yml doc.
+                if(map.get("name") != null)
+                {ArrayList<String> mods = (ArrayList<String>)map.get("mods");
+                 ArrayList<String> link = (ArrayList<String>)map.get("link");
+                 for(String a : mods)
+                  for(String b : link)
+                   PluginRegistrar.registerWebsite(a, b, (String)map.get("name"));
                 }
-
-                final String entryName = entry.getName();
-                final File entryFile = new File(entryName);
-                final String pluginName = entryFile.getName();
-
-                if (!entry.isDirectory() && pluginName.startsWith("WL")
-                        && pluginName.endsWith(".class"))
-                    addPlugin(classLoader, pluginName,
-                              entryFile.getPath().replace(File.separatorChar, '.'));
             }
+          reader.close();
         }
-        catch (final Exception ex)
-        {
-            throw new RuntimeException(ex);
-        }
+        catch(Exception e)
+        {}   
+
     }
 
-    private static String parseClassName(final String binpath)
-    {
-        final String[] tokens = binpath.split("\\\\");
-        String packageName = "";
-
-        for (int i = 0; i < tokens.length && tokens[i] != null; i++)
-            if (tokens[i].equals("bin"))
-            {
-                for (int j = i + 1; j < tokens.length; j++)
-                {
-                    if (packageName.length() > 0)
-                    {
-                        packageName = packageName + ".";
-                    }
-
-                    packageName = packageName + tokens[j];
-                }
-
-                break;
-            }
-
-        return packageName;
-    }
-
-    public final List<Plugin> plugins = Lists.newArrayList();
-
-    public void loadPlugins(final File modLocation)
-    {
-        loadIncludedPlugins(modLocation);
-        loadExternalPlugins(modLocation);
-    }
 }

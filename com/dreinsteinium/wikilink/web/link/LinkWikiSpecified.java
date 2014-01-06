@@ -3,16 +3,16 @@ package com.dreinsteinium.wikilink.web.link;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
-public class LinkEntity extends Link
+public class LinkWikiSpecified extends Link
 {
 
-    public Entity entity;
+    public String str;
     
-    public LinkEntity(ItemStack item, Entity entity)
+    public LinkWikiSpecified(ItemStack item, String string)
     {
         super(item, EnumLink.ENTITY);
         
-        this.entity = entity;
+        this.str = string;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LinkEntity extends Link
     @Override
     public String getHyperlink()
     {       
-        return "http://www.minecraftwiki.net/index.php?search=" + this.entity.getEntityName();
+        return "http://www.minecraft.gamepedia.com/index.php?search=" + this.str;
     }
 
 }
