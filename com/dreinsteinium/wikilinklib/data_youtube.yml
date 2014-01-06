@@ -1,9 +1,31 @@
-version: 1dad975578122095b1914bcc86d96eee
+version: be2f7baf4a8fc07f2812b13f09860342
 updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_youtube.yml
 ---
 mods: Minecraft
-item: item.wool
+item: tile.grass
 meta:
-  - '*'
+  - 0
 link:
-  - xxxxxx
+  - 58gIIDWHccQ
+---
+mods: Minecraft
+item: tile.bedrock
+meta:
+  - 0
+link:
+  - 4LBvJcICG7W
+---
+mods: Minecraft
+item: tile.sand
+meta:
+  - 0
+link:
+  - 3DJ6F2r8LI0
+---
+mods: IronChest
+item: tile.ironchest:IRON
+meta:
+  - 0
+link:
+  - 3DJ6F2r8LI0
+---
