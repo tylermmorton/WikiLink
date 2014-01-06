@@ -6,5 +6,5 @@ This is the folder containing all WikiLink plugins based on their correct versio
 3. Please use a YAML parser before submitting a pull request. If you followed the instructions in step 1 then you shouldn't get any errors. 
 
 ---
-YAML Guidelines - http://ess.khhq.net/wiki/YAML_Tutorial
+YAML Guidelines - http://ess.khhq.net/wiki/YAML_Tutorial <br>
 YAML Online Parser - http://yaml-online-parser.appspot.com/
