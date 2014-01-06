@@ -1,1 +1,219 @@
-a
+# 1/5/2014 10:12PM
+version: 07a4caf44cb659360ff27174d13c478b
+updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_wiki.yml
+---
+mods:
+  - Minecraft
+soft: MEDIAWIKI
+link: minecraft.gamepedia.com
+name: Minecraft Wiki
+######################
+# Modification Wikis #
+######################
+---
+mods:
+  - BiblioCraft
+  - BiblioWoodsBoP
+  - BiblioWoodsEBXL
+  - BiblioWoodsNatura
+  - BiblioWoodsHighlands
+soft: WIKIA
+link: bibliocraft.wikia.com
+name: BiblioCraft Wiki
+---
+mods:
+  - BiomesOPlenty
+soft: WIKIA
+link: biomesoplenty.wikia.com
+name: Biomes O' Plenty Wiki
+---
+mods:
+  - BuildCraft|Core
+  - BuildCraft|Energy
+  - BuildCraft|Factory
+  - BuildCraft|Silicon
+  - BuildCraft|Builders
+  - BuildCraft|Transport
+soft: WIKIA
+link: minecraftbuildcraft.wikia.com
+name: BuildCraft Wiki
+---
+mods:
+  - ComputerCraft
+soft: MEDIAWIKI
+link: computercraft.info/wiki
+name: ComputerCraft Wiki
+---
+mods:
+  - EE3
+soft: WIKISPACES
+link: equivalentexchange.wikispaces.com
+name: Equivalent Exchange Wiki
+---
+mods:
+  - ExtraBees
+soft: WIKIDOT
+link: extrabees.wikidot.com
+name: ExtraBees Wiki
+---
+mods:
+  - Forestry
+soft: DOKUWIKI
+link: forestry.sengir.net
+name: Forestry Wiki
+---
+mods:
+  - GalacticraftCore
+  - GalacticraftPlanets
+soft: MEDIAWIKI
+link: wiki.micdoodle8.com/w
+name: Galacticraft Wiki
+---
+mods:
+  - GregTech_Addon
+soft: WIKISPACES
+link: gregtech-addon.wikispaces.com
+name: GregTech Wiki
+---
+mods:
+  - GraviGun
+  - PortalGun
+soft: MEDIAWIKI
+link: ichun.us/w
+name: iChun's Wiki
+---
+mods:
+  - IC2
+soft: MEDIAWIKI
+link: wiki.industrial-craft.net
+name: IndustrialCraft 2 Wiki
+---
+mods:
+  - Metallurgy3Base
+  - Metallurgy3Core
+  - Metallurgy3Vanilla
+  - Metallurgy3Machines
+soft: WIKIA
+link: metallurgy2.wikia.com
+name: Metallurgy Wiki
+---
+mods:
+  - Railcraft
+soft: DOKUWIKI
+link: railcraft.info/wiki
+name: Railcraft Wiki
+---
+mods:
+  - StevesCarts
+soft: WIKISPACES
+link: stevescarts2.wikispaces.com
+name: Steve's Carts Wiki
+---
+mods:
+  - Thaumcraft
+soft: WIKIA
+link: thaumcraft-3.wikia.com
+name: Thaumcraft Wiki (Unofficial)
+---
+mods:
+  - ThermalExpansion
+soft: WIKISPACES
+link: thermalexpansion.wikispaces.com
+name: Thermal Expansion Wiki
+---
+mods:
+  - TConstruct
+soft: WIKIA
+link: tinkers-construct.wikia.com
+name: Tinkers Construct Wiki
+---
+mods:
+  - TwilightForest
+soft: WIKISPACES
+link: twilightforest.wikispaces.com
+name: Twilight Forest Wiki
+---
+#####################
+# Compilation Wikis #
+#####################
+---
+mods:
+  - MFFS
+  - Mekanism
+  - MekanismTools
+  - MekanismGenerators
+  - AtomicScience
+  - ICBM|Sentry
+  - ICBM|Contraption
+soft: DOKUWIKI
+link: wiki.universalelectricity.com
+name: Universal Electricity Wiki
+---
+mods:
+  - AppliedEnergistics
+  - BuildCraft|Core
+  - BuildCraft|Energy
+  - BuildCraft|Factory
+  - BuildCraft|Silicon
+  - BuildCraft|Builders
+  - BuildCraft|Transport
+  - ChickenChunks
+  - ComputerCraft
+  - EnderStorage
+  - EE3
+  - ExtraBiomesXL
+  - Factorization
+  - Forestry
+  - GraviGun
+  - IC2
+  - IronChest
+  - Mystcraft
+  - PortalGun
+  - Railcraft
+  - SoulShards
+  - StevesCarts
+  - Thaumcraft
+  - ThermalExpansion
+  - XyCraft
+soft: MEDIAWIKI
+link: wiki.feed-the-beast.com
+name: Feed The Beast Wiki
+---
+mods:
+  - AppliedEnergistics
+  - BiblioCraft
+  - BiomesOPlenty
+  - BuildCraft|Core
+  - BuildCraft|Energy
+  - BuildCraft|Factory
+  - BuildCraft|Silicon
+  - BuildCraft|Builders
+  - BuildCraft|Transport
+  - ChickenChunks
+  - ComputerCraft
+  - DartCraft
+  - EnchantingPlus
+  - EnderStorage
+  - EE3
+  - ExtraUtils
+  - ExtraBiomesXL
+  - Factorization
+  - Forestry
+  - GraviGun
+  - IC2
+  - IronChest
+  - Mystcraft
+  - Natura
+  - PortalGun
+  - Railcraft
+  - TConstruct
+  - SoulShards
+  - StevesCarts
+  - Thaumcraft
+  - ThaumicTinkerer
+  - ThermalExpansion
+  - XyCraft
+soft: MEDIAWIKI
+link: ftbwiki.org
+name: Feed The Beast Wiki (Unofficial)
+---
