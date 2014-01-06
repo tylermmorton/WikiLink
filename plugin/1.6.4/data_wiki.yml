@@ -17,9 +17,10 @@ mods:
   - BiblioWoodsEBXL
   - BiblioWoodsNatura
   - BiblioWoodsHighlands
-soft: WIKIA
+soft: CUSTOM
 link: bibliocraft.wikia.com
 name: BiblioCraft Wiki
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - BiomesOPlenty
@@ -34,9 +35,10 @@ mods:
   - BuildCraft|Silicon
   - BuildCraft|Builders
   - BuildCraft|Transport
-soft: WIKIA
+soft: CUSTOM
 link: minecraftbuildcraft.wikia.com
 name: BuildCraft Wiki
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - ComputerCraft
@@ -93,9 +95,10 @@ mods:
   - Metallurgy3Core
   - Metallurgy3Vanilla
   - Metallurgy3Machines
-soft: WIKIA
+soft: CUSTOM
 link: metallurgy2.wikia.com
 name: Metallurgy Wiki
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - Railcraft
@@ -111,9 +114,10 @@ name: Steve's Carts Wiki
 ---
 mods:
   - Thaumcraft
-soft: WIKIA
+soft: CUSTOM
 link: thaumcraft-3.wikia.com
 name: Thaumcraft Wiki (Unofficial)
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - ThermalExpansion
@@ -123,9 +127,10 @@ name: Thermal Expansion Wiki
 ---
 mods:
   - TConstruct
-soft: WIKIA
+soft: CUSTOM
 link: tinkers-construct.wikia.com
 name: Tinkers Construct Wiki
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - TwilightForest
