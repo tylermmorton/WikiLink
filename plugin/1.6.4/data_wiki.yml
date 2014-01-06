@@ -24,9 +24,10 @@ custom: /wiki/Special:Search?search=
 ---
 mods:
   - BiomesOPlenty
-soft: WIKIA
+soft: CUSTOM
 link: biomesoplenty.wikia.com
 name: Biomes O' Plenty Wiki
+custom: /wiki/Special:Search?search=
 ---
 mods:
   - BuildCraft|Core
