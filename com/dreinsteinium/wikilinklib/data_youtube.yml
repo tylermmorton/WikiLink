@@ -1,31 +1,41 @@
 version: be2f7baf4a8fc07f2812b13f09860342
 updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_youtube.yml
 ---
-mods: Minecraft
-item: tile.grass
+item: 2
 meta:
   - 0
 link:
   - 58gIIDWHccQ
 ---
-mods: Minecraft
-item: tile.bedrock
+item: 7
 meta:
   - 0
 link:
   - 4LBvJcICG7W
 ---
-mods: Minecraft
-item: tile.sand
+item: 12
 meta:
   - 0
 link:
   - 3DJ6F2r8LI0
 ---
-mods: IronChest
-item: tile.ironchest:IRON
+item: 35
 meta:
   - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
 link:
   - 3DJ6F2r8LI0
 ---
