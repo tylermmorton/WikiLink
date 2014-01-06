@@ -1,0 +1,1 @@
+This is the folder containing all WikiLink plugins based on their correct versions. These plugins are downloaded directly to WikiLink and updated accordingly on runtime. If you would like to contribute, please follow the simple guidelines below. 
