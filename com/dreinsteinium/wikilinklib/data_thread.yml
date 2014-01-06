@@ -1,9 +1,13 @@
 version: 1dad975578122095b1914bcc86d96eee
 updater: https://raw.github.com/DrEinsteinium/WikiLink/master/com/dreinsteinium/wikilinklib/data_thread.yml
 ---
-mods: 
+mods:
   - WikiLink
 link:
-  - 1926671-
-name: WikiLink Forum Thread
+  - 1926671
+---
+mods:
+  - AppliedEnergistics
+link:
+  - 1625015
 ---
