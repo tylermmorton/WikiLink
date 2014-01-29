@@ -69,8 +69,8 @@ public class WikiLink
 		LogHelper = Logger.getLogger("WikiLink");
 		LogHelper.setParent(FMLLog.getLogger());
 		
-		Reference.CFGROOT = new File(event.getModConfigurationDirectory() + "\\WikiLink");		
-        ConfigHandler.init(new File(Reference.CFGROOT + "\\WikiLink.cfg"));
+		Reference.CFGROOT = new File(event.getModConfigurationDirectory() + "/WikiLink");		
+        ConfigHandler.init(new File(Reference.CFGROOT + "/WikiLink.cfg"));
         
         
         // Populate the plugin files and if they don't exist, make them.         
@@ -78,12 +78,12 @@ public class WikiLink
         try
         {            
             for(String str : names)
-            {if(!(new File(configDir + "\\plugin\\data_" + str + ".yml").isFile()))
+            {if(!(new File(configDir + "/plugin/data_" + str + ".yml").isFile()))
                 {File plugindirs;           
-                    if(!(plugindirs = new File(Reference.CFGROOT + "\\plugin")).isDirectory())                   
+                    if(!(plugindirs = new File(Reference.CFGROOT + "/plugin")).isDirectory())                   
                          plugindirs.mkdirs();
                     
-                    File file = new File(Reference.CFGROOT + "\\plugin\\data_" + str + ".yml");
+                    File file = new File(Reference.CFGROOT + "/plugin/data_" + str + ".yml");
                         if(file.createNewFile())
                         {WikiLink.LogHelper.info("Created new file @ " + file.getAbsolutePath());
                          BufferedWriter up = new BufferedWriter(new FileWriter(file));
@@ -104,7 +104,7 @@ public class WikiLink
         {   WikiLink.LogHelper.info("Checking for Updated Versions of the YAML Libraries.");               
             for(String str : names)   
             {
-                File file = new File(Reference.CFGROOT + "\\plugin\\data_" + str + ".yml");
+                File file = new File(Reference.CFGROOT + "/plugin/data_" + str + ".yml");
                 UpdateHandler.updateLib(file);             
             }    
         }
@@ -140,7 +140,7 @@ public class WikiLink
             LogHelper.info("WikiLink is now setting up the PluginData mappings needed during runtime.");
             long timer = System.currentTimeMillis();
             
-            for(File file : new File(Reference.CFGROOT + "\\plugin").listFiles())
+            for(File file : new File(Reference.CFGROOT + "/plugin").listFiles())
             {if(file.getName().startsWith("data_") && file.getName().endsWith(".yml"))
                 {
                     if(file.getName().equals("data_wiki.yml"))
