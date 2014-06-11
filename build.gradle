@@ -1,6 +1,10 @@
 buildscript {
     repositories {
         mavenCentral()
+		maven {
+            name = "chicken bones craftsaddle"
+            url = "http://chickenbones.net/maven/"
+        }
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -25,7 +29,10 @@ group= "wikilinks" // http://maven.apache.org/guides/mini/guide-naming-conventio
 archivesBaseName = "WikiLinks"
 def actualVersion = version
 
-minecraft {version = "1.7.2-10.12.0.1057"}
+minecraft {
+	version = "1.7.2-10.12.1.1082"
+	replace "@VERSION@", "${project.version}.${System.env.BUILD_NUMBER}"
+}
 
 logger.lifecycle "$archivesBaseName-$version"
  
