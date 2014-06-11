@@ -40,7 +40,12 @@ minecraft {
     replaceIn "Reference.java"
     replace "@MAJOR@", rootProject.config.version.mod.major
     replace "@MINOR@", rootProject.config.version.mod.minor
-    replace "@BUILD@", "${System.getenv().BUILD_NUMBER}"
+    if (System.getenv("BUILD_NUMBER") != null) {
+		replace "@BUILD@", "${System.getenv("BUILD_NUMBER")}"
+	}
+	else {
+		replace "@BUILD@", "0"
+	}
 }
 
 subprojects*.apply plugin: 'java'
@@ -51,6 +56,8 @@ allprojects {
     
     if (System.getenv("BUILD_NUMBER") != null)
         version += ".${System.getenv("BUILD_NUMBER")}"
+	else
+		version += ".0"
         
 	repositories {
         maven {
