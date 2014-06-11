@@ -5,6 +5,10 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+		maven {
+			name = "yamlbeans"
+            url = "http://central.maven.org/maven2/com/esotericsoftware/yamlbeans/"
+		}	
     }
     dependencies {
        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
@@ -15,7 +19,6 @@ apply plugin: 'idea'
 apply plugin: 'forge'
 apply plugin: 'scala'
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 ext.buildProps = file "build.properties"
  
@@ -54,9 +57,13 @@ allprojects {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-		maven {
-			name = "yamlbeans"
-            url = "http://central.maven.org/maven2/com/esotericsoftware/yamlbeans/"
+        maven {
+            name = "yamlbeans"
+            url = "http://repo1.maven.org/maven2/com/esotericsoftware/yamlbeans/"
+        }
+		ivy {
+			name 'FMP'
+			artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
 		}
 		ivy {
 			artifactPattern "http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.6.4/[module]-dev%20[revision].[ext]"
@@ -68,7 +75,7 @@ allprojects {
 		compile name: 'CodeChickenLib', version: "${config.version.minecraft}-${config.version.cclib}", ext: 'jar'
 		compile name: 'NotEnoughItems', version: "${config.version.nei}", ext: 'jar'
 		compile name: 'CodeChickenCore', version: "${config.version.cccore}", ext: 'jar'
-		compile name: 'yamlbeans', version: "${config.version.yamlbeans}", ext: 'jar'
+		compile name: 'yamlbeans', version: "${config.version.yamlbeans}", ext: 'jar', group: 'com.esotericsoftware.yamlbeans'
 	}
     
     jar {
@@ -76,19 +83,6 @@ allprojects {
         dependsOn ":copyBuildXml"
         destinationDir = file (rootProject.getRootDir().getPath() + '/output')
     }
-	
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				artifact jar
-			}
-		}
-		repositories {
-			maven {
-				url "file://var/www/maven"
-			}
-		}
-	}
 }
  
 subprojects {
@@ -117,7 +111,7 @@ task copyBuildXml(type: Copy) {
 task apiZip(type: Zip) {
     classifier = 'api'
     from sourceSets*.allSource
-    include 'com/dreinsteinium/wikilink/**'
+    include 'com/dreinsteinium/wikilink/api/**'
     destinationDir = file 'output'
 }
 	
