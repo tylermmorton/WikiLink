@@ -86,7 +86,6 @@ allprojects {
 	}
     
     jar {
-		classifier = project.name
         dependsOn ":copyBuildXml"
         destinationDir = file (rootProject.getRootDir().getPath() + '/output')
     }
