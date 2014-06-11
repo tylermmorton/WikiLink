@@ -6,13 +6,10 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
-
 import org.lwjgl.input.Keyboard;
-
 import com.dreinsteinium.wikilink.cfg.ConfigHandler;
 import com.dreinsteinium.wikilink.net.CommonProxy;
 import com.dreinsteinium.wikilink.net.ConnectionHandler;
@@ -23,7 +20,6 @@ import com.dreinsteinium.wikilink.util.PacketHandler;
 import com.dreinsteinium.wikilink.util.UpdateHandler;
 import com.dreinsteinium.wikilink.web.WebHelper;
 import com.dreinsteinium.wikilink.web.link.Link;
-
 import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;

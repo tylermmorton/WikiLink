@@ -6,6 +6,8 @@ Thank you for visiting the GitHub of DrEinsteinium :)! This is the source for Wi
 Email = http://catacombs.co/contact-me/
 Twitter = http://twitter.com/dreinsteinium/
 
+currently maintained by dmodoomsirus http://twitter.com/dmodoomsirius
+
 If you would like to see more from me, please visit my website!
 http://catacombs.co/
 
