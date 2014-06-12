@@ -21,9 +21,9 @@ public class Reference
     public static final String PROXY_CLIENT_LOC = "com.dreinsteinium.wikilink.net.ClientProxy";
 	
 	public static final String VER_STATE = "Release";
-	public static final String VER_MAJOR = "3";
-	public static final String VER_MINOR = "02";
-	public static final String VER_BUILD = "02";
+	public static final String VER_MAJOR = "@MAJOR@";
+	public static final String VER_MINOR = "@MINOR@";
+	public static final String VER_BUILD = "@BUILD@";
 	public static final String VER_MINECRAFT = "1.6.4";
 	
 	public static final String VER_MODHASH = "1a98b5bf25c7e5bc1eb1347eb963ee04";

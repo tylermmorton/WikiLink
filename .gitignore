@@ -1334,3 +1334,6 @@ run/assets/sounds/step/wood5.ogg
 run/assets/sounds/step/wood6.ogg
 run/assets/sounds/tile/piston/in.ogg
 run/assets/sounds/tile/piston/out.ogg
+eclipse/
+output/
+lib/
