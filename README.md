@@ -1,15 +1,11 @@
 WikiLink
 ========
+Thanks for visiting my GitHub page!
 
-Thank you for visiting the GitHub of DrEinsteinium :)! This is the source for WikiLink, my first ever Minecraft project that I have used in order to learn Java programming. I uploaded my source so hopefully people may learn from it. If you have any questions or concerns, please tweet or email me.
+This is the source code for a Minecraft Forge modification that allows the user to click on items while in game, either in the inventory interface or by pointing their cursor towards an entity or block in the world, and search on the internet for information on that object. This mod was made to help players who have hundreds of mods installed to easily find information on specific items and to help them find a better understanding of the mechanics of the game. 
 
-Email = http://catacombs.co/contact-me/
+Due to the refactoring of Minecraft in 1.7, I discontinued the project, but I am leaving the source code up in case anyone would like to continue it in the future. If you're interested, please contact my through Twitter.
+
 Twitter = http://twitter.com/dreinsteinium/
 
-currently maintained by dmodoomsirus http://twitter.com/dmodoomsirius
-
-If you would like to see more from me, please visit my website!
-http://catacombs.co/
-
-In order to find license information, please check the LICENSE.
 
