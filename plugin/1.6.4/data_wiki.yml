@@ -48,6 +48,19 @@ link: computercraft.info/wiki
 name: ComputerCraft Wiki
 ---
 mods:
+  - Ender IO
+soft: MEDIAWIKI
+link: wiki.enderio.com
+name: Ender IO Wiki
+---
+mods:
+  - Ars Magica 2
+soft: CUSTOM
+link: wiki.arsmagicamod.com
+name: Official Mekanism Wiki
+custom: /w/index.php?search=
+---
+mods:
   - EE3
 soft: WIKISPACES
 link: equivalentexchange.wikispaces.com
@@ -144,6 +157,15 @@ name: Twilight Forest Wiki
 #####################
 ---
 mods:
+  - Mekanism
+  - MekanismTools
+  - MekanismGenerators
+soft: CUSTOM
+link: wiki.aidancbrady.com
+name: Official Mekanism Wiki
+custom: /w/index.php?search=
+---
+mods:
   - MFFS
   - Mekanism
   - MekanismTools
@@ -222,4 +244,145 @@ mods:
 soft: MEDIAWIKI
 link: ftbwiki.org
 name: Feed The Beast Wiki (Unofficial)
+---
+mods:
+  - Additional BuildCraft Objects
+  - Advanced Genetics
+  - Advanced Thaumaturgy
+  - Applied Energistics
+  - Ars Magica 2
+  - Backpacks
+  - BiblioCraft
+  - Big Reactors
+  - Biomes o' Plenty
+  - Blood Magic
+  - Buildcraft
+  - Carpenter's Blocks
+  - CCTransport
+  - Charlotte's Utilities
+  - ChickenChunks
+  - Chisel (Asie Fork)
+  - ChocoCraft
+  - Chocolate Quest
+  - ComputerCraft
+  - Damage Indicators
+  - DartCraft
+  - DartPatch
+  - DenPipes
+  - DenPipes - Forestry
+  - Dimensional Anchors
+  - EiraIRC
+  - Emasher Resource
+  - Enchiridion
+  - Ender Storage
+  - Ender IO
+  - Engineer's Toolbox
+  - Enhanced Portals 3
+  - Ex Aliquo
+  - Ex Nihilo
+  - Extra Bees
+  - Extra Cells
+  - Extra TiC
+  - Extra Trees
+  - Extra Utilities
+  - Factorization
+  - Finndus Fillies
+  - Flat Signs
+  - Forbidden Magic
+  - Forestry
+  - Magic Bees
+  - Forge
+  - Forge Multipart
+  - Galacticraft
+  - GasCraft
+  - Gendustry
+  - Gravity Gun
+  - Greg's Lighting
+  - GrowthCraft
+  - Hardcore Ender Expansion
+  - HexWool
+  - Infinitubes
+  - Immibis Peripherals
+  - Inventory Tweaks
+  - Iron Chest
+  - JABBA
+  - Liquid XP
+  - Logistics Pipes
+  - Mad Science
+  - Magic Bees
+  - Magical Crops
+  - Map Writer
+  - Mariculture
+  - MCPC+
+  - Mekanism
+  - Metallurgy
+  - MineChem
+  - MineFactory Reloaded (Skyboy Fork)
+  - MineTweaker
+  - Modular Force Field System (Calclavia's MFFS)
+  - Modular Powersuits
+  - Modular Powersuits Addons
+  - Mouse Tweaks
+  - MystCraft
+  - Natura
+  - Nether Ores (Skyboy Fork)
+  - Not Enough Codecs
+  - Not Enough Items
+  - Not Enough Keys
+  - NEI Addons
+  - NEI Plugins
+  - Obsidiplates
+  - OpenBlocks
+  - OpenComputers
+  - OpenComponents
+  - OpenPeripheral
+  - OpenPeripheral Addons
+  - Opis
+  - Plugins for Forestry
+  - PortalGun
+  - Project Red
+  - QuarryPlus
+  - Railcraft
+  - Random Things
+  - Redstone Arsenal
+  - Redstone Paste
+  - Refined Relocation
+  - Rei's Minimap
+  - Reliquary
+  - Remote IO
+  - Rock Crusher Metal Dusts Add-On
+  - RRUtility
+  - Simple Recycling
+  - Simply Jetpacks
+  - Small Boats
+  - Soul Shards Reborn
+  - Statues
+  - Steve's Carts
+  - Steve's Factory Manager
+  - Super Crafting Frame
+  - Switches
+  - Sync
+  - Technomancy
+  - Thaumcraft
+  - Thaumic Tinkerer
+  - Thaumic Tinkerer KAMI
+  - Thermal Expansion
+  - Tinkers' Construct
+  - Tinkers' Mechworks
+  - TiC Tooltips
+  - Totemic
+  - Translocator
+  - Truss Mod
+  - TubeStuff
+  - The Twilight Forest
+  - Underground Biomes
+  - Universal Electricity API
+  - Vending
+  - VoxelMap (aka Zan's Minimap)
+  - WAILA
+  - Wireless Redstone - ChickenBones Edition
+  - Witchery
+soft: MEDIAWIKI
+link: wiki.resonant-rise.com
+name: Resonant Rise Wiki
 ---
